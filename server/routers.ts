@@ -248,6 +248,139 @@ export const appRouter = router({
         return atualizacoes;
       }),
   }),
+
+  analises: router({
+    // Melhor vendedor do mês
+    melhorVendedor: publicProcedure
+      .input(z.object({ mes: z.string().optional() }))
+      .query(async ({ input }) => {
+        const vendedores = await db.getAllVendedores();
+        const resultados = [];
+
+        for (const vendedor of vendedores) {
+          const metricas = await db.getMetricasByVendedor(vendedor.id);
+          
+          // Filtra por mês se especificado
+          const metricasFiltradas = input.mes 
+            ? metricas.filter(m => m.mes === input.mes && m.status === 'com_dados')
+            : metricas.filter(m => m.status === 'com_dados');
+
+          if (metricasFiltradas.length > 0) {
+            const totalReceita = metricasFiltradas.reduce((sum, m) => sum + m.totalReceita, 0);
+            const totalVendas = metricasFiltradas.reduce((sum, m) => sum + m.totalVendas, 0);
+            const totalComissao = metricasFiltradas.reduce((sum, m) => sum + m.comissaoTotal, 0);
+
+            resultados.push({
+              vendedor: {
+                id: vendedor.id,
+                nome: vendedor.nome
+              },
+              receita: db.centavosParaReais(totalReceita),
+              vendas: db.centavosParaReais(totalVendas),
+              comissao: db.centavosParaReais(totalComissao),
+              meses: metricasFiltradas.length
+            });
+          }
+        }
+
+        // Ordena por receita
+        resultados.sort((a, b) => b.receita - a.receita);
+
+        return {
+          melhor: resultados[0] || null,
+          top5: resultados.slice(0, 5),
+          todos: resultados,
+          periodo: input.mes || 'Geral'
+        };
+      }),
+
+    // Dados para gráfico de barras
+    graficoComparativo: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      const dados = [];
+
+      for (const vendedor of vendedores) {
+        const metricas = await db.getMetricasByVendedor(vendedor.id);
+        const metricasComDados = metricas.filter(m => m.status === 'com_dados');
+
+        const totalVendas = metricasComDados.reduce((sum, m) => sum + m.totalVendas, 0);
+        const totalReceita = metricasComDados.reduce((sum, m) => sum + m.totalReceita, 0);
+        const totalComissao = metricasComDados.reduce((sum, m) => sum + m.comissaoTotal, 0);
+
+        dados.push({
+          vendedor: vendedor.nome,
+          vendas: db.centavosParaReais(totalVendas),
+          receita: db.centavosParaReais(totalReceita),
+          comissao: db.centavosParaReais(totalComissao)
+        });
+      }
+
+      // Ordena por receita
+      dados.sort((a, b) => b.receita - a.receita);
+
+      return dados;
+    }),
+
+    // Dados para resumo executivo
+    resumoExecutivo: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      const metricas = await db.getUltimasMetricas();
+      
+      // Calcula totais gerais
+      const totalVendas = metricas.reduce((sum, m) => sum + m.totalVendas, 0);
+      const totalReceita = metricas.reduce((sum, m) => sum + m.totalReceita, 0);
+      const totalComissao = metricas.reduce((sum, m) => sum + m.comissaoTotal, 0);
+
+      // Agrupa por vendedor
+      const porVendedor = new Map();
+      for (const metrica of metricas) {
+        if (!porVendedor.has(metrica.vendedorId)) {
+          porVendedor.set(metrica.vendedorId, {
+            vendas: 0,
+            receita: 0,
+            comissao: 0
+          });
+        }
+        const atual = porVendedor.get(metrica.vendedorId);
+        atual.vendas += metrica.totalVendas;
+        atual.receita += metrica.totalReceita;
+        atual.comissao += metrica.comissaoTotal;
+      }
+
+      // Encontra melhor e pior
+      let melhorVendedor = null;
+      let piorVendedor = null;
+      let maiorReceita = 0;
+      let menorReceita = Infinity;
+
+      for (const vendedor of vendedores) {
+        const dados = porVendedor.get(vendedor.id);
+        if (dados) {
+          if (dados.receita > maiorReceita) {
+            maiorReceita = dados.receita;
+            melhorVendedor = { nome: vendedor.nome, receita: db.centavosParaReais(dados.receita) };
+          }
+          if (dados.receita < menorReceita && dados.receita > 0) {
+            menorReceita = dados.receita;
+            piorVendedor = { nome: vendedor.nome, receita: db.centavosParaReais(dados.receita) };
+          }
+        }
+      }
+
+      return {
+        totais: {
+          vendas: db.centavosParaReais(totalVendas),
+          receita: db.centavosParaReais(totalReceita),
+          comissao: db.centavosParaReais(totalComissao)
+        },
+        vendedoresAtivos: vendedores.length,
+        mesesComDados: metricas.length,
+        melhorVendedor,
+        piorVendedor,
+        mediaReceita: db.centavosParaReais(totalReceita / vendedores.length)
+      };
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

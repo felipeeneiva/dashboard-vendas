@@ -14,6 +14,9 @@
 - [x] Implementar cards de métricas (Total Vendas, Receita, Comissão, %)
 - [x] Criar tabela de vendedores com métricas mensais
 - [ ] Implementar gráficos de evolução mensal
+- [x] Implementar query: vendedor com melhor desempenho
+- [x] Criar geração de resumo executivo em slides
+- [x] Criar gráfico de barras comparativo de vendedores
 - [ ] Criar sistema de filtros (por vendedor, por mês, por ano)
 - [ ] Implementar indicadores visuais de metas (progresso, falta para meta)
 - [x] Criar página individual por vendedor com detalhes
@@ -40,3 +43,6 @@
 - [ ] Validar cálculos e totalizações
 - [ ] Documentar como adicionar novos vendedores
 - [ ] Criar guia de uso do dashboard
+- [x] Criar manual completo de backup e exportação de dados
+- [x] Documentar como migrar dados da Manus para Google Sheets
+- [x] Criar guia de segurança e controle de acesso

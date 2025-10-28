@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { RefreshCw, TrendingUp, DollarSign, Percent, Award, Loader2, Eye } from "lucide-react";
+import { RefreshCw, TrendingUp, DollarSign, Percent, Award, Loader2, Eye, BarChart3 } from "lucide-react";
 import { APP_TITLE } from "@/const";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -81,6 +81,15 @@ export default function Home() {
           </div>
           
           <div className="flex items-center gap-3">
+            <Button
+              onClick={() => setLocation('/analises')}
+              variant="outline"
+              className="gap-2"
+            >
+              <BarChart3 className="h-4 w-4" />
+              Análises
+            </Button>
+            
             {isAuthenticated && (
               <>
                 {resumo && resumo.length === 0 && (
