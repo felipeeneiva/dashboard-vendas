@@ -1,10 +1,30 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { z } from "zod";
+import * as db from "./db";
+import { extrairMetricasAba, extrairDadosVendedor, gerarListaMeses } from "./sheetsExtractor";
+
+// Configuração dos vendedores
+const VENDEDORES_CONFIG = [
+  { nome: 'Rafael', sheetId: '1ZJz0MgOHLkYYNW5eWZmOAU797KXQPbwGmp8YnWl4NPo', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Gabriel', sheetId: '1jVIANOJ01UCat7Y8thFXkWZyhiv5Jzty-_9yK-xeKms', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Francine', sheetId: '1PpzDxn6eM3LKwtJTchD6qVbbyUkAeDnA6hNy0gmrx10', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Mauro', sheetId: '19CNbM8qmkDFi-TxPDH8xaKeK0xOngcnDR2zOYH-LFSk', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Luana', sheetId: '1tvfL-1S1kiAAyvFoKJzznW_RWYpLb6PAt-KiIF6vLjA', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Nathaly', sheetId: '1jVIANOJ01UCat7Y8thFXkWZyhiv5Jzty-_9yK-xeKms', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Danilo', sheetId: '1Yu3qKph4F59HnzMnIVFkTlB_Qf-LHTa2eU8ny-erN28', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Pedro', sheetId: '1BAVNbSUX9WUEAwnQ1zPaiBMXupBnrDOEdjYVjeMy8tE', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Leonardo', sheetId: '1xLkrLj7SEUa9gexhf-XgCBjZCI7XifchCek3ZBLxMZY', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Yasmin', sheetId: '1UeOUxTlb7IWIhllK87Bb73Wx7F1PfbwPKJSwPCzMu9U', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Lucas', sheetId: '1Bd53lZyS2aOUmIS4gSY_PtfuYFu-G_aUgXeH8HPEVZk', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Isabelle', sheetId: '1xpngLR6KJZSAJTKqmDvev2skDX_SQOX9ScNENk2pZPg', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Andrios', sheetId: '1srU7o9d3HInp0o6oHZhuVOVGZOVHSC14Kp68lFvbJ7s', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Felipe', sheetId: '1lQFpUKdMbYA4l2blzaHQRGUeh1gX9_b6Qsj_hmXA42M', dataEntrada: new Date('2024-01-01') }
+];
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -17,12 +37,217 @@ export const appRouter = router({
     }),
   }),
 
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  vendedores: router({
+    // Lista todos os vendedores
+    list: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      return vendedores.map(v => ({
+        ...v,
+        metaMensal: db.centavosParaReais(v.metaMensal || 0)
+      }));
+    }),
+
+    // Inicializa vendedores no banco (executar uma vez)
+    inicializar: protectedProcedure.mutation(async () => {
+      for (const config of VENDEDORES_CONFIG) {
+        await db.upsertVendedor({
+          nome: config.nome,
+          sheetId: config.sheetId,
+          ativo: true,
+          dataEntrada: config.dataEntrada,
+          metaMensal: 0 // Será configurado depois
+        });
+      }
+      return { success: true, total: VENDEDORES_CONFIG.length };
+    }),
+
+    // Atualiza meta de um vendedor
+    atualizarMeta: protectedProcedure
+      .input(z.object({
+        vendedorId: z.number(),
+        metaMensal: z.number()
+      }))
+      .mutation(async ({ input }) => {
+        const vendedor = await db.getVendedorById(input.vendedorId);
+        if (!vendedor) {
+          throw new Error("Vendedor não encontrado");
+        }
+
+        await db.upsertVendedor({
+          ...vendedor,
+          metaMensal: db.reaisParaCentavos(input.metaMensal)
+        });
+
+        return { success: true };
+      }),
+  }),
+
+  metricas: router({
+    // Busca métricas de todos os vendedores
+    resumoGeral: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      const resultado = [];
+
+      for (const vendedor of vendedores) {
+        const metricas = await db.getMetricasByVendedor(vendedor.id);
+        
+        // Pega apenas métricas com dados
+        const metricasComDados = metricas.filter(m => m.status === 'com_dados');
+        
+        // Calcula totais
+        const totalVendas = metricasComDados.reduce((sum, m) => sum + m.totalVendas, 0);
+        const totalReceita = metricasComDados.reduce((sum, m) => sum + m.totalReceita, 0);
+        const totalComissao = metricasComDados.reduce((sum, m) => sum + m.comissaoTotal, 0);
+
+        resultado.push({
+          vendedor: {
+            id: vendedor.id,
+            nome: vendedor.nome,
+            metaMensal: db.centavosParaReais(vendedor.metaMensal || 0)
+          },
+          totais: {
+            vendas: db.centavosParaReais(totalVendas),
+            receita: db.centavosParaReais(totalReceita),
+            comissao: db.centavosParaReais(totalComissao)
+          },
+          mesesComDados: metricasComDados.length
+        });
+      }
+
+      return resultado;
+    }),
+
+    // Busca métricas de um vendedor específico
+    porVendedor: publicProcedure
+      .input(z.object({ vendedorId: z.number() }))
+      .query(async ({ input }) => {
+        const vendedor = await db.getVendedorById(input.vendedorId);
+        if (!vendedor) {
+          throw new Error("Vendedor não encontrado");
+        }
+
+        const metricas = await db.getMetricasByVendedor(input.vendedorId);
+        
+        return {
+          vendedor: {
+            id: vendedor.id,
+            nome: vendedor.nome,
+            metaMensal: db.centavosParaReais(vendedor.metaMensal || 0)
+          },
+          metricas: metricas.map(m => ({
+            mes: m.mes,
+            totalVendas: db.centavosParaReais(m.totalVendas),
+            totalReceita: db.centavosParaReais(m.totalReceita),
+            comissaoTotal: db.centavosParaReais(m.comissaoTotal),
+            percentualReceita: db.percentualParaDecimal(m.percentualReceita),
+            status: m.status,
+            dataExtracao: m.dataExtracao
+          }))
+        };
+      }),
+
+    // Atualiza métricas de todos os vendedores
+    atualizarTodos: protectedProcedure.mutation(async () => {
+      const vendedores = await db.getAllVendedores();
+      const meses = gerarListaMeses();
+      
+      let vendedoresAtualizados = 0;
+      let totalRegistros = 0;
+      const erros: string[] = [];
+
+      for (const vendedor of vendedores) {
+        try {
+          console.log(`Extraindo dados de ${vendedor.nome}...`);
+          const resultados = await extrairDadosVendedor(vendedor.sheetId, meses);
+          
+          for (const resultado of resultados) {
+            const metricas = resultado.metricas;
+            
+            await db.upsertMetrica({
+              vendedorId: vendedor.id,
+              mes: resultado.mes,
+              totalVendas: metricas?.totalVendas || 0,
+              totalReceita: metricas?.totalReceita || 0,
+              comissaoTotal: metricas?.comissaoTotal || 0,
+              percentualReceita: metricas?.percentualReceita || 0,
+              status: metricas?.encontrado ? 'com_dados' : 'sem_dados',
+              dataExtracao: new Date()
+            });
+            
+            totalRegistros++;
+          }
+          
+          vendedoresAtualizados++;
+        } catch (error) {
+          console.error(`Erro ao atualizar ${vendedor.nome}:`, error);
+          erros.push(`${vendedor.nome}: ${error}`);
+        }
+      }
+
+      // Registra a atualização
+      await db.registrarAtualizacao({
+        tipo: 'manual',
+        status: erros.length === 0 ? 'sucesso' : (vendedoresAtualizados > 0 ? 'parcial' : 'erro'),
+        vendedoresAtualizados,
+        totalRegistros,
+        mensagem: erros.length > 0 ? erros.join('; ') : undefined
+      });
+
+      return {
+        success: true,
+        vendedoresAtualizados,
+        totalRegistros,
+        erros
+      };
+    }),
+
+    // Atualiza métricas de um vendedor específico
+    atualizarVendedor: protectedProcedure
+      .input(z.object({ vendedorId: z.number() }))
+      .mutation(async ({ input }) => {
+        const vendedor = await db.getVendedorById(input.vendedorId);
+        if (!vendedor) {
+          throw new Error("Vendedor não encontrado");
+        }
+
+        const meses = gerarListaMeses();
+        const resultados = await extrairDadosVendedor(vendedor.sheetId, meses);
+        
+        let totalRegistros = 0;
+        for (const resultado of resultados) {
+          const metricas = resultado.metricas;
+          
+          await db.upsertMetrica({
+            vendedorId: vendedor.id,
+            mes: resultado.mes,
+            totalVendas: metricas?.totalVendas || 0,
+            totalReceita: metricas?.totalReceita || 0,
+            comissaoTotal: metricas?.comissaoTotal || 0,
+            percentualReceita: metricas?.percentualReceita || 0,
+            status: metricas?.encontrado ? 'com_dados' : 'sem_dados',
+            dataExtracao: new Date()
+          });
+          
+          totalRegistros++;
+        }
+
+        return {
+          success: true,
+          vendedor: vendedor.nome,
+          totalRegistros
+        };
+      }),
+  }),
+
+  atualizacoes: router({
+    // Lista últimas atualizações
+    ultimas: publicProcedure
+      .input(z.object({ limit: z.number().optional() }))
+      .query(async ({ input }) => {
+        const atualizacoes = await db.getUltimasAtualizacoes(input.limit || 10);
+        return atualizacoes;
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
