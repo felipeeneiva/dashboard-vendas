@@ -14,6 +14,9 @@
 - [x] Implementar cards de métricas (Total Vendas, Receita, Comissão, %)
 - [x] Criar tabela de vendedores com métricas mensais
 - [ ] Implementar gráficos de evolução mensal
+- [ ] Implementar: "Qual foi o vendedor com o melhor desempenho geral e em qual mês isso ocorreu?"
+- [ ] Implementar: "Crie um resumo executivo em slides com os principais resultados"
+- [ ] Implementar: "Gere um gráfico de barras comparando o desempenho de vendas de cada vendedor"
 - [x] Implementar query: vendedor com melhor desempenho
 - [x] Criar geração de resumo executivo em slides
 - [x] Criar gráfico de barras comparativo de vendedores
@@ -43,6 +46,12 @@
 - [x] Implementar dashboards e gráficos nativos no Sheets
 - [x] Criar planilhas individuais para cada vendedor
 - [x] Adicionar sistema de atualização automática (trigger)
+
+### Novas Features
+- [x] Adicionar botão para limpar dados antigos (2023)
+- [x] Implementar atualização automática diária às 6h
+- [x] Criar endpoint para limpar métricas de anos específicos
+- [x] Adicionar sistema de agendamento de tarefas (cron)
 
 ### Bugs Reportados
 - [x] Corrigir valores gigantescos no Google Sheets (multiplicação incorreta)

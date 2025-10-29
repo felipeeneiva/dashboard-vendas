@@ -163,7 +163,25 @@ export const appRouter = router({
         };
       }),
 
-    // Atualiza métricas de todos os vendedores
+      // Limpa métricas de anos específicos
+    limparDadosAntigos: protectedProcedure
+      .input(z.object({ ano: z.number() }))
+      .mutation(async ({ input }) => {
+        const metricas = await db.getAllMetricas();
+        const metricasParaRemover = metricas.filter(m => m.mes.endsWith(`/${input.ano}`));
+        
+        for (const metrica of metricasParaRemover) {
+          await db.deleteMetrica(metrica.id);
+        }
+        
+        return { 
+          success: true, 
+          removidos: metricasParaRemover.length,
+          ano: input.ano
+        };
+      }),
+    
+    // Atualiza dados de todos os vendedores
     atualizarTodos: protectedProcedure.mutation(async () => {
       const vendedores = await db.getAllVendedores();
       const meses = gerarListaMeses();

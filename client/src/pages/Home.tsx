@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { RefreshCw, TrendingUp, DollarSign, Percent, Award, Loader2, Eye, BarChart3 } from "lucide-react";
+import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { APP_TITLE } from "@/const";
 import { toast } from "sonner";
@@ -24,6 +24,17 @@ export default function Home() {
   // Busca últimas atualizações
   const { data: atualizacoes } = trpc.atualizacoes.ultimas.useQuery({ limit: 5 });
 
+  // Mutation para limpar dados antigos
+  const limparDados = trpc.metricas.limparDadosAntigos.useMutation({
+    onSuccess: (data) => {
+      toast.success(`Dados de ${data.ano} removidos! ${data.removidos} registros excluídos.`);
+      refetch();
+    },
+    onError: (error) => {
+      toast.error(`Erro ao limpar dados: ${error.message}`);
+    }
+  });
+  
   // Mutation para atualizar todos os dados
   const atualizarTodos = trpc.metricas.atualizarTodos.useMutation({
     onSuccess: (data) => {
@@ -130,6 +141,25 @@ export default function Home() {
                     Inicializar Vendedores
                   </Button>
                 )}
+                <Button
+                  onClick={() => limparDados.mutate({ ano: 2023 })}
+                  disabled={limparDados.isPending}
+                  variant="destructive"
+                  className="gap-2"
+                >
+                  {limparDados.isPending ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Limpando...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="h-4 w-4" />
+                      Limpar 2023
+                    </>
+                  )}
+                </Button>
+                
                 <Button
                   onClick={handleRefresh}
                   disabled={isRefreshing}

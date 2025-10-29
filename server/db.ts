@@ -124,6 +124,21 @@ export async function upsertVendedor(vendedor: InsertVendedor): Promise<void> {
 
 // ==================== METRICA FUNCTIONS ====================
 
+export async function getAllMetricas(): Promise<Metrica[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const result = await db.select().from(metricas);
+  return result;
+}
+
+export async function deleteMetrica(metricaId: number): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  
+  await db.delete(metricas).where(eq(metricas.id, metricaId));
+}
+
 export async function getMetricasByVendedor(vendedorId: number): Promise<Metrica[]> {
   const db = await getDb();
   if (!db) return [];
