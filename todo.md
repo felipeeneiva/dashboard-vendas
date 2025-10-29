@@ -17,7 +17,13 @@
 - [x] Implementar query: vendedor com melhor desempenho
 - [x] Criar geração de resumo executivo em slides
 - [x] Criar gráfico de barras comparativo de vendedores
-- [ ] Criar sistema de filtros (por vendedor, por mês, por ano)
+- [x] Criar sistema de filtros (por vendedor, por mês, por ano)
+- [x] Implementar filtro por ano (2024 ou 2025)
+- [x] Implementar filtro por mês específico
+- [ ] Implementar filtro por período (data inicial e final)
+- [x] Adicionar filtros na página principal
+- [x] Adicionar filtros na página de análises
+- [x] Adicionar filtro na página de detalhes do vendedor
 - [ ] Implementar indicadores visuais de metas (progresso, falta para meta)
 - [x] Criar página individual por vendedor com detalhes
 - [x] Implementar sistema de acesso individual por vendedor (links únicos)

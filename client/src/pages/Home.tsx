@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
 import { RefreshCw, TrendingUp, DollarSign, Percent, Award, Loader2, Eye, BarChart3 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { APP_TITLE } from "@/const";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -12,9 +13,13 @@ export default function Home() {
   const { user, isAuthenticated } = useAuth();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [, setLocation] = useLocation();
+  const [anoFiltro, setAnoFiltro] = useState<number | undefined>(undefined);
+  const [mesFiltro, setMesFiltro] = useState<string | undefined>(undefined);
 
   // Busca resumo geral
-  const { data: resumo, isLoading, refetch } = trpc.metricas.resumoGeral.useQuery();
+  const { data: resumo, isLoading, refetch } = trpc.metricas.resumoGeral.useQuery(
+    anoFiltro || mesFiltro ? { ano: anoFiltro, mes: mesFiltro } : undefined
+  );
 
   // Busca últimas atualizações
   const { data: atualizacoes } = trpc.atualizacoes.ultimas.useQuery({ limit: 5 });
@@ -81,6 +86,30 @@ export default function Home() {
           </div>
           
           <div className="flex items-center gap-3">
+            <Select value={anoFiltro?.toString() || 'todos'} onValueChange={(v) => setAnoFiltro(v === 'todos' ? undefined : parseInt(v))}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="Ano" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos</SelectItem>
+                <SelectItem value="2024">2024</SelectItem>
+                <SelectItem value="2025">2025</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select value={mesFiltro || 'todos'} onValueChange={(v) => setMesFiltro(v === 'todos' ? undefined : v)}>
+              <SelectTrigger className="w-44">
+                <SelectValue placeholder="Mês" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="todos">Todos</SelectItem>
+                {['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'].flatMap(mes => [
+                  <SelectItem key={`${mes}/2024`} value={`${mes}/2024`}>{mes}/2024</SelectItem>,
+                  <SelectItem key={`${mes}/2025`} value={`${mes}/2025`}>{mes}/2025</SelectItem>
+                ])}
+              </SelectContent>
+            </Select>
+            
             <Button
               onClick={() => setLocation('/analises')}
               variant="outline"

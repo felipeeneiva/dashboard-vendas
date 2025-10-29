@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Loader2, TrendingUp, DollarSign, Award, Percent, Calendar } from "lucide-react";
 import { useLocation } from "wouter";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface VendedorDetalhesProps {
   params: { id: string };
@@ -13,9 +14,15 @@ interface VendedorDetalhesProps {
 export default function VendedorDetalhes({ params }: VendedorDetalhesProps) {
   const [, setLocation] = useLocation();
   const vendedorId = parseInt(params.id);
+  const [anoFiltro, setAnoFiltro] = useState<number | undefined>(undefined);
+  const [mesFiltro, setMesFiltro] = useState<string | undefined>(undefined);
 
   // Busca dados do vendedor
-  const { data, isLoading } = trpc.metricas.porVendedor.useQuery({ vendedorId });
+  const { data, isLoading } = trpc.metricas.porVendedor.useQuery({ 
+    vendedorId,
+    ano: anoFiltro,
+    mes: mesFiltro
+  });
 
   // Agrupa métricas por ano
   const metricasPorAno = useMemo(() => {
@@ -80,13 +87,41 @@ export default function VendedorDetalhes({ params }: VendedorDetalhesProps) {
             Voltar
           </Button>
           
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-              {data.vendedor.nome}
-            </h1>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-              Detalhamento de vendas e comissões
-            </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+                {data.vendedor.nome}
+              </h1>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                Detalhamento de vendas e comissões
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <Select value={anoFiltro?.toString() || 'todos'} onValueChange={(v) => setAnoFiltro(v === 'todos' ? undefined : parseInt(v))}>
+                <SelectTrigger className="w-32">
+                  <SelectValue placeholder="Ano" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todos</SelectItem>
+                  <SelectItem value="2024">2024</SelectItem>
+                  <SelectItem value="2025">2025</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={mesFiltro || 'todos'} onValueChange={(v) => setMesFiltro(v === 'todos' ? undefined : v)}>
+                <SelectTrigger className="w-44">
+                  <SelectValue placeholder="Mês" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="todos">Todos</SelectItem>
+                  {['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'].flatMap(mes => [
+                    <SelectItem key={`${mes}/2024`} value={`${mes}/2024`}>{mes}/2024</SelectItem>,
+                    <SelectItem key={`${mes}/2025`} value={`${mes}/2025`}>{mes}/2025</SelectItem>
+                  ])}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </header>

@@ -83,8 +83,13 @@ export const appRouter = router({
   }),
 
   metricas: router({
-    // Busca métricas de todos os vendedores
-    resumoGeral: publicProcedure.query(async () => {
+    // Resumo geral de todos os vendedores
+    resumoGeral: publicProcedure
+      .input(z.object({ 
+        ano: z.number().optional(),
+        mes: z.string().optional() 
+      }).optional())
+      .query(async ({ input }) => {
       const vendedores = await db.getAllVendedores();
       const resultado = [];
 
@@ -119,14 +124,26 @@ export const appRouter = router({
 
     // Busca métricas de um vendedor específico
     porVendedor: publicProcedure
-      .input(z.object({ vendedorId: z.number() }))
+      .input(z.object({ 
+        vendedorId: z.number(),
+        ano: z.number().optional(),
+        mes: z.string().optional()
+      }))
       .query(async ({ input }) => {
         const vendedor = await db.getVendedorById(input.vendedorId);
         if (!vendedor) {
-          throw new Error("Vendedor não encontrado");
+          throw new Error('Vendedor não encontrado');
         }
 
-        const metricas = await db.getMetricasByVendedor(input.vendedorId);
+        let metricas = await db.getMetricasByVendedor(input.vendedorId);
+        
+        // Aplica filtros se fornecidos
+        if (input.ano) {
+          metricas = metricas.filter(m => m.mes.endsWith(`/${input.ano}`));
+        }
+        if (input.mes) {
+          metricas = metricas.filter(m => m.mes === input.mes);
+        }
         
         return {
           vendedor: {
@@ -252,18 +269,34 @@ export const appRouter = router({
   analises: router({
     // Melhor vendedor do mês
     melhorVendedor: publicProcedure
-      .input(z.object({ mes: z.string().optional() }))
+      .input(z.object({ 
+        mes: z.string().optional(),
+        ano: z.number().optional()
+      }))
       .query(async ({ input }) => {
-        const vendedores = await db.getAllVendedores();
-        const resultados = [];
+      const vendedores = await db.getAllVendedores();
+      const resultados = [];
 
-        for (const vendedor of vendedores) {
-          const metricas = await db.getMetricasByVendedor(vendedor.id);
+      for (const vendedor of vendedores) {
+        let metricas = await db.getMetricasByVendedor(vendedor.id);
+        
+        // Aplica filtros se fornecidos
+        if (input?.ano) {
+          metricas = metricas.filter(m => m.mes.endsWith(`/${input.ano}`));
+        }
+        if (input?.mes) {
+          metricas = metricas.filter(m => m.mes === input.mes);
+        }
           
-          // Filtra por mês se especificado
-          const metricasFiltradas = input.mes 
-            ? metricas.filter(m => m.mes === input.mes && m.status === 'com_dados')
-            : metricas.filter(m => m.status === 'com_dados');
+        // Filtra por ano e mês se especificado
+        let metricasFiltradas = metricas.filter(m => m.status === 'com_dados');
+        
+        if (input.ano) {
+          metricasFiltradas = metricasFiltradas.filter(m => m.mes.endsWith(`/${input.ano}`));
+        }
+        if (input.mes) {
+          metricasFiltradas = metricasFiltradas.filter(m => m.mes === input.mes);
+        }
 
           if (metricasFiltradas.length > 0) {
             const totalReceita = metricasFiltradas.reduce((sum, m) => sum + m.totalReceita, 0);
