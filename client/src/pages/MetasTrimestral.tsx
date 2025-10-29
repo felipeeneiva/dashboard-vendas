@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Loader2, Target, TrendingUp, AlertCircle, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Loader2, Target, TrendingUp, AlertCircle, CheckCircle2, PieChart as PieChartIcon } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { useLocation } from "wouter";
 
 export default function MetasTrimestral() {
@@ -119,6 +120,62 @@ export default function MetasTrimestral() {
                 </div>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Gráfico de Pizza */}
+        <Card className="mb-8">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <PieChartIcon className="h-5 w-5 text-purple-600" />
+              <CardTitle>Contribuição para Meta Geral</CardTitle>
+            </div>
+            <CardDescription>
+              Participação de cada vendedor no total de vendas do trimestre
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {data.totalVendido > 0 ? (
+              <div className="h-96">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={data.vendedores
+                        .filter(item => item.totalVendido > 0)
+                        .map(item => ({
+                          name: item.vendedor.nome,
+                          value: item.totalVendido,
+                          percentual: ((item.totalVendido / data.totalVendido) * 100).toFixed(2)
+                        }))}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={(entry) => `${entry.name}: ${entry.percentual}%`}
+                    outerRadius={120}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {data.vendedores.map((_, index) => {
+                      const colors = [
+                        '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981',
+                        '#6366f1', '#f97316', '#14b8a6', '#a855f7', '#ef4444',
+                        '#06b6d4', '#84cc16', '#f43f5e', '#8b5cf6'
+                      ];
+                      return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
+                    })}
+                  </Pie>
+                  <Tooltip 
+                    formatter={(value: number) => formatarMoeda(value)}
+                  />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className="h-96 flex items-center justify-center text-slate-500">
+                <p>Nenhum dado de vendas disponível para o período</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 

@@ -55,6 +55,8 @@
 - [x] Implementar tabela de vendedores com indicadores visuais
 - [x] Adicionar gráficos de progresso de metas
 - [x] Criar endpoint tRPC para buscar dados do trimestre
+- [x] Adicionar gráfico de pizza mostrando contribuição de cada vendedor
+- [ ] Implementar envio de resumo diário por e-mail
 
 ### Novas Features
 - [x] Adicionar botão para limpar dados antigos (2023)
@@ -63,6 +65,7 @@
 - [x] Adicionar sistema de agendamento de tarefas (cron)
 
 ### Bugs Reportados
+- [x] Corrigir travamento na página de Metas Trimestral
 - [x] Corrigir valores gigantescos no Google Sheets (multiplicação incorreta)
 - [x] Corrigir conversão de valores (centavos vs reais)
 - [x] Limitar extração apenas para 2024 e 2025 (remover 2023)
