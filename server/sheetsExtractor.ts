@@ -14,8 +14,8 @@ export interface MetricasExtraidas {
 }
 
 /**
- * Limpa valor monetário brasileiro e converte para centavos
- * Exemplo: "R$ 1.234,56" -> 123456
+ * Limpa valor monetário brasileiro e retorna em centavos
+ * Exemplo: "R$ 1.234,56" -> 123456 (centavos)
  */
 function limparValorMonetario(valor: string): number {
   if (!valor || valor.trim() === '' || valor.trim() === '-') {
@@ -31,7 +31,8 @@ function limparValorMonetario(valor: string): number {
   
   try {
     const reais = parseFloat(valorLimpo);
-    return Math.round(reais * 100); // Converte para centavos
+    // Converte para centavos (multiplica por 100)
+    return Math.round(reais * 100);
   } catch {
     return 0;
   }
@@ -134,14 +135,14 @@ export async function extrairMetricasAba(
 }
 
 /**
- * Gera lista de meses de 2023 a 2025
+ * Gera lista de meses de 2024 a 2025
  */
 export function gerarListaMeses(): string[] {
   const mesesNomes = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ];
-  const anos = [2023, 2024, 2025];
+  const anos = [2024, 2025];
   const meses: string[] = [];
   
   for (const ano of anos) {

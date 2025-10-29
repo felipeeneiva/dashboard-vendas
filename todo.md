@@ -38,6 +38,12 @@
 - [x] Criar planilhas individuais para cada vendedor
 - [x] Adicionar sistema de atualização automática (trigger)
 
+### Bugs Reportados
+- [x] Corrigir valores gigantescos no Google Sheets (multiplicação incorreta)
+- [x] Corrigir conversão de valores (centavos vs reais)
+- [x] Limitar extração apenas para 2024 e 2025 (remover 2023)
+- [x] Corrigir dados incorretos da Luana em Março/2025
+
 ### Testes e Documentação
 - [ ] Testar extração de dados de todas as planilhas
 - [ ] Validar cálculos e totalizações
