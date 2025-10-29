@@ -92,6 +92,15 @@ export async function getUserByOpenId(openId: string) {
 
 // ==================== VENDEDOR FUNCTIONS ====================
 
+export async function updateVendedorMeta(vendedorId: number, metaTrimestral: number): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  
+  await db.update(vendedores)
+    .set({ metaTrimestral })
+    .where(eq(vendedores.id, vendedorId));
+}
+
 export async function getAllVendedores(): Promise<Vendedor[]> {
   const db = await getDb();
   if (!db) return [];

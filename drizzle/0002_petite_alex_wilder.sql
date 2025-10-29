@@ -1,0 +1,1 @@
+ALTER TABLE `vendedores` ADD `metaTrimestral` int DEFAULT 0;

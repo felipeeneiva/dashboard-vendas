@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye } from 'lucide-react';
+import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { APP_TITLE } from "@/const";
 import { toast } from "sonner";
@@ -128,6 +128,15 @@ export default function Home() {
             >
               <BarChart3 className="h-4 w-4" />
               Análises
+            </Button>
+            
+            <Button
+              onClick={() => setLocation('/metas-trimestral')}
+              variant="outline"
+              className="gap-2 border-blue-300 hover:bg-blue-50 dark:border-blue-700 dark:hover:bg-blue-900/20"
+            >
+              <Target className="h-4 w-4" />
+              Metas Trimestral
             </Button>
             
             {isAuthenticated && (

@@ -47,6 +47,15 @@
 - [x] Criar planilhas individuais para cada vendedor
 - [x] Adicionar sistema de atualização automática (trigger)
 
+### Dashboard de Metas Trimestral (Set-Out-Nov/2025)
+- [x] Criar página de dashboard de metas trimestral
+- [x] Adicionar metas individuais por vendedor no banco de dados
+- [x] Implementar cálculo de progresso por vendedor (% atingido e % faltante)
+- [x] Criar card de meta geral (R$ 10 milhões)
+- [x] Implementar tabela de vendedores com indicadores visuais
+- [x] Adicionar gráficos de progresso de metas
+- [x] Criar endpoint tRPC para buscar dados do trimestre
+
 ### Novas Features
 - [x] Adicionar botão para limpar dados antigos (2023)
 - [x] Implementar atualização automática diária às 6h

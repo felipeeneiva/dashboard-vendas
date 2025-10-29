@@ -25,6 +25,76 @@ const VENDEDORES_CONFIG = [
 ];
 
 export const appRouter = router({
+  // Router de metas trimestral
+  metas: router({
+    // Busca dados do trimestre Set-Out-Nov/2025
+    trimestral: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      const mesesTrimestre = ['Setembro/2025', 'Outubro/2025', 'Novembro/2025'];
+      
+      const metaGeral = 1000000000; // R$ 10 milhões em centavos
+      let totalVendido = 0;
+      
+      const vendedoresComProgresso = await Promise.all(
+        vendedores.map(async (vendedor) => {
+          const metricas = await db.getMetricasByVendedor(vendedor.id);
+          
+          // Filtra apenas os meses do trimestre
+          const metricasTrimestre = metricas.filter(m => 
+            mesesTrimestre.includes(m.mes)
+          );
+          
+          // Soma total de vendas do trimestre
+          const totalVendasTrimestre = metricasTrimestre.reduce(
+            (acc, m) => acc + (m.totalVendas || 0), 
+            0
+          );
+          
+          totalVendido += totalVendasTrimestre;
+          
+          const metaVendedor = vendedor.metaTrimestral || 0;
+          const percentualAtingido = metaVendedor > 0 
+            ? (totalVendasTrimestre / metaVendedor) * 100 
+            : 0;
+          const percentualFaltante = 100 - percentualAtingido;
+          
+          return {
+            vendedor,
+            metaVendedor,
+            totalVendido: totalVendasTrimestre,
+            percentualAtingido: Math.min(percentualAtingido, 100),
+            percentualFaltante: Math.max(percentualFaltante, 0),
+            status: percentualAtingido >= 100 ? 'atingida' : 
+                    percentualAtingido >= 70 ? 'proximo' : 'distante'
+          };
+        })
+      );
+      
+      const percentualGeralAtingido = (totalVendido / metaGeral) * 100;
+      const percentualGeralFaltante = 100 - percentualGeralAtingido;
+      
+      return {
+        metaGeral,
+        totalVendido,
+        percentualGeralAtingido: Math.min(percentualGeralAtingido, 100),
+        percentualGeralFaltante: Math.max(percentualGeralFaltante, 0),
+        vendedores: vendedoresComProgresso,
+        periodo: 'Setembro - Outubro - Novembro/2025'
+      };
+    }),
+    
+    // Atualiza meta de um vendedor
+    atualizarMeta: protectedProcedure
+      .input(z.object({
+        vendedorId: z.number(),
+        metaTrimestral: z.number()
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateVendedorMeta(input.vendedorId, input.metaTrimestral);
+        return { success: true };
+      }),
+  }),
+  
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

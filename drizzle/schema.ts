@@ -28,6 +28,7 @@ export const vendedores = mysqlTable("vendedores", {
   ativo: boolean("ativo").default(true).notNull(),
   dataEntrada: timestamp("dataEntrada").notNull(), // Data de entrada do vendedor
   metaMensal: int("metaMensal").default(0), // Meta mensal em reais (centavos)
+  metaTrimestral: int("metaTrimestral").default(0), // Meta trimestral Set-Out-Nov/2025 (centavos)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

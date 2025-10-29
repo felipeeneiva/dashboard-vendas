@@ -15,6 +15,13 @@
       "when": 1761658023531,
       "tag": "0001_nasty_mimic",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1761704936984,
+      "tag": "0002_petite_alex_wilder",
+      "breakpoints": true
     }
   ]
 }
