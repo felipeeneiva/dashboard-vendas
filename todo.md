@@ -60,6 +60,7 @@
 - [x] Adicionar comparativo ano a ano na página de detalhes do vendedor
 - [x] Implementar cálculo de variação percentual entre períodos
 - [ ] Criar gráfico de evolução comparativa
+- [x] Adicionar seletor de ordenação (Receita, Vendas, Comissão, Nome)
 - [x] Adicionar indicadores visuais de tendência (setas verde/vermelha)
 
 ### Novas Features

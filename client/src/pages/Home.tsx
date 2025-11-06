@@ -15,6 +15,7 @@ export default function Home() {
   const [, setLocation] = useLocation();
   const [anoFiltro, setAnoFiltro] = useState<number | undefined>(undefined);
   const [mesFiltro, setMesFiltro] = useState<string | undefined>(undefined);
+  const [ordenacao, setOrdenacao] = useState<'receita' | 'vendas' | 'comissao' | 'nome'>('receita');
 
   // Busca resumo geral
   const { data: resumo, isLoading, refetch } = trpc.metricas.resumoGeral.useQuery(
@@ -118,6 +119,18 @@ export default function Home() {
                   <SelectItem key={`${mes}/2024`} value={`${mes}/2024`}>{mes}/2024</SelectItem>,
                   <SelectItem key={`${mes}/2025`} value={`${mes}/2025`}>{mes}/2025</SelectItem>
                 ])}
+              </SelectContent>
+            </Select>
+            
+            <Select value={ordenacao} onValueChange={(v: any) => setOrdenacao(v)}>
+              <SelectTrigger className="w-44">
+                <SelectValue placeholder="Ordenar por" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="receita">Receita ↓</SelectItem>
+                <SelectItem value="vendas">Vendas ↓</SelectItem>
+                <SelectItem value="comissao">Comissão ↓</SelectItem>
+                <SelectItem value="nome">Nome A-Z</SelectItem>
               </SelectContent>
             </Select>
             
@@ -274,7 +287,20 @@ export default function Home() {
                   </thead>
                   <tbody>
                     {resumo
-                      .sort((a, b) => b.totais.receita - a.totais.receita)
+                      .sort((a, b) => {
+                        switch (ordenacao) {
+                          case 'receita':
+                            return b.totais.receita - a.totais.receita;
+                          case 'vendas':
+                            return b.totais.vendas - a.totais.vendas;
+                          case 'comissao':
+                            return b.totais.comissao - a.totais.comissao;
+                          case 'nome':
+                            return a.vendedor.nome.localeCompare(b.vendedor.nome);
+                          default:
+                            return 0;
+                        }
+                      })
                       .map((item, index) => (
                         <tr
                           key={item.vendedor.id}
