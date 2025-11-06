@@ -164,7 +164,18 @@ export const appRouter = router({
       const resultado = [];
 
       for (const vendedor of vendedores) {
-        const metricas = await db.getMetricasByVendedor(vendedor.id);
+        let metricas = await db.getMetricasByVendedor(vendedor.id);
+        
+        // Aplica filtros de ano e mês se fornecidos
+        if (input?.ano) {
+          metricas = metricas.filter(m => {
+            const ano = parseInt(m.mes.split('/')[1]);
+            return ano === input.ano;
+          });
+        }
+        if (input?.mes) {
+          metricas = metricas.filter(m => m.mes === input.mes);
+        }
         
         // Pega apenas métricas com dados
         const metricasComDados = metricas.filter(m => m.status === 'com_dados');

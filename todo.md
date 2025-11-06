@@ -65,6 +65,7 @@
 - [x] Adicionar sistema de agendamento de tarefas (cron)
 
 ### Bugs Reportados
+- [x] Corrigir filtro de mês na página principal (não está filtrando os dados)
 - [x] Corrigir travamento na página de Metas Trimestral
 - [x] Corrigir valores gigantescos no Google Sheets (multiplicação incorreta)
 - [x] Corrigir conversão de valores (centavos vs reais)
