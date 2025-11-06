@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Loader2, TrendingUp, DollarSign, Award, Percent, Calendar } from "lucide-react";
+import { ArrowLeft, Loader2, TrendingUp, DollarSign, Award, Percent, Calendar, ArrowUp, ArrowDown, Minus } from "lucide-react";
 import { useLocation } from "wouter";
 import { useMemo, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -55,6 +55,48 @@ export default function VendedorDetalhes({ params }: VendedorDetalhesProps) {
         }),
         { vendas: 0, receita: 0, comissao: 0 }
       );
+  }, [data?.metricas]);
+
+  // Calcula comparativo ano a ano (mesmo mês)
+  const comparativoAnual = useMemo(() => {
+    if (!data?.metricas) return [];
+
+    const mesesUnicos = new Set<string>();
+    data.metricas.forEach(m => {
+      const [mes] = m.mes.split('/');
+      mesesUnicos.add(mes);
+    });
+
+    return Array.from(mesesUnicos).map(mes => {
+      const metricas2024 = data.metricas.find(m => m.mes === `${mes}/2024`);
+      const metricas2025 = data.metricas.find(m => m.mes === `${mes}/2025`);
+
+      if (!metricas2024 || !metricas2025) return null;
+
+      const vendas2024 = metricas2024.totalVendas;
+      const vendas2025 = metricas2025.totalVendas;
+      const variacaoVendas = vendas2024 > 0 
+        ? ((vendas2025 - vendas2024) / vendas2024) * 100 
+        : 0;
+
+      const receita2024 = metricas2024.totalReceita;
+      const receita2025 = metricas2025.totalReceita;
+      const variacaoReceita = receita2024 > 0 
+        ? ((receita2025 - receita2024) / receita2024) * 100 
+        : 0;
+
+      return {
+        mes,
+        vendas2024,
+        vendas2025,
+        variacaoVendas,
+        receita2024,
+        receita2025,
+        variacaoReceita,
+        diferencaVendas: vendas2025 - vendas2024,
+        diferencaReceita: receita2025 - receita2024
+      };
+    }).filter(Boolean);
   }, [data?.metricas]);
 
   if (isLoading) {
@@ -185,6 +227,68 @@ export default function VendedorDetalhes({ params }: VendedorDetalhesProps) {
             </CardContent>
           </Card>
         </div>
+
+        {/* Comparativo Ano a Ano */}
+        {comparativoAnual.length > 0 && (
+          <Card className="mb-8 border-purple-200 dark:border-purple-800">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-purple-600" />
+                <CardTitle>Comparativo 2024 vs 2025</CardTitle>
+              </div>
+              <CardDescription>
+                Comparação mês a mês entre os anos
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-3 px-4 font-semibold">Mês</th>
+                      <th className="text-right py-3 px-4 font-semibold">Vendas 2024</th>
+                      <th className="text-right py-3 px-4 font-semibold">Vendas 2025</th>
+                      <th className="text-right py-3 px-4 font-semibold">Variação</th>
+                      <th className="text-right py-3 px-4 font-semibold">Receita 2024</th>
+                      <th className="text-right py-3 px-4 font-semibold">Receita 2025</th>
+                      <th className="text-right py-3 px-4 font-semibold">Variação</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {comparativoAnual.map((comp: any) => {
+                      const IconeVendas = comp.variacaoVendas > 0 ? ArrowUp : comp.variacaoVendas < 0 ? ArrowDown : Minus;
+                      const IconeReceita = comp.variacaoReceita > 0 ? ArrowUp : comp.variacaoReceita < 0 ? ArrowDown : Minus;
+                      const corVendas = comp.variacaoVendas > 0 ? 'text-green-600' : comp.variacaoVendas < 0 ? 'text-red-600' : 'text-slate-500';
+                      const corReceita = comp.variacaoReceita > 0 ? 'text-green-600' : comp.variacaoReceita < 0 ? 'text-red-600' : 'text-slate-500';
+                      
+                      return (
+                        <tr key={comp.mes} className="border-b hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                          <td className="py-3 px-4 font-medium">{comp.mes}</td>
+                          <td className="text-right py-3 px-4">R$ {(comp.vendas2024 / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                          <td className="text-right py-3 px-4">R$ {(comp.vendas2025 / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                          <td className={`text-right py-3 px-4 font-semibold ${corVendas}`}>
+                            <div className="flex items-center justify-end gap-1">
+                              <IconeVendas className="h-4 w-4" />
+                              {Math.abs(comp.variacaoVendas).toFixed(1)}%
+                            </div>
+                          </td>
+                          <td className="text-right py-3 px-4">R$ {(comp.receita2024 / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                          <td className="text-right py-3 px-4">R$ {(comp.receita2025 / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                          <td className={`text-right py-3 px-4 font-semibold ${corReceita}`}>
+                            <div className="flex items-center justify-end gap-1">
+                              <IconeReceita className="h-4 w-4" />
+                              {Math.abs(comp.variacaoReceita).toFixed(1)}%
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Métricas por Ano */}
         {Object.keys(metricasPorAno)

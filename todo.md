@@ -57,6 +57,10 @@
 - [x] Criar endpoint tRPC para buscar dados do trimestre
 - [x] Adicionar gráfico de pizza mostrando contribuição de cada vendedor
 - [ ] Implementar envio de resumo diário por e-mail
+- [x] Adicionar comparativo ano a ano na página de detalhes do vendedor
+- [x] Implementar cálculo de variação percentual entre períodos
+- [ ] Criar gráfico de evolução comparativa
+- [x] Adicionar indicadores visuais de tendência (setas verde/vermelha)
 
 ### Novas Features
 - [x] Adicionar botão para limpar dados antigos (2023)
