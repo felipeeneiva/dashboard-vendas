@@ -1,0 +1,9 @@
+{
+  "query": "DELETE FROM metricas WHERE vendedorId = (SELECT id FROM vendedores WHERE nome = 'Gabriel');",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute DELETE FROM metricas WHERE vendedorId = (SELECT id FROM vendedores WHERE nome = 'Gabriel');",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 53
+}
