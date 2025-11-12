@@ -70,6 +70,7 @@
 - [x] Adicionar sistema de agendamento de tarefas (cron)
 
 ### Bugs Reportados
+- [x] Corrigir erro JSON ao extrair dados do Gabriel (planilha retorna HTML - formato de abas em MAIÚSCULAS)
 - [x] Investigar por que vendas do Gabriel não estão sendo contabilizadas (ID de planilha duplicado com Nathaly)
 - [x] Corrigir filtro de mês na página principal (não está filtrando os dados)
 - [x] Corrigir travamento na página de Metas Trimestral

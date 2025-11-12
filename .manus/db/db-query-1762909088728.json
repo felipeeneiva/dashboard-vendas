@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO vendedores (nome, sheetId, ativo, dataEntrada, metaMensal, metaTrimestral) VALUES ('Gabriel', '1Fp7Y6ytwk7SLZAEZkSw-gAU2nCWVK9M1SyK0enbjQfY', 1, '2024-01-01', 0, 65000000);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute INSERT INTO vendedores (nome, sheetId, ativo, dataEntrada, metaMensal, metaTrimestral) VALUES ('Gabriel', '1Fp7Y6ytwk7SLZAEZkSw-gAU2nCWVK9M1SyK0enbjQfY', 1, '2024-01-01', 0, 65000000);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 67
+}

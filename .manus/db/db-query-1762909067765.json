@@ -1,0 +1,75 @@
+{
+  "query": "SELECT id, nome, sheetId FROM vendedores;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, nome, sheetId FROM vendedores;",
+  "rows": [
+    {
+      "id": "1",
+      "nome": "Rafael",
+      "sheetId": "1ZJz0MgOHLkYYNW5eWZmOAU797KXQPbwGmp8YnWl4NPo"
+    },
+    {
+      "id": "2",
+      "nome": "Nathaly",
+      "sheetId": "1jVIANOJ01UCat7Y8thFXkWZyhiv5Jzty-_9yK-xeKms"
+    },
+    {
+      "id": "3",
+      "nome": "Francine",
+      "sheetId": "1PpzDxn6eM3LKwtJTchD6qVbbyUkAeDnA6hNy0gmrx10"
+    },
+    {
+      "id": "4",
+      "nome": "Mauro",
+      "sheetId": "19CNbM8qmkDFi-TxPDH8xaKeK0xOngcnDR2zOYH-LFSk"
+    },
+    {
+      "id": "5",
+      "nome": "Luana",
+      "sheetId": "1tvfL-1S1kiAAyvFoKJzznW_RWYpLb6PAt-KiIF6vLjA"
+    },
+    {
+      "id": "7",
+      "nome": "Danilo",
+      "sheetId": "1Yu3qKph4F59HnzMnIVFkTlB_Qf-LHTa2eU8ny-erN28"
+    },
+    {
+      "id": "8",
+      "nome": "Pedro",
+      "sheetId": "1BAVNbSUX9WUEAwnQ1zPaiBMXupBnrDOEdjYVjeMy8tE"
+    },
+    {
+      "id": "9",
+      "nome": "Leonardo",
+      "sheetId": "1xLkrLj7SEUa9gexhf-XgCBjZCI7XifchCek3ZBLxMZY"
+    },
+    {
+      "id": "10",
+      "nome": "Yasmin",
+      "sheetId": "1UeOUxTlb7IWIhllK87Bb73Wx7F1PfbwPKJSwPCzMu9U"
+    },
+    {
+      "id": "11",
+      "nome": "Lucas",
+      "sheetId": "1Bd53lZyS2aOUmIS4gSY_PtfuYFu-G_aUgXeH8HPEVZk"
+    },
+    {
+      "id": "12",
+      "nome": "Isabelle",
+      "sheetId": "1xpngLR6KJZSAJTKqmDvev2skDX_SQOX9ScNENk2pZPg"
+    },
+    {
+      "id": "13",
+      "nome": "Andrios",
+      "sheetId": "1srU7o9d3HInp0o6oHZhuVOVGZOVHSC14Kp68lFvbJ7s"
+    },
+    {
+      "id": "14",
+      "nome": "Felipe",
+      "sheetId": "1lQFpUKdMbYA4l2blzaHQRGUeh1gX9_b6Qsj_hmXA42M"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tsheetId\n1\tRafael\t1ZJz0MgOHLkYYNW5eWZmOAU797KXQPbwGmp8YnWl4NPo\n2\tNathaly\t1jVIANOJ01UCat7Y8thFXkWZyhiv5Jzty-_9yK-xeKms\n3\tFrancine\t1PpzDxn6eM3LKwtJTchD6qVbbyUkAeDnA6hNy0gmrx10\n4\tMauro\t19CNbM8qmkDFi-TxPDH8xaKeK0xOngcnDR2zOYH-LFSk\n5\tLuana\t1tvfL-1S1kiAAyvFoKJzznW_RWYpLb6PAt-KiIF6vLjA\n7\tDanilo\t1Yu3qKph4F59HnzMnIVFkTlB_Qf-LHTa2eU8ny-erN28\n8\tPedro\t1BAVNbSUX9WUEAwnQ1zPaiBMXupBnrDOEdjYVjeMy8tE\n9\tLeonardo\t1xLkrLj7SEUa9gexhf-XgCBjZCI7XifchCek3ZBLxMZY\n10\tYasmin\t1UeOUxTlb7IWIhllK87Bb73Wx7F1PfbwPKJSwPCzMu9U\n11\tLucas\t1Bd53lZyS2aOUmIS4gSY_PtfuYFu-G_aUgXeH8HPEVZk\n12\tIsabelle\t1xpngLR6KJZSAJTKqmDvev2skDX_SQOX9ScNENk2pZPg\n13\tAndrios\t1srU7o9d3HInp0o6oHZhuVOVGZOVHSC14Kp68lFvbJ7s\n14\tFelipe\t1lQFpUKdMbYA4l2blzaHQRGUeh1gX9_b6Qsj_hmXA42M\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

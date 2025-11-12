@@ -62,9 +62,9 @@ function limparPercentual(valor: string): number {
 }
 
 /**
- * Extrai métricas de uma aba específica da planilha
+ * Função auxiliar que tenta extrair métricas de uma aba
  */
-export async function extrairMetricasAba(
+async function tentarExtrairAba(
   sheetId: string,
   nomeAba: string
 ): Promise<MetricasExtraidas | null> {
@@ -132,6 +132,26 @@ export async function extrairMetricasAba(
     console.error(`Erro ao extrair métricas da aba "${nomeAba}":`, error);
     return null;
   }
+}
+
+/**
+ * Extrai métricas de uma aba específica da planilha
+ * Tenta primeiro com o formato original, depois com MAIÚSCULAS
+ */
+export async function extrairMetricasAba(
+  sheetId: string,
+  nomeAba: string
+): Promise<MetricasExtraidas | null> {
+  // Tenta primeiro com o formato original (Primeira letra maiúscula)
+  let resultado = await tentarExtrairAba(sheetId, nomeAba);
+  
+  // Se não encontrar, tenta com MAIÚSCULAS
+  if (!resultado || !resultado.encontrado) {
+    const nomeAbaUpper = nomeAba.toUpperCase();
+    resultado = await tentarExtrairAba(sheetId, nomeAbaUpper);
+  }
+  
+  return resultado;
 }
 
 /**
