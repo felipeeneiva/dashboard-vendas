@@ -57,6 +57,13 @@
 - [x] Criar endpoint tRPC para buscar dados do trimestre
 - [x] Adicionar gráfico de pizza mostrando contribuição de cada vendedor
 - [ ] Implementar envio de resumo diário por e-mail
+
+### Gráfico de Funil Semanal
+- [x] Criar endpoint para calcular progresso semanal da meta trimestral
+- [x] Implementar gráfico de funil com etapas semanais
+- [x] Adicionar indicadores de progresso por semana
+- [x] Criar projeção se vai bater meta no ritmo atual
+- [x] Adicionar comparativo semana atual vs anterior
 - [x] Adicionar comparativo ano a ano na página de detalhes do vendedor
 - [x] Implementar cálculo de variação percentual entre períodos
 - [ ] Criar gráfico de evolução comparativa

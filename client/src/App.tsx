@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import VendedorDetalhes from "./pages/VendedorDetalhes";
 import Analises from "./pages/Analises";
 import MetasTrimestral from "./pages/MetasTrimestral";
+import ProgressoSemanal from "./pages/ProgressoSemanal";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -19,7 +20,8 @@ function Router() {
       </Route>
       <Route path="/analises" component={Analises} />
       <Route path="/metas-trimestral" component={MetasTrimestral} />
-      <Route path={"/404"} component={NotFound} />
+      <Route path="/progresso-semanal" component={ProgressoSemanal} />
+      <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>

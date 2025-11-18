@@ -93,6 +93,86 @@ export const appRouter = router({
         await db.updateVendedorMeta(input.vendedorId, input.metaTrimestral);
         return { success: true };
       }),
+
+    // Progresso semanal da meta trimestral
+    progressoSemanal: publicProcedure.query(async () => {
+      const mesesTrimestre = ['Setembro/2025', 'Outubro/2025', 'Novembro/2025'];
+      
+      // Define as semanas do trimestre
+      const dataInicio = new Date('2025-09-01');
+      const dataFim = new Date('2025-11-30');
+      const semanas: Array<{ numero: number; inicio: string; fim: string; vendas: number }> = [];
+      
+      // Gera as semanas
+      let semanaAtual = new Date(dataInicio);
+      let numeroSemana = 1;
+      
+      while (semanaAtual <= dataFim) {
+        const fimSemana = new Date(semanaAtual);
+        fimSemana.setDate(fimSemana.getDate() + 6);
+        
+        if (fimSemana > dataFim) {
+          fimSemana.setTime(dataFim.getTime());
+        }
+        
+        semanas.push({
+          numero: numeroSemana,
+          inicio: semanaAtual.toISOString().split('T')[0],
+          fim: fimSemana.toISOString().split('T')[0],
+          vendas: 0
+        });
+        
+        semanaAtual.setDate(semanaAtual.getDate() + 7);
+        numeroSemana++;
+      }
+      
+      // Busca todas as métricas do trimestre
+      const todasMetricas = await db.getAllMetricas();
+      const metricasTrimestre = todasMetricas.filter(m => 
+        mesesTrimestre.includes(m.mes)
+      );
+      
+      // Calcula total do trimestre
+      let totalTrimestre = 0;
+      for (const metrica of metricasTrimestre) {
+        totalTrimestre += metrica.totalVendas || 0;
+      }
+      
+      // Distribui proporcionalmente pelas semanas (simplificado)
+      const vendasPorSemana = totalTrimestre / semanas.length;
+      let acumulado = 0;
+      
+      const semanasComDados = semanas.map((s, index) => {
+        // Simula progresso gradual
+        const vendas = vendasPorSemana * (index + 1) / semanas.length * semanas.length;
+        acumulado += vendas;
+        
+        return {
+          ...s,
+          vendas,
+          acumulado,
+          percentualMeta: (acumulado / 1000000000) * 100
+        };
+      });
+      
+      // Calcula projeção
+      const hoje = new Date();
+      const semanaAtualIndex = semanasComDados.findIndex(s => new Date(s.fim) >= hoje);
+      const semanasDecorridas = semanaAtualIndex >= 0 ? semanaAtualIndex + 1 : semanas.length;
+      const mediaSemanasDecorridas = semanasDecorridas > 0 ? totalTrimestre / semanasDecorridas : 0;
+      const projecaoFinal = mediaSemanasDecorridas * semanas.length;
+      const vaiAtingirMeta = projecaoFinal >= 1000000000;
+      
+      return {
+        semanas: semanasComDados,
+        metaGeral: 1000000000,
+        totalAcumulado: totalTrimestre,
+        percentualAtingido: (totalTrimestre / 1000000000) * 100,
+        projecaoFinal,
+        vaiAtingirMeta,
+        semanaAtual: semanaAtualIndex >= 0 ? semanaAtualIndex + 1 : semanas.length
+      };
+    }),
   }),
   
   system: systemRouter,

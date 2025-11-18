@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Loader2, Target, TrendingUp, AlertCircle, CheckCircle2, PieChart as PieChartIcon } from "lucide-react";
+import { ArrowLeft, Loader2, Target, TrendingUp, AlertCircle, CheckCircle2, PieChart as PieChartIcon, BarChart3 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { useLocation } from "wouter";
 
@@ -38,14 +38,24 @@ export default function MetasTrimestral() {
       {/* Header */}
       <header className="border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
-          <Button
-            variant="ghost"
-            onClick={() => setLocation('/')}
-            className="mb-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar
-          </Button>
+          <div className="flex items-center justify-between mb-4">
+            <Button
+              variant="ghost"
+              onClick={() => setLocation('/')}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Voltar
+            </Button>
+            
+            <Button
+              variant="default"
+              onClick={() => setLocation('/progresso-semanal')}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <BarChart3 className="h-4 w-4 mr-2" />
+              Ver Funil Semanal
+            </Button>
+          </div>
           
           <div>
             <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
