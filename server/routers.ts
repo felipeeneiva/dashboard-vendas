@@ -9,7 +9,7 @@ import { extrairMetricasAba, extrairDadosVendedor, gerarListaMeses } from "./she
 // Configuração dos vendedores
 const VENDEDORES_CONFIG = [
   { nome: 'Rafael', sheetId: '1ZJz0MgOHLkYYNW5eWZmOAU797KXQPbwGmp8YnWl4NPo', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Gabriel', sheetId: '1jVIANOJ01UCat7Y8thFXkWZyhiv5Jzty-_9yK-xeKms', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Gabriel', sheetId: '1Fp7Y6ytwk7SLZAEZkSw-gAU2nCWVK9M1SyK0enbjQfY', dataEntrada: new Date('2024-01-01') },
   { nome: 'Francine', sheetId: '1PpzDxn6eM3LKwtJTchD6qVbbyUkAeDnA6hNy0gmrx10', dataEntrada: new Date('2023-01-01') },
   { nome: 'Mauro', sheetId: '19CNbM8qmkDFi-TxPDH8xaKeK0xOngcnDR2zOYH-LFSk', dataEntrada: new Date('2023-01-01') },
   { nome: 'Luana', sheetId: '1tvfL-1S1kiAAyvFoKJzznW_RWYpLb6PAt-KiIF6vLjA', dataEntrada: new Date('2023-01-01') },
