@@ -353,9 +353,10 @@ export const appRouter = router({
 
       for (const vendedor of vendedores) {
         try {
-          console.log(`Extraindo dados de ${vendedor.nome}...`);
+          console.log(`[Atualização] Extraindo dados de ${vendedor.nome} (ID: ${vendedor.sheetId})...`);
           const resultados = await extrairDadosVendedor(vendedor.sheetId, meses);
           
+          let mesesComDados = 0;
           for (const resultado of resultados) {
             const metricas = resultado.metricas;
             
@@ -370,13 +371,18 @@ export const appRouter = router({
               dataExtracao: new Date()
             });
             
+            if (metricas?.encontrado) {
+              mesesComDados++;
+            }
             totalRegistros++;
           }
           
+          console.log(`[Atualização] ${vendedor.nome}: ${mesesComDados} meses com dados de ${meses.length} meses`);
           vendedoresAtualizados++;
         } catch (error) {
-          console.error(`Erro ao atualizar ${vendedor.nome}:`, error);
-          erros.push(`${vendedor.nome}: ${error}`);
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          console.error(`[Atualização] ERRO ao atualizar ${vendedor.nome}:`, errorMsg);
+          erros.push(`${vendedor.nome}: ${errorMsg}`);
         }
       }
 

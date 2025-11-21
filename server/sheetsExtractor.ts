@@ -76,14 +76,23 @@ async function tentarExtrairAba(
       timeout: 15000,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
+      },
+      validateStatus: () => true // Aceita qualquer status para tratamento manual
     });
     
+    // Verifica se houve erro HTTP
     if (response.status !== 200) {
+      console.warn(`[Sheets] Status ${response.status} para ${sheetId}/${nomeAba}`);
       return null;
     }
     
     const htmlContent = response.data;
+    
+    // Detecta se é HTML de erro (DOCTYPE, <html>, etc.)
+    if (typeof htmlContent === 'string' && htmlContent.trim().startsWith('<!')) {
+      console.warn(`[Sheets] Recebeu HTML ao invés de dados para ${sheetId}/${nomeAba}`);
+      return null;
+    }
     
     // Verifica se a aba existe
     if (!htmlContent || htmlContent.length < 100 || htmlContent.includes('error')) {

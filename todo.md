@@ -94,3 +94,9 @@
 - [x] Criar manual completo de backup e exportação de dados
 - [x] Documentar como migrar dados da Manus para Google Sheets
 - [x] Criar guia de segurança e controle de acesso
+
+### Bug: Erro JSON ao Atualizar Vendedores
+- [x] Investigar qual vendedor está retornando HTML ao invés de JSON
+- [x] Implementar tratamento de erro para detectar respostas HTML
+- [x] Adicionar validação e logs detalhados para identificar planilhas problemáticas
+- [x] Testar correção e validar que todos os vendedores atualizam corretamente
