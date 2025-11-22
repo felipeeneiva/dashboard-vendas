@@ -94,3 +94,10 @@
 - [x] Criar manual completo de backup e exportação de dados
 - [x] Documentar como migrar dados da Manus para Google Sheets
 - [x] Criar guia de segurança e controle de acesso
+
+### Bug Crítico Resolvido: Dados Zerados
+- [x] Identificar causa (validação HTML incorreta rejeitando todas as respostas)
+- [x] Fazer rollback para versão funcional
+- [x] Criar script de atualização sem autenticação
+- [x] Recuperar todos os dados (14 vendedores, 336 registros, 215 com dados)
+- [x] Validar que dashboard está funcionando corretamente
