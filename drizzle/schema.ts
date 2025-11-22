@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, decimal, boolean } from "drizzle-orm/mysql-core";
+import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -51,7 +51,10 @@ export const metricas = mysqlTable("metricas", {
   dataExtracao: timestamp("dataExtracao").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
+}, (table) => ({
+  // Constraint UNIQUE para evitar duplicatas: um vendedor só pode ter um registro por mês
+  vendedorMesUnique: uniqueIndex("vendedorMes_unique").on(table.vendedorId, table.mes),
+}));
 
 export type Metrica = typeof metricas.$inferSelect;
 export type InsertMetrica = typeof metricas.$inferInsert;

@@ -1,0 +1,262 @@
+{
+  "query": "SELECT v.nome, m.mes, COUNT(*) as quantidade, SUM(m.totalVendas) as soma_vendas\nFROM metricas m \nJOIN vendedores v ON m.vendedorId = v.id \nWHERE m.mes IN ('Setembro/2025', 'Outubro/2025', 'Novembro/2025')\nGROUP BY v.nome, m.mes\nHAVING COUNT(*) > 1\nORDER BY v.nome, m.mes",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT v.nome, m.mes, COUNT(*) as quantidade, SUM(m.totalVendas) as soma_vendas\nFROM metricas m \nJOIN vendedores v ON m.vendedorId = v.id \nWHERE m.mes IN ('Setembro/2025', 'Outubro/2025', 'Novembro/2025')\nGROUP BY v.nome, m.mes\nHAVING COUNT(*) > 1\nORDER BY v.nome, m.mes",
+  "rows": [
+    {
+      "nome": "Andrios",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "0"
+    },
+    {
+      "nome": "Andrios",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "0"
+    },
+    {
+      "nome": "Andrios",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "0"
+    },
+    {
+      "nome": "Danilo",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "12228192"
+    },
+    {
+      "nome": "Danilo",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "37748922"
+    },
+    {
+      "nome": "Danilo",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "33395706"
+    },
+    {
+      "nome": "Felipe",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "0"
+    },
+    {
+      "nome": "Felipe",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "0"
+    },
+    {
+      "nome": "Felipe",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "0"
+    },
+    {
+      "nome": "Francine",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "31896826"
+    },
+    {
+      "nome": "Francine",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "33742814"
+    },
+    {
+      "nome": "Francine",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "21767600"
+    },
+    {
+      "nome": "Gabriel",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "0"
+    },
+    {
+      "nome": "Gabriel",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "26681136"
+    },
+    {
+      "nome": "Gabriel",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "33181616"
+    },
+    {
+      "nome": "Isabelle",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "7761230"
+    },
+    {
+      "nome": "Isabelle",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "5158000"
+    },
+    {
+      "nome": "Isabelle",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "10341724"
+    },
+    {
+      "nome": "Leonardo",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "19793398"
+    },
+    {
+      "nome": "Leonardo",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "17477636"
+    },
+    {
+      "nome": "Leonardo",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "18381006"
+    },
+    {
+      "nome": "Luana",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "26760080"
+    },
+    {
+      "nome": "Luana",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "23786696"
+    },
+    {
+      "nome": "Luana",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "9381758"
+    },
+    {
+      "nome": "Lucas",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "33292900"
+    },
+    {
+      "nome": "Lucas",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "31887766"
+    },
+    {
+      "nome": "Lucas",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "14204632"
+    },
+    {
+      "nome": "Mauro",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "57980010"
+    },
+    {
+      "nome": "Mauro",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "24039308"
+    },
+    {
+      "nome": "Mauro",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "22675142"
+    },
+    {
+      "nome": "Nathaly",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "39731824"
+    },
+    {
+      "nome": "Nathaly",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "31490400"
+    },
+    {
+      "nome": "Nathaly",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "32909400"
+    },
+    {
+      "nome": "Pedro",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "23383648"
+    },
+    {
+      "nome": "Pedro",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "24772000"
+    },
+    {
+      "nome": "Pedro",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "12231016"
+    },
+    {
+      "nome": "Rafael",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "42598954"
+    },
+    {
+      "nome": "Rafael",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "51615632"
+    },
+    {
+      "nome": "Rafael",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "57257566"
+    },
+    {
+      "nome": "Yasmin",
+      "mes": "Novembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "8790124"
+    },
+    {
+      "nome": "Yasmin",
+      "mes": "Outubro/2025",
+      "quantidade": "2",
+      "soma_vendas": "14443072"
+    },
+    {
+      "nome": "Yasmin",
+      "mes": "Setembro/2025",
+      "quantidade": "2",
+      "soma_vendas": "22109122"
+    }
+  ],
+  "messages": [],
+  "stdout": "nome\tmes\tquantidade\tsoma_vendas\nAndrios\tNovembro/2025\t2\t0\nAndrios\tOutubro/2025\t2\t0\nAndrios\tSetembro/2025\t2\t0\nDanilo\tNovembro/2025\t2\t12228192\nDanilo\tOutubro/2025\t2\t37748922\nDanilo\tSetembro/2025\t2\t33395706\nFelipe\tNovembro/2025\t2\t0\nFelipe\tOutubro/2025\t2\t0\nFelipe\tSetembro/2025\t2\t0\nFrancine\tNovembro/2025\t2\t31896826\nFrancine\tOutubro/2025\t2\t33742814\nFrancine\tSetembro/2025\t2\t21767600\nGabriel\tNovembro/2025\t2\t0\nGabriel\tOutubro/2025\t2\t26681136\nGabriel\tSetembro/2025\t2\t33181616\nIsabelle\tNovembro/2025\t2\t7761230\nIsabelle\tOutubro/2025\t2\t5158000\nIsabelle\tSetembro/2025\t2\t10341724\nLeonardo\tNovembro/2025\t2\t19793398\nLeonardo\tOutubro/2025\t2\t17477636\nLeonardo\tSetembro/2025\t2\t18381006\nLuana\tNovembro/2025\t2\t26760080\nLuana\tOutubro/2025\t2\t23786696\nLuana\tSetembro/2025\t2\t9381758\nLucas\tNovembro/2025\t2\t33292900\nLucas\tOutubro/2025\t2\t31887766\nLucas\tSetembro/2025\t2\t14204632\nMauro\tNovembro/2025\t2\t57980010\nMauro\tOutubro/2025\t2\t24039308\nMauro\tSetembro/2025\t2\t22675142\nNathaly\tNovembro/2025\t2\t39731824\nNathaly\tOutubro/2025\t2\t31490400\nNathaly\tSetembro/2025\t2\t32909400\nPedro\tNovembro/2025\t2\t23383648\nPedro\tOutubro/2025\t2\t24772000\nPedro\tSetembro/2025\t2\t12231016\nRafael\tNovembro/2025\t2\t42598954\nRafael\tOutubro/2025\t2\t51615632\nRafael\tSetembro/2025\t2\t57257566\nYasmin\tNovembro/2025\t2\t8790124\nYasmin\tOutubro/2025\t2\t14443072\nYasmin\tSetembro/2025\t2\t22109122\n",
+  "stderr": "",
+  "execution_time_ms": 46
+}

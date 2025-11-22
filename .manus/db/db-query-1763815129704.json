@@ -1,0 +1,598 @@
+{
+  "query": "SELECT v.nome, m.mes, m.totalVendas, m.totalReceita, m.status \nFROM metricas m \nJOIN vendedores v ON m.vendedorId = v.id \nWHERE m.mes IN ('Setembro/2025', 'Outubro/2025', 'Novembro/2025')\nORDER BY v.nome, m.mes",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT v.nome, m.mes, m.totalVendas, m.totalReceita, m.status \nFROM metricas m \nJOIN vendedores v ON m.vendedorId = v.id \nWHERE m.mes IN ('Setembro/2025', 'Outubro/2025', 'Novembro/2025')\nORDER BY v.nome, m.mes",
+  "rows": [
+    {
+      "nome": "Andrios",
+      "mes": "Novembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Andrios",
+      "mes": "Novembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Andrios",
+      "mes": "Outubro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Andrios",
+      "mes": "Outubro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Andrios",
+      "mes": "Setembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Andrios",
+      "mes": "Setembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Danilo",
+      "mes": "Novembro/2025",
+      "totalVendas": "6114096",
+      "totalReceita": "525558",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Danilo",
+      "mes": "Novembro/2025",
+      "totalVendas": "6114096",
+      "totalReceita": "525558",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Danilo",
+      "mes": "Outubro/2025",
+      "totalVendas": "18874461",
+      "totalReceita": "2714998",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Danilo",
+      "mes": "Outubro/2025",
+      "totalVendas": "18874461",
+      "totalReceita": "2714998",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Danilo",
+      "mes": "Setembro/2025",
+      "totalVendas": "16697853",
+      "totalReceita": "2946746",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Danilo",
+      "mes": "Setembro/2025",
+      "totalVendas": "16697853",
+      "totalReceita": "2946746",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Felipe",
+      "mes": "Novembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Felipe",
+      "mes": "Novembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Felipe",
+      "mes": "Outubro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Felipe",
+      "mes": "Outubro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Felipe",
+      "mes": "Setembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Felipe",
+      "mes": "Setembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "sem_dados"
+    },
+    {
+      "nome": "Francine",
+      "mes": "Novembro/2025",
+      "totalVendas": "15948413",
+      "totalReceita": "2005621",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Francine",
+      "mes": "Novembro/2025",
+      "totalVendas": "15948413",
+      "totalReceita": "2005621",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Francine",
+      "mes": "Outubro/2025",
+      "totalVendas": "16871407",
+      "totalReceita": "2335683",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Francine",
+      "mes": "Outubro/2025",
+      "totalVendas": "16871407",
+      "totalReceita": "2335683",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Francine",
+      "mes": "Setembro/2025",
+      "totalVendas": "10883800",
+      "totalReceita": "1698790",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Francine",
+      "mes": "Setembro/2025",
+      "totalVendas": "10883800",
+      "totalReceita": "1698790",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Gabriel",
+      "mes": "Novembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Gabriel",
+      "mes": "Novembro/2025",
+      "totalVendas": "0",
+      "totalReceita": "0",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Gabriel",
+      "mes": "Outubro/2025",
+      "totalVendas": "13340568",
+      "totalReceita": "2707164",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Gabriel",
+      "mes": "Outubro/2025",
+      "totalVendas": "13340568",
+      "totalReceita": "2707164",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Gabriel",
+      "mes": "Setembro/2025",
+      "totalVendas": "16590808",
+      "totalReceita": "2489049",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Gabriel",
+      "mes": "Setembro/2025",
+      "totalVendas": "16590808",
+      "totalReceita": "2489049",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Isabelle",
+      "mes": "Novembro/2025",
+      "totalVendas": "3880615",
+      "totalReceita": "401962",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Isabelle",
+      "mes": "Novembro/2025",
+      "totalVendas": "3880615",
+      "totalReceita": "401962",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Isabelle",
+      "mes": "Outubro/2025",
+      "totalVendas": "2579000",
+      "totalReceita": "509704",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Isabelle",
+      "mes": "Outubro/2025",
+      "totalVendas": "2579000",
+      "totalReceita": "509704",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Isabelle",
+      "mes": "Setembro/2025",
+      "totalVendas": "5170862",
+      "totalReceita": "794509",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Isabelle",
+      "mes": "Setembro/2025",
+      "totalVendas": "5170862",
+      "totalReceita": "794509",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Leonardo",
+      "mes": "Novembro/2025",
+      "totalVendas": "9896699",
+      "totalReceita": "1069983",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Leonardo",
+      "mes": "Novembro/2025",
+      "totalVendas": "9896699",
+      "totalReceita": "1069983",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Leonardo",
+      "mes": "Outubro/2025",
+      "totalVendas": "8738818",
+      "totalReceita": "1244873",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Leonardo",
+      "mes": "Outubro/2025",
+      "totalVendas": "8738818",
+      "totalReceita": "1244873",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Leonardo",
+      "mes": "Setembro/2025",
+      "totalVendas": "9190503",
+      "totalReceita": "2141084",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Leonardo",
+      "mes": "Setembro/2025",
+      "totalVendas": "9190503",
+      "totalReceita": "2141084",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Luana",
+      "mes": "Novembro/2025",
+      "totalVendas": "13380040",
+      "totalReceita": "1824795",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Luana",
+      "mes": "Novembro/2025",
+      "totalVendas": "13380040",
+      "totalReceita": "1824795",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Luana",
+      "mes": "Outubro/2025",
+      "totalVendas": "11893348",
+      "totalReceita": "1628383",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Luana",
+      "mes": "Outubro/2025",
+      "totalVendas": "11893348",
+      "totalReceita": "1628383",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Luana",
+      "mes": "Setembro/2025",
+      "totalVendas": "4690879",
+      "totalReceita": "637781",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Luana",
+      "mes": "Setembro/2025",
+      "totalVendas": "4690879",
+      "totalReceita": "637781",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Lucas",
+      "mes": "Novembro/2025",
+      "totalVendas": "16646450",
+      "totalReceita": "1459778",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Lucas",
+      "mes": "Novembro/2025",
+      "totalVendas": "16646450",
+      "totalReceita": "1459778",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Lucas",
+      "mes": "Outubro/2025",
+      "totalVendas": "15943883",
+      "totalReceita": "3530659",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Lucas",
+      "mes": "Outubro/2025",
+      "totalVendas": "15943883",
+      "totalReceita": "3530659",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Lucas",
+      "mes": "Setembro/2025",
+      "totalVendas": "7102316",
+      "totalReceita": "1152158",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Lucas",
+      "mes": "Setembro/2025",
+      "totalVendas": "7102316",
+      "totalReceita": "1152158",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Mauro",
+      "mes": "Novembro/2025",
+      "totalVendas": "28319325",
+      "totalReceita": "5009957",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Mauro",
+      "mes": "Novembro/2025",
+      "totalVendas": "29660685",
+      "totalReceita": "5009957",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Mauro",
+      "mes": "Outubro/2025",
+      "totalVendas": "12019654",
+      "totalReceita": "2063344",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Mauro",
+      "mes": "Outubro/2025",
+      "totalVendas": "12019654",
+      "totalReceita": "2063344",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Mauro",
+      "mes": "Setembro/2025",
+      "totalVendas": "11337571",
+      "totalReceita": "2088836",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Mauro",
+      "mes": "Setembro/2025",
+      "totalVendas": "11337571",
+      "totalReceita": "2088836",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Nathaly",
+      "mes": "Novembro/2025",
+      "totalVendas": "19865912",
+      "totalReceita": "3183511",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Nathaly",
+      "mes": "Novembro/2025",
+      "totalVendas": "19865912",
+      "totalReceita": "3183511",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Nathaly",
+      "mes": "Outubro/2025",
+      "totalVendas": "15745200",
+      "totalReceita": "2586827",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Nathaly",
+      "mes": "Outubro/2025",
+      "totalVendas": "15745200",
+      "totalReceita": "2586827",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Nathaly",
+      "mes": "Setembro/2025",
+      "totalVendas": "16454700",
+      "totalReceita": "3064586",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Nathaly",
+      "mes": "Setembro/2025",
+      "totalVendas": "16454700",
+      "totalReceita": "3064586",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Pedro",
+      "mes": "Novembro/2025",
+      "totalVendas": "11691824",
+      "totalReceita": "2593145",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Pedro",
+      "mes": "Novembro/2025",
+      "totalVendas": "11691824",
+      "totalReceita": "2593145",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Pedro",
+      "mes": "Outubro/2025",
+      "totalVendas": "12386000",
+      "totalReceita": "2535775",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Pedro",
+      "mes": "Outubro/2025",
+      "totalVendas": "12386000",
+      "totalReceita": "2535775",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Pedro",
+      "mes": "Setembro/2025",
+      "totalVendas": "6115508",
+      "totalReceita": "834404",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Pedro",
+      "mes": "Setembro/2025",
+      "totalVendas": "6115508",
+      "totalReceita": "834404",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Rafael",
+      "mes": "Novembro/2025",
+      "totalVendas": "21299477",
+      "totalReceita": "1784308",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Rafael",
+      "mes": "Novembro/2025",
+      "totalVendas": "21299477",
+      "totalReceita": "1784308",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Rafael",
+      "mes": "Outubro/2025",
+      "totalVendas": "25807816",
+      "totalReceita": "3475108",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Rafael",
+      "mes": "Outubro/2025",
+      "totalVendas": "25807816",
+      "totalReceita": "3475108",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Rafael",
+      "mes": "Setembro/2025",
+      "totalVendas": "28628783",
+      "totalReceita": "3676853",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Rafael",
+      "mes": "Setembro/2025",
+      "totalVendas": "28628783",
+      "totalReceita": "3676853",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Yasmin",
+      "mes": "Novembro/2025",
+      "totalVendas": "4395062",
+      "totalReceita": "638828",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Yasmin",
+      "mes": "Novembro/2025",
+      "totalVendas": "4395062",
+      "totalReceita": "638828",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Yasmin",
+      "mes": "Outubro/2025",
+      "totalVendas": "7221536",
+      "totalReceita": "687852",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Yasmin",
+      "mes": "Outubro/2025",
+      "totalVendas": "7221536",
+      "totalReceita": "687852",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Yasmin",
+      "mes": "Setembro/2025",
+      "totalVendas": "11054561",
+      "totalReceita": "1867338",
+      "status": "com_dados"
+    },
+    {
+      "nome": "Yasmin",
+      "mes": "Setembro/2025",
+      "totalVendas": "11054561",
+      "totalReceita": "1867338",
+      "status": "com_dados"
+    }
+  ],
+  "messages": [],
+  "stdout": "nome\tmes\ttotalVendas\ttotalReceita\tstatus\nAndrios\tNovembro/2025\t0\t0\tsem_dados\nAndrios\tNovembro/2025\t0\t0\tsem_dados\nAndrios\tOutubro/2025\t0\t0\tsem_dados\nAndrios\tOutubro/2025\t0\t0\tsem_dados\nAndrios\tSetembro/2025\t0\t0\tsem_dados\nAndrios\tSetembro/2025\t0\t0\tsem_dados\nDanilo\tNovembro/2025\t6114096\t525558\tcom_dados\nDanilo\tNovembro/2025\t6114096\t525558\tcom_dados\nDanilo\tOutubro/2025\t18874461\t2714998\tcom_dados\nDanilo\tOutubro/2025\t18874461\t2714998\tcom_dados\nDanilo\tSetembro/2025\t16697853\t2946746\tcom_dados\nDanilo\tSetembro/2025\t16697853\t2946746\tcom_dados\nFelipe\tNovembro/2025\t0\t0\tsem_dados\nFelipe\tNovembro/2025\t0\t0\tsem_dados\nFelipe\tOutubro/2025\t0\t0\tsem_dados\nFelipe\tOutubro/2025\t0\t0\tsem_dados\nFelipe\tSetembro/2025\t0\t0\tsem_dados\nFelipe\tSetembro/2025\t0\t0\tsem_dados\nFrancine\tNovembro/2025\t15948413\t2005621\tcom_dados\nFrancine\tNovembro/2025\t15948413\t2005621\tcom_dados\nFrancine\tOutubro/2025\t16871407\t2335683\tcom_dados\nFrancine\tOutubro/2025\t16871407\t2335683\tcom_dados\nFrancine\tSetembro/2025\t10883800\t1698790\tcom_dados\nFrancine\tSetembro/2025\t10883800\t1698790\tcom_dados\nGabriel\tNovembro/2025\t0\t0\tcom_dados\nGabriel\tNovembro/2025\t0\t0\tcom_dados\nGabriel\tOutubro/2025\t13340568\t2707164\tcom_dados\nGabriel\tOutubro/2025\t13340568\t2707164\tcom_dados\nGabriel\tSetembro/2025\t16590808\t2489049\tcom_dados\nGabriel\tSetembro/2025\t16590808\t2489049\tcom_dados\nIsabelle\tNovembro/2025\t3880615\t401962\tcom_dados\nIsabelle\tNovembro/2025\t3880615\t401962\tcom_dados\nIsabelle\tOutubro/2025\t2579000\t509704\tcom_dados\nIsabelle\tOutubro/2025\t2579000\t509704\tcom_dados\nIsabelle\tSetembro/2025\t5170862\t794509\tcom_dados\nIsabelle\tSetembro/2025\t5170862\t794509\tcom_dados\nLeonardo\tNovembro/2025\t9896699\t1069983\tcom_dados\nLeonardo\tNovembro/2025\t9896699\t1069983\tcom_dados\nLeonardo\tOutubro/2025\t8738818\t1244873\tcom_dados\nLeonardo\tOutubro/2025\t8738818\t1244873\tcom_dados\nLeonardo\tSetembro/2025\t9190503\t2141084\tcom_dados\nLeonardo\tSetembro/2025\t9190503\t2141084\tcom_dados\nLuana\tNovembro/2025\t13380040\t1824795\tcom_dados\nLuana\tNovembro/2025\t13380040\t1824795\tcom_dados\nLuana\tOutubro/2025\t11893348\t1628383\tcom_dados\nLuana\tOutubro/2025\t11893348\t1628383\tcom_dados\nLuana\tSetembro/2025\t4690879\t637781\tcom_dados\nLuana\tSetembro/2025\t4690879\t637781\tcom_dados\nLucas\tNovembro/2025\t16646450\t1459778\tcom_dados\nLucas\tNovembro/2025\t16646450\t1459778\tcom_dados\nLucas\tOutubro/2025\t15943883\t3530659\tcom_dados\nLucas\tOutubro/2025\t15943883\t3530659\tcom_dados\nLucas\tSetembro/2025\t7102316\t1152158\tcom_dados\nLucas\tSetembro/2025\t7102316\t1152158\tcom_dados\nMauro\tNovembro/2025\t28319325\t5009957\tcom_dados\nMauro\tNovembro/2025\t29660685\t5009957\tcom_dados\nMauro\tOutubro/2025\t12019654\t2063344\tcom_dados\nMauro\tOutubro/2025\t12019654\t2063344\tcom_dados\nMauro\tSetembro/2025\t11337571\t2088836\tcom_dados\nMauro\tSetembro/2025\t11337571\t2088836\tcom_dados\nNathaly\tNovembro/2025\t19865912\t3183511\tcom_dados\nNathaly\tNovembro/2025\t19865912\t3183511\tcom_dados\nNathaly\tOutubro/2025\t15745200\t2586827\tcom_dados\nNathaly\tOutubro/2025\t15745200\t2586827\tcom_dados\nNathaly\tSetembro/2025\t16454700\t3064586\tcom_dados\nNathaly\tSetembro/2025\t16454700\t3064586\tcom_dados\nPedro\tNovembro/2025\t11691824\t2593145\tcom_dados\nPedro\tNovembro/2025\t11691824\t2593145\tcom_dados\nPedro\tOutubro/2025\t12386000\t2535775\tcom_dados\nPedro\tOutubro/2025\t12386000\t2535775\tcom_dados\nPedro\tSetembro/2025\t6115508\t834404\tcom_dados\nPedro\tSetembro/2025\t6115508\t834404\tcom_dados\nRafael\tNovembro/2025\t21299477\t1784308\tcom_dados\nRafael\tNovembro/2025\t21299477\t1784308\tcom_dados\nRafael\tOutubro/2025\t25807816\t3475108\tcom_dados\nRafael\tOutubro/2025\t25807816\t3475108\tcom_dados\nRafael\tSetembro/2025\t28628783\t3676853\tcom_dados\nRafael\tSetembro/2025\t28628783\t3676853\tcom_dados\nYasmin\tNovembro/2025\t4395062\t638828\tcom_dados\nYasmin\tNovembro/2025\t4395062\t638828\tcom_dados\nYasmin\tOutubro/2025\t7221536\t687852\tcom_dados\nYasmin\tOutubro/2025\t7221536\t687852\tcom_dados\nYasmin\tSetembro/2025\t11054561\t1867338\tcom_dados\nYasmin\tSetembro/2025\t11054561\t1867338\tcom_dados\n",
+  "stderr": "",
+  "execution_time_ms": 692
+}

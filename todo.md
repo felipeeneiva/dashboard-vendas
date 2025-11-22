@@ -101,3 +101,9 @@
 - [x] Criar script de atualização sem autenticação
 - [x] Recuperar todos os dados (14 vendedores, 336 registros, 215 com dados)
 - [x] Validar que dashboard está funcionando corretamente
+
+### Bug: Metas Trimestrais Somando Todos os Meses
+- [x] Investigar endpoint metasTrimestral que está somando dados errados
+- [x] Corrigir filtro para somar apenas Setembro/2025, Outubro/2025 e Novembro/2025
+- [x] Validar que cada vendedor tem apenas esses 3 meses somados
+- [x] Testar que o total geral está correto
