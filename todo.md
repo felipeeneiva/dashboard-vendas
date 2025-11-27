@@ -163,3 +163,19 @@
 - [x] Remover constraint UNIQUE de metricas (permitir múltiplas extrações por mês)
 - [x] Criar função insertMetrica para inserir sem verificar duplicatas
 - [x] Documentar que vendas aparecem quando há diferença real entre extrações
+
+
+### Adicionar Botões de Ação no Cabeçalho
+- [x] Botão "Análises" já existe e funciona
+- [x] Botão "Metas Trimestral" já existe e funciona
+- [x] Botão "Limpar 2023" já existe e funciona
+- [x] Botão "Atualizar Dados" já existe e funciona
+- [ ] Adicionar botão "Fornecedores" que redireciona para /fornecedores
+- [ ] Testar navegação para página de Fornecedores
+
+
+### Adicionar Botões de Navegação Rápida no Cabeçalho
+- [x] Adicionar botão "Fornecedores" que redireciona para /fornecedores
+- [x] Adicionar botão "Monitoramento" que redireciona para /monitoramento
+- [x] Posicionar ao lado dos botões existentes (Análises, Metas Trimestral)
+- [x] Testar navegação (botões aparecendo corretamente no cabeçalho)

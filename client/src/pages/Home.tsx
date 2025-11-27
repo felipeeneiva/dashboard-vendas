@@ -168,6 +168,24 @@ export default function Home() {
               Metas Trimestral
             </Button>
             
+            <Button
+              onClick={() => setLocation('/fornecedores')}
+              variant="outline"
+              className="gap-2 border-green-300 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
+            >
+              <TrendingUp className="h-4 w-4" />
+              Fornecedores
+            </Button>
+            
+            <Button
+              onClick={() => setLocation('/monitoramento')}
+              variant="outline"
+              className="gap-2 border-purple-300 hover:bg-purple-50 dark:border-purple-700 dark:hover:bg-purple-900/20"
+            >
+              <Eye className="h-4 w-4" />
+              Monitoramento
+            </Button>
+            
             {isAuthenticated && (
               <>
                 {resumo && resumo.length === 0 && (
