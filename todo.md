@@ -204,3 +204,41 @@
 - [x] Validar ordenação por Nome A-Z
 - [x] Validar ordenação por Número de Vendas
 - [x] Validar unificações de fornecedores (Soul Travel, Hero Seguro, etc.)
+
+
+### Bug: Métricas Duplicadas Causando Valores Dobrados
+- [ ] Remover métricas duplicadas de Novembro/2025 (Rafael, Nathaly)
+- [ ] Corrigir lógica de agregação para usar apenas extração mais recente por mês
+- [ ] Adicionar DISTINCT ou GROUP BY para evitar somas duplicadas
+- [ ] Corrigir contagem de meses (mostra "2 meses" quando deveria ser "1")
+- [ ] Validar que Nathaly mostra R$ 247.599,12 ao invés de R$ 495.198,24
+
+### Correção: FRT Operadora vs FRT Consolidadora
+- [x] Investigar variações de FRT no banco de dados
+- [ ] Separar FRT Operadora (3 vendas) de FRT Consolidadora (559 vendas)
+- [ ] Decidir o que fazer com "FRT" genérico (389 vendas)
+- [ ] Atualizar aliases para remover unificação incorreta
+- [ ] Atualizar registros no banco para refletir separação
+- [ ] Testar e validar que aparecem separados no relatório
+
+
+### Painel Individual para Vendedores
+- [x] Criar sistema de autenticação por email para vendedores (usar OAuth existente)
+- [x] Adicionar campo email na tabela vendedores
+- [x] Atualizar emails de todos os 14 vendedores no banco
+- [ ] Criar endpoint tRPC para buscar dados do vendedor logado (baseado no email)
+- [ ] Criar página `/meu-painel` com métricas pessoais
+- [ ] Exibir Total de Vendas, Receita, Comissões do vendedor
+- [ ] Exibir Meta Trimestral Individual (quanto vendeu, quanto falta, percentual)
+- [ ] Exibir Meta Geral da Equipe (R$ 10mi, total vendido, quanto falta)
+- [ ] Implementar segurança: vendedor só vê seus próprios dados
+- [ ] Testar login com diferentes emails de vendedores
+- [ ] Validar que vendedor A não consegue ver dados do vendedor B
+
+- [x] Corrigir controle de acesso no painel individual (/meu-painel) - cada vendedor deve ver apenas seus próprios dados
+- [x] Implementar verificação de admin (felipe@mundoproviagens.com.br e vendas@mundoproviagens.com.br) para acesso ao dashboard completo
+- [x] Testar que vendedores comuns não conseguem ver dados de outros vendedores
+
+- [x] Corrigir controle de acesso no painel individual (/meu-painel) - cada vendedor deve ver apenas seus próprios dados
+- [x] Implementar verificação de admin (felipe@mundoproviagens.com.br e vendas@mundoproviagens.com.br) para acesso ao dashboard completo
+- [x] Testar que vendedores comuns não conseguem ver dados de outros vendedores

@@ -1,0 +1,8 @@
+{
+  "query": "ALTER TABLE vendedores ADD COLUMN email VARCHAR(320) UNIQUE AFTER nome",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute ALTER TABLE vendedores ADD COLUMN email VARCHAR(320) UNIQUE AFTER nome",
+  "returncode": 1,
+  "logs": [
+    "ERROR 8200 (HY000) at line 1: unsupported add column 'email' constraint UNIQUE KEY when altering 'jUteHPSJGShqbZJcfArKWy.vendedores'"
+  ]
+}

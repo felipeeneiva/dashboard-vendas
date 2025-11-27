@@ -900,6 +900,96 @@ export const appRouter = router({
         .sort((a, b) => b.valor - a.valor);
     }),
   }),
+
+  // Router de painel individual do vendedor
+  painelVendedor: router({
+    // Busca dados do vendedor logado
+    meusDados: protectedProcedure
+      .input(z.object({
+        trimestre: z.array(z.string()).optional(), // Ex: ['Setembro/2025', 'Outubro/2025', 'Novembro/2025']
+        ano: z.number().optional(),
+        mes: z.string().optional()
+      }).optional())
+      .query(async ({ ctx, input }) => {
+        // Busca vendedor pelo email do usuário logado
+        const vendedor = await db.getVendedorByEmail(ctx.user.email);
+        
+        if (!vendedor) {
+          throw new Error('Vendedor não encontrado para este email');
+        }
+        
+        // Busca todas as métricas do vendedor
+        let metricas = await db.getMetricasByVendedor(vendedor.id);
+        
+        // Aplica filtros se fornecidos
+        if (input?.ano) {
+          metricas = metricas.filter(m => {
+            const ano = parseInt(m.mes.split('/')[1]);
+            return ano === input.ano;
+          });
+        }
+        if (input?.mes) {
+          metricas = metricas.filter(m => m.mes === input.mes);
+        }
+        if (input?.trimestre && input.trimestre.length > 0) {
+          metricas = metricas.filter(m => input.trimestre!.includes(m.mes));
+        }
+        
+        // Calcula totais
+        const metricasComDados = metricas.filter(m => m.status === 'com_dados');
+        const totalVendas = metricasComDados.reduce((sum, m) => sum + m.totalVendas, 0);
+        const totalReceita = metricasComDados.reduce((sum, m) => sum + m.totalReceita, 0);
+        const totalComissao = metricasComDados.reduce((sum, m) => sum + m.comissaoTotal, 0);
+        
+        // Calcula meta trimestral (Set-Out-Nov/2025)
+        const mesesTrimestre = ['Setembro/2025', 'Outubro/2025', 'Novembro/2025'];
+        const metricasTrimestre = await db.getMetricasByVendedor(vendedor.id);
+        const metricasTrimestreFiltered = metricasTrimestre.filter(m => 
+          mesesTrimestre.includes(m.mes) && m.status === 'com_dados'
+        );
+        const totalTrimestreVendas = metricasTrimestreFiltered.reduce((sum, m) => sum + m.totalVendas, 0);
+        
+        // Meta geral da equipe
+        const todosVendedores = await db.getAllVendedores();
+        let totalGeralTrimestre = 0;
+        for (const v of todosVendedores) {
+          const mets = await db.getMetricasByVendedor(v.id);
+          const metsTri = mets.filter(m => mesesTrimestre.includes(m.mes) && m.status === 'com_dados');
+          totalGeralTrimestre += metsTri.reduce((sum, m) => sum + m.totalVendas, 0);
+        }
+        
+        const metaGeralEquipe = 1000000000; // R$ 10 milhões em centavos
+        
+        return {
+          vendedor: {
+            id: vendedor.id,
+            nome: vendedor.nome,
+            email: vendedor.email,
+            metaTrimestral: db.centavosParaReais(vendedor.metaTrimestral || 0)
+          },
+          totais: {
+            vendas: db.centavosParaReais(totalVendas),
+            receita: db.centavosParaReais(totalReceita),
+            comissao: db.centavosParaReais(totalComissao)
+          },
+          metaTrimestralIndividual: {
+            meta: db.centavosParaReais(vendedor.metaTrimestral || 0),
+            vendido: db.centavosParaReais(totalTrimestreVendas),
+            falta: db.centavosParaReais(Math.max(0, (vendedor.metaTrimestral || 0) - totalTrimestreVendas)),
+            percentual: (vendedor.metaTrimestral || 0) > 0 
+              ? ((totalTrimestreVendas / (vendedor.metaTrimestral || 1)) * 100).toFixed(2)
+              : '0.00'
+          },
+          metaGeralEquipe: {
+            meta: db.centavosParaReais(metaGeralEquipe),
+            vendido: db.centavosParaReais(totalGeralTrimestre),
+            falta: db.centavosParaReais(Math.max(0, metaGeralEquipe - totalGeralTrimestre)),
+            percentual: ((totalGeralTrimestre / metaGeralEquipe) * 100).toFixed(2)
+          },
+          mesesComDados: metricasComDados.length
+        };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

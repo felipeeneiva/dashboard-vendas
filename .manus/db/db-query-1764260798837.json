@@ -1,0 +1,9 @@
+{
+  "query": "DELETE m1 FROM metricas m1\nINNER JOIN metricas m2 \nWHERE m1.vendedorId = m2.vendedorId \n  AND m1.mes = m2.mes\n  AND m1.dataExtracao < m2.dataExtracao\n  AND m1.mes = 'Novembro/2025'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute DELETE m1 FROM metricas m1\nINNER JOIN metricas m2 \nWHERE m1.vendedorId = m2.vendedorId \n  AND m1.mes = m2.mes\n  AND m1.dataExtracao < m2.dataExtracao\n  AND m1.mes = 'Novembro/2025'",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 60
+}

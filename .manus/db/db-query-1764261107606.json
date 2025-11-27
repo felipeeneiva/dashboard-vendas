@@ -1,0 +1,18 @@
+{
+  "query": "SELECT id, vendedorId, mes, totalVendas, dataExtracao, status\nFROM metricas\nWHERE vendedorId = 2 AND mes = 'Novembro/2025'\nORDER BY dataExtracao",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, vendedorId, mes, totalVendas, dataExtracao, status\nFROM metricas\nWHERE vendedorId = 2 AND mes = 'Novembro/2025'\nORDER BY dataExtracao",
+  "rows": [
+    {
+      "id": "60047",
+      "vendedorId": "2",
+      "mes": "Novembro/2025",
+      "totalVendas": "24759912",
+      "dataExtracao": "2025-11-27 16:10:02",
+      "status": "com_dados"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tvendedorId\tmes\ttotalVendas\tdataExtracao\tstatus\n60047\t2\tNovembro/2025\t24759912\t2025-11-27 16:10:02\tcom_dados\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

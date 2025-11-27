@@ -12,6 +12,7 @@ import ProgressoSemanal from "./pages/ProgressoSemanal";
 import RelatorioFornecedores from "./pages/RelatorioFornecedores";
 import DashboardFornecedores from "./pages/DashboardFornecedores";
 import MonitoramentoVendas from "./pages/MonitoramentoVendas";
+import MeuPainel from "./pages/MeuPainel";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/fornecedores" component={RelatorioFornecedores} />
       <Route path="/fornecedores/dashboard" component={DashboardFornecedores} />
       <Route path="/monitoramento" component={MonitoramentoVendas} />
+      <Route path="/meu-painel" component={MeuPainel} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -24,6 +24,7 @@ export type InsertUser = typeof users.$inferInsert;
 export const vendedores = mysqlTable("vendedores", {
   id: int("id").autoincrement().primaryKey(),
   nome: varchar("nome", { length: 100 }).notNull(),
+  email: varchar("email", { length: 320 }).unique(), // Email do vendedor para login
   sheetId: varchar("sheetId", { length: 100 }).notNull().unique(),
   ativo: boolean("ativo").default(true).notNull(),
   dataEntrada: timestamp("dataEntrada").notNull(), // Data de entrada do vendedor

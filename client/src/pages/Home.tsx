@@ -6,13 +6,26 @@ import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { APP_TITLE } from "@/const";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 
+// Emails dos administradores
+const ADMIN_EMAILS = ['felipe@mundoproviagens.com.br', 'vendas@mundoproviagens.com.br'];
+
 export default function Home() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [, setLocation] = useLocation();
+
+  // Redireciona vendedores comuns para /meu-painel
+  useEffect(() => {
+    if (!loading && isAuthenticated && user?.email) {
+      const isAdmin = ADMIN_EMAILS.includes(user.email);
+      if (!isAdmin) {
+        setLocation('/meu-painel');
+      }
+    }
+  }, [loading, isAuthenticated, user, setLocation]);
   const [anoFiltro, setAnoFiltro] = useState<number | undefined>(undefined);
   const [mesFiltro, setMesFiltro] = useState<string | undefined>(undefined);
   const [ordenacao, setOrdenacao] = useState<'receita' | 'vendas' | 'comissao' | 'nome'>('receita');

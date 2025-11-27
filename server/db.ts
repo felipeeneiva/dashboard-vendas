@@ -117,6 +117,14 @@ export async function getVendedorById(id: number): Promise<Vendedor | undefined>
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function getVendedorByEmail(email: string | null | undefined): Promise<Vendedor | undefined> {
+  const db = await getDb();
+  if (!db || !email) return undefined;
+  
+  const result = await db.select().from(vendedores).where(eq(vendedores.email, email)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
 export async function upsertVendedor(vendedor: InsertVendedor): Promise<void> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");

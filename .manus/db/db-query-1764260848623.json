@@ -1,0 +1,9 @@
+{
+  "query": "DELETE FROM metricas\nWHERE id NOT IN (\n  SELECT * FROM (\n    SELECT MAX(id) \n    FROM metricas \n    GROUP BY vendedorId, mes\n  ) AS keep_ids\n)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute DELETE FROM metricas\nWHERE id NOT IN (\n  SELECT * FROM (\n    SELECT MAX(id) \n    FROM metricas \n    GROUP BY vendedorId, mes\n  ) AS keep_ids\n)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 57
+}
