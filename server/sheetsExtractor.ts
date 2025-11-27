@@ -351,3 +351,119 @@ export async function extrairDadosFornecedoresVendedor(
   
   return dadosPorMes;
 }
+
+export interface VendaDiariaExtraida {
+  dataVenda: Date; // Coluna H
+  nomePassageiros: string; // Coluna L - identifica venda única
+  valorTotal: number; // Em centavos (coluna T)
+  destino: string; // Coluna K
+}
+
+/**
+ * Extrai vendas diárias de uma aba da planilha
+ * Agrupa por nome de passageiros (coluna L) para identificar vendas únicas
+ */
+export async function extrairVendasDiarias(
+  sheetId: string,
+  nomeAba: string
+): Promise<VendaDiariaExtraida[]> {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:html&sheet=${encodeURIComponent(nomeAba)}`;
+  
+  try {
+    const response = await axios.get(url, { timeout: 10000 });
+    const html = response.data;
+    
+    if (!html || html.length < 100) {
+      return [];
+    }
+    
+    const vendasMap = new Map<string, VendaDiariaExtraida>();
+    
+    // Regex para extrair linhas da tabela HTML
+    const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/g;
+    const cellRegex = /<td[^>]*>([\s\S]*?)<\/td>/g;
+    
+    let rowMatch;
+    let rowIndex = 0;
+    
+    while ((rowMatch = rowRegex.exec(html)) !== null) {
+      rowIndex++;
+      
+      // Pula primeiras 2 linhas (cabeçalho)
+      if (rowIndex <= 2) {
+        continue;
+      }
+      
+      const rowHtml = rowMatch[1];
+      const cells: string[] = [];
+      
+      let cellMatch;
+      while ((cellMatch = cellRegex.exec(rowHtml)) !== null) {
+        // Remove tags HTML e pega texto
+        const cellText = cellMatch[1]
+          .replace(/<[^>]*>/g, '')
+          .replace(/&nbsp;/g, '')
+          .trim();
+        cells.push(cellText);
+      }
+      
+      // Verifica se tem colunas suficientes
+      if (cells.length < 20) {
+        continue;
+      }
+      
+      // Índices das colunas
+      const dataVendaStr = cells[7]; // H (índice 7)
+      const destino = cells[10]; // K (índice 10)
+      const nomePassageiros = cells[11]; // L (índice 11)
+      const valorTotalStr = cells[19]; // T (índice 19)
+      
+      if (!nomePassageiros || nomePassageiros.trim() === '' || nomePassageiros === 'comentário') {
+        continue; // Pula linhas sem nome de passageiros
+      }
+      
+      if (!dataVendaStr || dataVendaStr.trim() === '') {
+        continue; // Pula linhas sem data
+      }
+      
+      // Parse da data (formato DD/MM/YYYY)
+      const dataMatch = dataVendaStr.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+      if (!dataMatch) {
+        continue; // Pula se não conseguir fazer parse da data
+      }
+      
+      const dia = parseInt(dataMatch[1]);
+      const mes = parseInt(dataMatch[2]) - 1; // JavaScript months são 0-indexed
+      const ano = parseInt(dataMatch[3]);
+      const dataVenda = new Date(ano, mes, dia);
+      
+      // Chave única: data + nome passageiros (para agrupar linhas da mesma venda)
+      const chave = `${dataVendaStr}_${nomePassageiros.toLowerCase().trim()}`;
+      
+      // Se já existe essa venda, soma o valor (múltiplas linhas da mesma venda)
+      if (vendasMap.has(chave)) {
+        const vendaExistente = vendasMap.get(chave)!;
+        vendaExistente.valorTotal += limparValorMonetario(valorTotalStr);
+      } else {
+        vendasMap.set(chave, {
+          dataVenda,
+          nomePassageiros: nomePassageiros.trim(),
+          valorTotal: limparValorMonetario(valorTotalStr),
+          destino: destino.trim(),
+        });
+      }
+    }
+    
+    const vendas = Array.from(vendasMap.values());
+    
+    if (vendas.length > 0) {
+      console.log(`[Vendas Diárias] Extraídas ${vendas.length} vendas únicas de ${nomeAba}`);
+    }
+    
+    return vendas;
+    
+  } catch (error: any) {
+    console.error(`[Vendas Diárias] Erro ao extrair ${nomeAba}:`, error.message);
+    return [];
+  }
+}

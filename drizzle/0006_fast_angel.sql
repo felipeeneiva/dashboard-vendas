@@ -1,0 +1,1 @@
+ALTER TABLE `vendas_diarias` MODIFY COLUMN `nomePassageiros` varchar(500) NOT NULL;

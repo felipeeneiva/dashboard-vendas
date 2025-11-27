@@ -36,6 +36,20 @@
       "when": 1764205923696,
       "tag": "0004_nappy_moira_mactaggert",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1764210855702,
+      "tag": "0005_milky_preak",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1764210885662,
+      "tag": "0006_fast_angel",
+      "breakpoints": true
     }
   ]
 }

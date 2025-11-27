@@ -99,3 +99,25 @@ export const fornecedores = mysqlTable("fornecedores", {
 
 export type Fornecedor = typeof fornecedores.$inferSelect;
 export type InsertFornecedor = typeof fornecedores.$inferInsert;
+
+/**
+ * Tabela de vendas diárias
+ * Armazena vendas únicas agrupadas por nome de passageiros
+ */
+export const vendasDiarias = mysqlTable("vendas_diarias", {
+  id: int("id").autoincrement().primaryKey(),
+  vendedorId: int("vendedorId").notNull().references(() => vendedores.id),
+  dataVenda: timestamp("dataVenda").notNull(), // Data de fechamento (coluna H)
+  nomePassageiros: varchar("nomePassageiros", { length: 500 }).notNull(), // Coluna L - identifica venda única
+  valorTotal: int("valorTotal").notNull(), // Em centavos (coluna T)
+  destino: varchar("destino", { length: 255 }), // Coluna K
+  mes: varchar("mes", { length: 20 }).notNull(), // Ex: "Novembro/2025"
+  ano: int("ano").notNull(), // Ex: 2025
+  dataExtracao: timestamp("dataExtracao").defaultNow().notNull(),
+}, (table) => ({
+  // Constraint para evitar duplicatas
+  uniqueVenda: uniqueIndex("unique_venda").on(table.vendedorId, table.dataVenda, table.nomePassageiros),
+}));
+
+export type VendaDiaria = typeof vendasDiarias.$inferSelect;
+export type InsertVendaDiaria = typeof vendasDiarias.$inferInsert;

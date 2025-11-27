@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE `vendas_diarias` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `vendedorId` int NOT NULL,\n  `dataVenda` timestamp NOT NULL,\n  `nomePassageiros` varchar(500) NOT NULL,\n  `valorTotal` int NOT NULL,\n  `destino` varchar(255),\n  `mes` varchar(20) NOT NULL,\n  `ano` int NOT NULL,\n  `dataExtracao` timestamp NOT NULL DEFAULT (now()),\n  CONSTRAINT `vendas_diarias_id` PRIMARY KEY(`id`),\n  CONSTRAINT `unique_venda` UNIQUE(`vendedorId`,`dataVenda`,`nomePassageiros`)\n)",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute CREATE TABLE `vendas_diarias` (\n  `id` int AUTO_INCREMENT NOT NULL,\n  `vendedorId` int NOT NULL,\n  `dataVenda` timestamp NOT NULL,\n  `nomePassageiros` varchar(500) NOT NULL,\n  `valorTotal` int NOT NULL,\n  `destino` varchar(255),\n  `mes` varchar(20) NOT NULL,\n  `ano` int NOT NULL,\n  `dataExtracao` timestamp NOT NULL DEFAULT (now()),\n  CONSTRAINT `vendas_diarias_id` PRIMARY KEY(`id`),\n  CONSTRAINT `unique_venda` UNIQUE(`vendedorId`,`dataVenda`,`nomePassageiros`)\n)",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 181
+}

@@ -121,3 +121,15 @@
 - [x] Adicionar gráfico de evolução mensal por operadora
 - [x] Criar comparativo de custos (TARIFA vs TAXA vs DU/TEB/OVER)
 - [x] Testar e validar valores TARIFA, TAXA, DU/TEB/OVER, INCENTIVO e VALOR TOTAL
+
+### Monitoramento Real de Vendas Diário
+- [x] Investigar estrutura de datas nas planilhas (coluna H = data fechamento, coluna L = nome passageiros para agrupar)
+- [x] Criar tabela no banco para armazenar vendas diárias por vendedor
+- [ ] Implementar extração de vendas por dia (agrupar por coluna L, extrair data coluna H, valor coluna T)
+- [ ] Criar endpoints tRPC para consultar vendas diárias
+- [ ] Desenvolver página de monitoramento em tempo real
+- [ ] Adicionar métricas: vendas do dia, comparativo com ontem, ranking diário
+- [ ] Adicionar progresso diário rumo à meta mensal
+- [ ] Mostrar última atualização e botão de refresh
+- [ ] Reorganizar menu lateral com categorias profissionais
+- [ ] Testar e validar dados diários
