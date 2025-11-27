@@ -1,4 +1,4 @@
-import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, uniqueIndex, index, boolean } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -51,10 +51,7 @@ export const metricas = mysqlTable("metricas", {
   dataExtracao: timestamp("dataExtracao").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-}, (table) => ({
-  // Constraint UNIQUE para evitar duplicatas: um vendedor só pode ter um registro por mês
-  vendedorMesUnique: uniqueIndex("vendedorMes_unique").on(table.vendedorId, table.mes),
-}));
+});
 
 export type Metrica = typeof metricas.$inferSelect;
 export type InsertMetrica = typeof metricas.$inferInsert;
@@ -93,8 +90,8 @@ export const fornecedores = mysqlTable("fornecedores", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (table) => ({
-  // Índice para consultas por operadora normalizada
-  operadoraNormalizadaIdx: uniqueIndex("operadoraNormalizada_idx").on(table.operadoraNormalizada, table.mes, table.vendedorId),
+  // Índice para consultas por operadora normalizada (não-único, permite múltiplas vendas)
+  operadoraNormalizadaIdx: index("operadoraNormalizada_idx").on(table.operadoraNormalizada, table.mes, table.vendedorId),
 }));
 
 export type Fornecedor = typeof fornecedores.$inferSelect;
@@ -108,7 +105,7 @@ export const vendasDiarias = mysqlTable("vendas_diarias", {
   id: int("id").autoincrement().primaryKey(),
   vendedorId: int("vendedorId").notNull().references(() => vendedores.id),
   dataVenda: timestamp("dataVenda").notNull(), // Data de fechamento (coluna H)
-  nomePassageiros: varchar("nomePassageiros", { length: 500 }).notNull(), // Coluna L - identifica venda única
+  nomePassageiros: varchar("nomePassageiros", { length: 255 }).notNull(), // Coluna L - identifica venda única
   valorTotal: int("valorTotal").notNull(), // Em centavos (coluna T)
   destino: varchar("destino", { length: 255 }), // Coluna K
   mes: varchar("mes", { length: 20 }).notNull(), // Ex: "Novembro/2025"

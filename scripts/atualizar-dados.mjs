@@ -5,8 +5,8 @@
 
 import { drizzle } from 'drizzle-orm/mysql2';
 import { eq, and } from 'drizzle-orm';
-import { vendedores, metricas, fornecedores } from '../drizzle/schema.ts';
-import { extrairDadosVendedor, extrairDadosFornecedores, gerarListaMeses } from '../server/sheetsExtractor.ts';
+import { vendedores, metricas, fornecedores, vendasDiarias } from '../drizzle/schema.ts';
+import { extrairDadosVendedor, extrairDadosFornecedores, extrairVendasDiarias, gerarListaMeses } from '../server/sheetsExtractor.ts';
 
 // Conecta ao banco
 const db = drizzle(process.env.DATABASE_URL);
@@ -25,6 +25,7 @@ let vendedoresAtualizados = 0;
 let totalRegistros = 0;
 let totalComDados = 0;
 let totalFornecedores = 0;
+let totalVendasDiarias = 0;
 
 for (const vendedor of todosVendedores) {
   try {
@@ -35,6 +36,7 @@ for (const vendedor of todosVendedores) {
     
     let mesesComDados = 0;
     let fornecedoresDoVendedor = 0;
+    let vendasDiariasDoVendedor = 0;
     
     for (const resultado of resultados) {
       const metricasData = resultado.metricas;
@@ -97,6 +99,38 @@ for (const vendedor of todosVendedores) {
         } catch (errorFornecedor) {
           console.warn(`   ⚠️  Erro ao extrair fornecedores de ${resultado.mes}:`, errorFornecedor.message);
         }
+        
+        // Extrai vendas diárias deste mês
+        try {
+          const vendasDiariasMes = await extrairVendasDiarias(vendedor.sheetId, resultado.mes);
+          
+          if (vendasDiariasMes.length > 0) {
+            // Remove dados antigos deste vendedor/mês
+            await db.delete(vendasDiarias)
+              .where(and(
+                eq(vendasDiarias.vendedorId, vendedor.id),
+                eq(vendasDiarias.mes, resultado.mes)
+              ));
+            
+            // Insere novas vendas
+            for (const venda of vendasDiariasMes) {
+              await db.insert(vendasDiarias).values({
+                vendedorId: vendedor.id,
+                dataVenda: venda.dataVenda,
+                nomePassageiros: venda.nomePassageiros,
+                valorTotal: venda.valorTotal,
+                destino: venda.destino,
+                mes: resultado.mes,
+                ano: venda.dataVenda.getFullYear(),
+                dataExtracao: new Date()
+              });
+              vendasDiariasDoVendedor++;
+              totalVendasDiarias++;
+            }
+          }
+        } catch (errorVendas) {
+          console.warn(`   ⚠️  Erro ao extrair vendas diárias de ${resultado.mes}:`, errorVendas.message);
+        }
       }
       totalRegistros++;
     }
@@ -104,6 +138,9 @@ for (const vendedor of todosVendedores) {
     console.log(`   ✅ ${mesesComDados} meses com dados de ${meses.length} meses processados`);
     if (fornecedoresDoVendedor > 0) {
       console.log(`   📦 ${fornecedoresDoVendedor} registros de fornecedores salvos`);
+    }
+    if (vendasDiariasDoVendedor > 0) {
+      console.log(`   💰 ${vendasDiariasDoVendedor} vendas diárias salvas`);
     }
     vendedoresAtualizados++;
     
@@ -120,6 +157,7 @@ console.log(`📝 Total de registros processados: ${totalRegistros}`);
 console.log(`📊 Registros com dados: ${totalComDados}`);
 console.log(`🔍 Registros sem dados: ${totalRegistros - totalComDados}`);
 console.log(`📦 Total de fornecedores salvos: ${totalFornecedores}`);
+console.log(`💰 Total de vendas diárias salvas: ${totalVendasDiarias}`);
 console.log('='.repeat(60));
 console.log('\n✨ Atualização concluída!\n');
 

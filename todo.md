@@ -117,6 +117,12 @@
 - [x] Desenvolver página de relatório com tabela consolidada
 - [x] Adicionar filtros por fornecedor, mês e ano
 - [x] Modificar script atualizar-dados.mjs para incluir extração de fornecedores
+- [x] Adicionar extração de vendas diárias ao script de atualização
+- [x] Corrigir constraint UNIQUE da tabela fornecedores (permitir múltiplas vendas)
+- [x] Corrigir tipo de nomePassageiros para VARCHAR(255) em vendas_diarias
+- [x] Executar script completo e popular banco com fornecedores (4.063 registros salvos!)
+- [x] Validar página de Relatório de Fornecedores com dados reais
+- [x] Validar Dashboard de Fornecedores com gráficos (Top 10, Pizza, Comparativo)
 - [x] Criar dashboard executivo com gráficos de top 10 fornecedores
 - [x] Adicionar gráfico de evolução mensal por operadora
 - [x] Criar comparativo de custos (TARIFA vs TAXA vs DU/TEB/OVER)
@@ -133,4 +139,27 @@
 - [x] Mostrar última atualização e botão de refresh
 - [x] Reorganizar menu lateral com categorias profissionais
 - [ ] Verificar e corrigir erros de extração JSON nas planilhas
-- [ ] Testar e validar dados diários
+- [x] Testar página de Monitoramento (interface funcionando, aguardando dados de diferença)
+
+### Bug: Filtros de Meses Mostrando Duplicatas
+- [x] Corrigir dropdown de meses para não mostrar Janeiro/2024, Janeiro/2025, Fevereiro/2024, etc. repetidos
+- [x] Implementar filtro por ano (2024, 2025, Todos) que filtra meses disponíveis
+- [x] Adicionar lógica para limpar filtro de mês quando ano muda
+- [x] Testar que ao selecionar um mês específico, apenas dados daquele mês aparecem
+- [x] Validar que dropdown de meses mostra apenas meses do ano selecionado (sem duplicatas)
+- [x] Validar que totais atualizam corretamente ao mudar filtros
+
+
+### Nova Abordagem: Vendas Diárias por Diferença de Totais
+- [x] Remover lógica antiga de extração por data/passageiros (coluna H/L)
+- [x] Implementar cálculo de vendas diárias: Total hoje - Total ontem
+- [x] Criar função para buscar métricas ordenadas por data
+- [x] Calcular diferenças entre dias consecutivos
+- [x] Atualizar endpoints tRPC para usar nova lógica
+- [x] Reescrever router vendasDiarias completo (hoje, comparativo, ranking)
+- [x] Executar segunda atualização para criar dados de diferença
+- [x] Testar página de Monitoramento com dados calculados
+- [x] Validar lógica de cálculo de vendas por diferença (funciona corretamente)
+- [x] Remover constraint UNIQUE de metricas (permitir múltiplas extrações por mês)
+- [x] Criar função insertMetrica para inserir sem verificar duplicatas
+- [x] Documentar que vendas aparecem quando há diferença real entre extrações

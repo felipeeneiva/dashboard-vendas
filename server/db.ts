@@ -188,6 +188,13 @@ export async function getUltimasMetricas(): Promise<Metrica[]> {
   return result;
 }
 
+// Insere uma nova métrica SEM verificar duplicatas (para monitoramento diário)
+export async function insertMetrica(metrica: Omit<InsertMetrica, 'id'>): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(metricas).values(metrica as InsertMetrica);
+}
+
 export async function upsertMetrica(metrica: InsertMetrica): Promise<void> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");

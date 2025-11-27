@@ -757,51 +757,104 @@ export const appRouter = router({
       }),
   }),
 
-  // Router de vendas diárias
+  // Router de vendas diárias (calculadas por diferença de totais)
   vendasDiarias: router({
-    // Vendas de hoje
+    // Vendas de hoje (calculadas pela diferença do total acumulado)
     hoje: protectedProcedure.query(async () => {
-      const hoje = new Date();
-      hoje.setHours(0, 0, 0, 0);
+      const mesAtual = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+        .replace(/^\w/, c => c.toUpperCase()).replace(/ de /, '/');
       
-      const vendas = await db.getVendasPorData(hoje, hoje);
+      const vendedores = await db.listarVendedores();
+      const metricas = await db.getAllMetricas();
       
-      const totalVendas = vendas.length;
-      const valorTotal = vendas.reduce((sum, v) => sum + v.valorTotal, 0);
+      // Filtra métricas do mês atual e ordena por data de extração
+      const metricasMesAtual = metricas
+        .filter(m => m.mes === mesAtual)
+        .sort((a, b) => new Date(b.dataExtracao).getTime() - new Date(a.dataExtracao).getTime());
+      
+      if (metricasMesAtual.length === 0) {
+        return {
+          totalVendas: 0,
+          valorTotal: 0,
+          vendas: []
+        };
+      }
+      
+      // Agrupa por vendedor e pega as 2 últimas extrações
+      const vendasPorVendedor: Array<{ vendedor: string, valor: number }> = [];
+      let totalVendas = 0;
+      
+      for (const vendedor of vendedores) {
+        const metricasVendedor = metricasMesAtual.filter(m => m.vendedorId === vendedor.id);
+        if (metricasVendedor.length < 2) continue;
+        
+        const ultima = metricasVendedor[0];
+        const penultima = metricasVendedor[1];
+        
+        const vendasDia = ultima.totalVendas - penultima.totalVendas;
+        if (vendasDia > 0) {
+          vendasPorVendedor.push({
+            vendedor: vendedor.nome,
+            valor: vendasDia
+          });
+          totalVendas += vendasDia;
+        }
+      }
       
       return {
-        totalVendas,
-        valorTotal: db.centavosParaReais(valorTotal),
-        vendas: vendas.map(v => ({
+        totalVendas: vendasPorVendedor.length,
+        valorTotal: db.centavosParaReais(totalVendas),
+        vendas: vendasPorVendedor.map(v => ({
           ...v,
-          valorTotal: db.centavosParaReais(v.valorTotal)
+          valor: db.centavosParaReais(v.valor)
         }))
       };
     }),
 
     // Comparativo (hoje vs ontem)
     comparativo: protectedProcedure.query(async () => {
-      const hoje = new Date();
-      hoje.setHours(0, 0, 0, 0);
+      const mesAtual = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+        .replace(/^\w/, c => c.toUpperCase()).replace(/ de /, '/');
       
-      const ontem = new Date(hoje);
-      ontem.setDate(ontem.getDate() - 1);
+      const vendedores = await db.listarVendedores();
+      const metricas = await db.getAllMetricas();
       
-      const vendasHoje = await db.getVendasPorData(hoje, hoje);
-      const vendasOntem = await db.getVendasPorData(ontem, ontem);
+      const metricasMesAtual = metricas
+        .filter(m => m.mes === mesAtual)
+        .sort((a, b) => new Date(b.dataExtracao).getTime() - new Date(a.dataExtracao).getTime());
       
-      const totalHoje = vendasHoje.reduce((sum, v) => sum + v.valorTotal, 0);
-      const totalOntem = vendasOntem.reduce((sum, v) => sum + v.valorTotal, 0);
+      if (metricasMesAtual.length < 3) {
+        return {
+          hoje: { vendas: 0, valor: 0 },
+          ontem: { vendas: 0, valor: 0 },
+          variacao: 0
+        };
+      }
+      
+      let totalHoje = 0;
+      let totalOntem = 0;
+      
+      for (const vendedor of vendedores) {
+        const metricasVendedor = metricasMesAtual.filter(m => m.vendedorId === vendedor.id);
+        if (metricasVendedor.length < 3) continue;
+        
+        const ultima = metricasVendedor[0];
+        const penultima = metricasVendedor[1];
+        const antepenultima = metricasVendedor[2];
+        
+        totalHoje += ultima.totalVendas - penultima.totalVendas;
+        totalOntem += penultima.totalVendas - antepenultima.totalVendas;
+      }
       
       const variacao = totalOntem > 0 ? ((totalHoje - totalOntem) / totalOntem) * 100 : 0;
       
       return {
         hoje: {
-          vendas: vendasHoje.length,
+          vendas: totalHoje > 0 ? 1 : 0,
           valor: db.centavosParaReais(totalHoje)
         },
         ontem: {
-          vendas: vendasOntem.length,
+          vendas: totalOntem > 0 ? 1 : 0,
           valor: db.centavosParaReais(totalOntem)
         },
         variacao: Math.round(variacao * 10) / 10
@@ -810,30 +863,36 @@ export const appRouter = router({
 
     // Ranking diário de vendedores
     ranking: protectedProcedure.query(async () => {
-      const hoje = new Date();
-      hoje.setHours(0, 0, 0, 0);
+      const mesAtual = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+        .replace(/^\w/, c => c.toUpperCase()).replace(/ de /, '/');
       
-      const vendas = await db.getVendasPorData(hoje, hoje);
-      const vendedoresMap = await db.listarVendedores();
+      const vendedores = await db.listarVendedores();
+      const metricas = await db.getAllMetricas();
       
-      const rankingMap = new Map<number, { vendedor: string, vendas: number, valor: number }>();
+      const metricasMesAtual = metricas
+        .filter(m => m.mes === mesAtual)
+        .sort((a, b) => new Date(b.dataExtracao).getTime() - new Date(a.dataExtracao).getTime());
       
-      for (const venda of vendas) {
-        const vendedor = vendedoresMap.find(v => v.id === venda.vendedorId);
-        if (!vendedor) continue;
+      const ranking: Array<{ vendedor: string, vendas: number, valor: number }> = [];
+      
+      for (const vendedor of vendedores) {
+        const metricasVendedor = metricasMesAtual.filter(m => m.vendedorId === vendedor.id);
+        if (metricasVendedor.length < 2) continue;
         
-        const atual = rankingMap.get(venda.vendedorId) || {
-          vendedor: vendedor.nome,
-          vendas: 0,
-          valor: 0
-        };
+        const ultima = metricasVendedor[0];
+        const penultima = metricasVendedor[1];
         
-        atual.vendas += 1;
-        atual.valor += venda.valorTotal;
-        rankingMap.set(venda.vendedorId, atual);
+        const vendasDia = ultima.totalVendas - penultima.totalVendas;
+        if (vendasDia > 0) {
+          ranking.push({
+            vendedor: vendedor.nome,
+            vendas: 1,
+            valor: vendasDia
+          });
+        }
       }
       
-      return Array.from(rankingMap.values())
+      return ranking
         .map(r => ({
           ...r,
           valor: db.centavosParaReais(r.valor)

@@ -1,1 +1,0 @@
-ALTER TABLE `metricas` ADD CONSTRAINT `vendedorMes_unique` UNIQUE(`vendedorId`,`mes`);

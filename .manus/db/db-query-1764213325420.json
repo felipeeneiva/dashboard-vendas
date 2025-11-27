@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS vendas_diarias (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  vendedorId INT NOT NULL,\n  dataVenda TIMESTAMP NOT NULL,\n  nomePassageiros VARCHAR(255) NOT NULL,\n  valorTotal INT NOT NULL,\n  destino VARCHAR(255),\n  mes VARCHAR(20) NOT NULL,\n  ano INT NOT NULL,\n  dataExtracao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  UNIQUE KEY unique_venda (vendedorId, dataVenda, nomePassageiros),\n  FOREIGN KEY (vendedorId) REFERENCES vendedores(id)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute CREATE TABLE IF NOT EXISTS vendas_diarias (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  vendedorId INT NOT NULL,\n  dataVenda TIMESTAMP NOT NULL,\n  nomePassageiros VARCHAR(255) NOT NULL,\n  valorTotal INT NOT NULL,\n  destino VARCHAR(255),\n  mes VARCHAR(20) NOT NULL,\n  ano INT NOT NULL,\n  dataExtracao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,\n  UNIQUE KEY unique_venda (vendedorId, dataVenda, nomePassageiros),\n  FOREIGN KEY (vendedorId) REFERENCES vendedores(id)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 55
+}

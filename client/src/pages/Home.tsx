@@ -98,7 +98,17 @@ export default function Home() {
           </div>
           
           <div className="flex items-center gap-3">
-            <Select value={anoFiltro?.toString() || 'todos'} onValueChange={(v) => setAnoFiltro(v === 'todos' ? undefined : parseInt(v))}>
+            <Select value={anoFiltro?.toString() || 'todos'} onValueChange={(v) => {
+              const novoAno = v === 'todos' ? undefined : parseInt(v);
+              setAnoFiltro(novoAno);
+              // Limpar filtro de mês se não for compatível com o ano selecionado
+              if (mesFiltro && novoAno) {
+                const anoDoMes = parseInt(mesFiltro.split('/')[1]);
+                if (anoDoMes !== novoAno) {
+                  setMesFiltro(undefined);
+                }
+              }
+            }}>
               <SelectTrigger className="w-32">
                 <SelectValue placeholder="Ano" />
               </SelectTrigger>
@@ -115,10 +125,16 @@ export default function Home() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="todos">Todos</SelectItem>
-                {['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'].flatMap(mes => [
-                  <SelectItem key={`${mes}/2024`} value={`${mes}/2024`}>{mes}/2024</SelectItem>,
-                  <SelectItem key={`${mes}/2025`} value={`${mes}/2025`}>{mes}/2025</SelectItem>
-                ])}
+                {['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'].flatMap(mes => {
+                  const items = [];
+                  if (!anoFiltro || anoFiltro === 2024) {
+                    items.push(<SelectItem key={`${mes}/2024`} value={`${mes}/2024`}>{mes}/2024</SelectItem>);
+                  }
+                  if (!anoFiltro || anoFiltro === 2025) {
+                    items.push(<SelectItem key={`${mes}/2025`} value={`${mes}/2025`}>{mes}/2025</SelectItem>);
+                  }
+                  return items;
+                })}
               </SelectContent>
             </Select>
             

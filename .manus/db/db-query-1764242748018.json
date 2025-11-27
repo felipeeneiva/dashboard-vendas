@@ -1,0 +1,40 @@
+{
+  "query": "SELECT vendedorId, COUNT(*) as extrações, MIN(dataExtracao) as primeira, MAX(dataExtracao) as ultima \nFROM metricas \nWHERE mes = 'Novembro/2025' \nGROUP BY vendedorId \nORDER BY vendedorId \nLIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT vendedorId, COUNT(*) as extrações, MIN(dataExtracao) as primeira, MAX(dataExtracao) as ultima \nFROM metricas \nWHERE mes = 'Novembro/2025' \nGROUP BY vendedorId \nORDER BY vendedorId \nLIMIT 5;",
+  "rows": [
+    {
+      "vendedorId": "1",
+      "extrações": "1",
+      "primeira": "2025-11-27 11:20:02",
+      "ultima": "2025-11-27 11:20:02"
+    },
+    {
+      "vendedorId": "2",
+      "extrações": "1",
+      "primeira": "2025-11-27 11:20:40",
+      "ultima": "2025-11-27 11:20:40"
+    },
+    {
+      "vendedorId": "3",
+      "extrações": "1",
+      "primeira": "2025-11-27 11:21:23",
+      "ultima": "2025-11-27 11:21:23"
+    },
+    {
+      "vendedorId": "4",
+      "extrações": "1",
+      "primeira": "2025-11-27 11:22:04",
+      "ultima": "2025-11-27 11:22:04"
+    },
+    {
+      "vendedorId": "5",
+      "extrações": "1",
+      "primeira": "2025-11-27 11:22:42",
+      "ultima": "2025-11-27 11:22:42"
+    }
+  ],
+  "messages": [],
+  "stdout": "vendedorId\textrações\tprimeira\tultima\n1\t1\t2025-11-27 11:20:02\t2025-11-27 11:20:02\n2\t1\t2025-11-27 11:20:40\t2025-11-27 11:20:40\n3\t1\t2025-11-27 11:21:23\t2025-11-27 11:21:23\n4\t1\t2025-11-27 11:22:04\t2025-11-27 11:22:04\n5\t1\t2025-11-27 11:22:42\t2025-11-27 11:22:42\n",
+  "stderr": "",
+  "execution_time_ms": 47
+}

@@ -50,6 +50,20 @@
       "when": 1764210885662,
       "tag": "0006_fast_angel",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1764213285547,
+      "tag": "0007_exotic_lady_mastermind",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1764246233298,
+      "tag": "0008_red_penance",
+      "breakpoints": true
     }
   ]
 }

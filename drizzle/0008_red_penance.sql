@@ -1,0 +1,1 @@
+ALTER TABLE `metricas` DROP INDEX `vendedorMes_unique`;
