@@ -125,11 +125,12 @@
 ### Monitoramento Real de Vendas Diário
 - [x] Investigar estrutura de datas nas planilhas (coluna H = data fechamento, coluna L = nome passageiros para agrupar)
 - [x] Criar tabela no banco para armazenar vendas diárias por vendedor
-- [ ] Implementar extração de vendas por dia (agrupar por coluna L, extrair data coluna H, valor coluna T)
-- [ ] Criar endpoints tRPC para consultar vendas diárias
-- [ ] Desenvolver página de monitoramento em tempo real
-- [ ] Adicionar métricas: vendas do dia, comparativo com ontem, ranking diário
-- [ ] Adicionar progresso diário rumo à meta mensal
-- [ ] Mostrar última atualização e botão de refresh
-- [ ] Reorganizar menu lateral com categorias profissionais
+- [x] Implementar extração de vendas por dia (agrupar por coluna L, extrair data coluna H, valor coluna T)
+- [x] Criar endpoints tRPC para consultar vendas diárias
+- [x] Desenvolver página de monitoramento em tempo real
+- [x] Adicionar métricas: vendas do dia, comparativo com ontem, ranking diário
+- [ ] Adicionar progresso diário rumo à meta mensal (marcado como 'Em desenvolvimento')
+- [x] Mostrar última atualização e botão de refresh
+- [x] Reorganizar menu lateral com categorias profissionais
+- [ ] Verificar e corrigir erros de extração JSON nas planilhas
 - [ ] Testar e validar dados diários

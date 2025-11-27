@@ -21,19 +21,40 @@ import {
 } from "@/components/ui/sidebar";
 import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users, BarChart3, Target, TrendingUp, Package, PieChart } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, BarChart3, Target, TrendingUp, Package, PieChart, Activity } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
-const menuItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/" },
-  { icon: BarChart3, label: "Análises", path: "/analises" },
-  { icon: Target, label: "Metas Trimestral", path: "/metas-trimestral" },
-  { icon: TrendingUp, label: "Progresso Semanal", path: "/progresso-semanal" },
-  { icon: Package, label: "Fornecedores", path: "/fornecedores" },
-  { icon: PieChart, label: "Dashboard Fornecedores", path: "/fornecedores/dashboard" },
+const menuCategories = [
+  {
+    title: "Visão Geral",
+    items: [
+      { icon: LayoutDashboard, label: "Dashboard", path: "/" },
+    ]
+  },
+  {
+    title: "Metas e Performance",
+    items: [
+      { icon: BarChart3, label: "Análises", path: "/analises" },
+      { icon: Target, label: "Metas Trimestral", path: "/metas-trimestral" },
+      { icon: TrendingUp, label: "Progresso Semanal", path: "/progresso-semanal" },
+    ]
+  },
+  {
+    title: "Fornecedores",
+    items: [
+      { icon: Package, label: "Relatório", path: "/fornecedores" },
+      { icon: PieChart, label: "Dashboard", path: "/fornecedores/dashboard" },
+    ]
+  },
+  {
+    title: "Monitoramento",
+    items: [
+      { icon: Activity, label: "Vendas em Tempo Real", path: "/monitoramento" },
+    ]
+  },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -125,7 +146,8 @@ function DashboardLayoutContent({
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const activeMenuItem = menuItems.find(item => item.path === location);
+  const allMenuItems = menuCategories.flatMap(cat => cat.items);
+  const activeMenuItem = allMenuItems.find(item => item.path === location);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -212,26 +234,34 @@ function DashboardLayoutContent({
           </SidebarHeader>
 
           <SidebarContent className="gap-0">
-            <SidebarMenu className="px-2 py-1">
-              {menuItems.map(item => {
-                const isActive = location === item.path;
-                return (
-                  <SidebarMenuItem key={item.path}>
-                    <SidebarMenuButton
-                      isActive={isActive}
-                      onClick={() => setLocation(item.path)}
-                      tooltip={item.label}
-                      className={`h-10 transition-all font-normal`}
-                    >
-                      <item.icon
-                        className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
-                      />
-                      <span>{item.label}</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
+            {menuCategories.map((category, catIndex) => (
+              <div key={category.title}>
+                {catIndex > 0 && <div className="h-px bg-border mx-2 my-2" />}
+                <div className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  {category.title}
+                </div>
+                <SidebarMenu className="px-2 py-1">
+                  {category.items.map((item: any) => {
+                    const isActive = location === item.path;
+                    return (
+                      <SidebarMenuItem key={item.path}>
+                        <SidebarMenuButton
+                          isActive={isActive}
+                          onClick={() => setLocation(item.path)}
+                          tooltip={item.label}
+                          className={`h-10 transition-all font-normal`}
+                        >
+                          <item.icon
+                            className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
+                          />
+                          <span>{item.label}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </div>
+            ))}
           </SidebarContent>
 
           <SidebarFooter className="p-3">

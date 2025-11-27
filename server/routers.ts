@@ -756,6 +756,91 @@ export const appRouter = router({
           });
       }),
   }),
+
+  // Router de vendas diárias
+  vendasDiarias: router({
+    // Vendas de hoje
+    hoje: protectedProcedure.query(async () => {
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+      
+      const vendas = await db.getVendasPorData(hoje, hoje);
+      
+      const totalVendas = vendas.length;
+      const valorTotal = vendas.reduce((sum, v) => sum + v.valorTotal, 0);
+      
+      return {
+        totalVendas,
+        valorTotal: db.centavosParaReais(valorTotal),
+        vendas: vendas.map(v => ({
+          ...v,
+          valorTotal: db.centavosParaReais(v.valorTotal)
+        }))
+      };
+    }),
+
+    // Comparativo (hoje vs ontem)
+    comparativo: protectedProcedure.query(async () => {
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+      
+      const ontem = new Date(hoje);
+      ontem.setDate(ontem.getDate() - 1);
+      
+      const vendasHoje = await db.getVendasPorData(hoje, hoje);
+      const vendasOntem = await db.getVendasPorData(ontem, ontem);
+      
+      const totalHoje = vendasHoje.reduce((sum, v) => sum + v.valorTotal, 0);
+      const totalOntem = vendasOntem.reduce((sum, v) => sum + v.valorTotal, 0);
+      
+      const variacao = totalOntem > 0 ? ((totalHoje - totalOntem) / totalOntem) * 100 : 0;
+      
+      return {
+        hoje: {
+          vendas: vendasHoje.length,
+          valor: db.centavosParaReais(totalHoje)
+        },
+        ontem: {
+          vendas: vendasOntem.length,
+          valor: db.centavosParaReais(totalOntem)
+        },
+        variacao: Math.round(variacao * 10) / 10
+      };
+    }),
+
+    // Ranking diário de vendedores
+    ranking: protectedProcedure.query(async () => {
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+      
+      const vendas = await db.getVendasPorData(hoje, hoje);
+      const vendedoresMap = await db.listarVendedores();
+      
+      const rankingMap = new Map<number, { vendedor: string, vendas: number, valor: number }>();
+      
+      for (const venda of vendas) {
+        const vendedor = vendedoresMap.find(v => v.id === venda.vendedorId);
+        if (!vendedor) continue;
+        
+        const atual = rankingMap.get(venda.vendedorId) || {
+          vendedor: vendedor.nome,
+          vendas: 0,
+          valor: 0
+        };
+        
+        atual.vendas += 1;
+        atual.valor += venda.valorTotal;
+        rankingMap.set(venda.vendedorId, atual);
+      }
+      
+      return Array.from(rankingMap.values())
+        .map(r => ({
+          ...r,
+          valor: db.centavosParaReais(r.valor)
+        }))
+        .sort((a, b) => b.valor - a.valor);
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

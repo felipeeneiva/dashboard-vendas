@@ -1,6 +1,6 @@
 import { eq, and, desc, like } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, vendedores, metricas, atualizacoes, Vendedor, Metrica, InsertVendedor, InsertMetrica, InsertAtualizacao } from "../drizzle/schema";
+import { InsertUser, users, vendedores, metricas, atualizacoes, vendasDiarias, Vendedor, Metrica, VendaDiaria, InsertVendedor, InsertMetrica, InsertAtualizacao, InsertVendaDiaria } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -407,4 +407,77 @@ export async function consultarFornecedoresPorAno(ano: number) {
     console.error("[Database] Failed to query fornecedores:", error);
     return [];
   }
+}
+
+// ==================== Vendas Diárias ====================
+
+export async function salvarVendaDiaria(venda: InsertVendaDiaria): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot save venda diaria: database not available");
+    return;
+  }
+
+  try {
+    await db.insert(vendasDiarias).values(venda).onDuplicateKeyUpdate({
+      set: {
+        valorTotal: venda.valorTotal,
+        destino: venda.destino,
+        dataExtracao: new Date(),
+      },
+    });
+  } catch (error) {
+    console.error("[Database] Failed to save venda diaria:", error);
+    throw error;
+  }
+}
+
+export async function getVendasPorData(dataInicio: Date, dataFim: Date): Promise<VendaDiaria[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get vendas: database not available");
+    return [];
+  }
+
+  const result = await db
+    .select()
+    .from(vendasDiarias)
+    .where(
+      and(
+        eq(vendasDiarias.dataVenda, dataInicio), // Simplificado, ajustar se necessário
+      )
+    );
+
+  return result;
+}
+
+export async function listarVendedores(): Promise<Vendedor[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list vendedores: database not available");
+    return [];
+  }
+
+  const result = await db.select().from(vendedores);
+  return result;
+}
+
+export async function getVendasPorVendedor(vendedorId: number, dataInicio: Date, dataFim: Date): Promise<VendaDiaria[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get vendas: database not available");
+    return [];
+  }
+
+  const result = await db
+    .select()
+    .from(vendasDiarias)
+    .where(
+      and(
+        eq(vendasDiarias.vendedorId, vendedorId),
+        // Adicionar filtro de data range aqui se necessário
+      )
+    );
+
+  return result;
 }
