@@ -242,3 +242,13 @@
 - [x] Corrigir controle de acesso no painel individual (/meu-painel) - cada vendedor deve ver apenas seus próprios dados
 - [x] Implementar verificação de admin (felipe@mundoproviagens.com.br e vendas@mundoproviagens.com.br) para acesso ao dashboard completo
 - [x] Testar que vendedores comuns não conseguem ver dados de outros vendedores
+
+- [x] Adicionar extração de destinos (coluna K) por vendedor nas planilhas
+- [x] Criar endpoint tRPC para evolução mensal do vendedor (gráfico de linha)
+- [x] Criar endpoint tRPC para top destinos do vendedor
+- [x] Criar endpoint tRPC para comparativo 2024 vs 2025 do vendedor
+- [x] Adicionar gráfico de evolução mensal na página MeuPainel
+- [x] Adicionar tabela comparativa 2024 vs 2025 na página MeuPainel
+- [x] Adicionar ranking de top destinos na página MeuPainel
+- [x] Adicionar estatísticas pessoais (ticket médio, melhor mês, crescimento)
+- [x] Testar com vendedores que só têm dados de 2025

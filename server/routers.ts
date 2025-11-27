@@ -989,6 +989,139 @@ export const appRouter = router({
           mesesComDados: metricasComDados.length
         };
       }),
+
+    // Evolução mensal do vendedor
+    evolucaoMensal: protectedProcedure
+      .query(async ({ ctx }) => {
+        const vendedor = await db.getVendedorByEmail(ctx.user.email);
+        if (!vendedor) throw new Error('Vendedor não encontrado');
+
+        const metricas = await db.getMetricasByVendedor(vendedor.id);
+        const metricasComDados = metricas.filter(m => m.status === 'com_dados');
+
+        // Ordena por data (mês/ano)
+        const evolucao = metricasComDados
+          .map(m => {
+            const [mesNome, ano] = m.mes.split('/');
+            const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            const mesNumero = meses.indexOf(mesNome) + 1;
+            return {
+              mes: m.mes,
+              vendas: db.centavosParaReais(m.totalVendas),
+              receita: db.centavosParaReais(m.totalReceita),
+              comissao: db.centavosParaReais(m.comissaoTotal),
+              ano: parseInt(ano),
+              mesNumero,
+              ordenacao: parseInt(ano) * 100 + mesNumero
+            };
+          })
+          .sort((a, b) => a.ordenacao - b.ordenacao);
+
+        return evolucao;
+      }),
+
+    // Comparativo 2024 vs 2025
+    comparativoAnos: protectedProcedure
+      .query(async ({ ctx }) => {
+        const vendedor = await db.getVendedorByEmail(ctx.user.email);
+        if (!vendedor) throw new Error('Vendedor não encontrado');
+
+        const metricas = await db.getMetricasByVendedor(vendedor.id);
+        const metricasComDados = metricas.filter(m => m.status === 'com_dados');
+
+        // Separa por ano
+        const dados2024 = metricasComDados.filter(m => m.mes.endsWith('/2024'));
+        const dados2025 = metricasComDados.filter(m => m.mes.endsWith('/2025'));
+
+        const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+        const comparativo = meses.map(mesNome => {
+          const metrica2024 = dados2024.find(m => m.mes === `${mesNome}/2024`);
+          const metrica2025 = dados2025.find(m => m.mes === `${mesNome}/2025`);
+
+          const vendas2024 = metrica2024 ? db.centavosParaReais(metrica2024.totalVendas) : 0;
+          const vendas2025 = metrica2025 ? db.centavosParaReais(metrica2025.totalVendas) : 0;
+          const receita2024 = metrica2024 ? db.centavosParaReais(metrica2024.totalReceita) : 0;
+          const receita2025 = metrica2025 ? db.centavosParaReais(metrica2025.totalReceita) : 0;
+
+          let variacaoVendas = 0;
+          let variacaoReceita = 0;
+          if (vendas2024 > 0) {
+            variacaoVendas = ((vendas2025 - vendas2024) / vendas2024) * 100;
+          }
+          if (receita2024 > 0) {
+            variacaoReceita = ((receita2025 - receita2024) / receita2024) * 100;
+          }
+
+          return {
+            mes: mesNome,
+            vendas2024,
+            vendas2025,
+            receita2024,
+            receita2025,
+            variacaoVendas: variacaoVendas.toFixed(2),
+            variacaoReceita: variacaoReceita.toFixed(2),
+            temDados2024: !!metrica2024,
+            temDados2025: !!metrica2025
+          };
+        }).filter(item => item.temDados2024 || item.temDados2025); // Só meses com dados
+
+        return comparativo;
+      }),
+
+    // Top destinos do vendedor
+    topDestinos: protectedProcedure
+      .input(z.object({
+        limit: z.number().default(10),
+        ano: z.number().optional()
+      }).optional())
+      .query(async ({ ctx, input }) => {
+        const vendedor = await db.getVendedorByEmail(ctx.user.email);
+        if (!vendedor) throw new Error('Vendedor não encontrado');
+
+        const dbInstance = await db.getDb();
+        if (!dbInstance) throw new Error('Database não disponível');
+
+        const { vendasDiarias } = await import('../drizzle/schema');
+        const { eq, and } = await import('drizzle-orm');
+
+        // Busca vendas do vendedor
+        let query = dbInstance
+          .select()
+          .from(vendasDiarias)
+          .where(eq(vendasDiarias.vendedorId, vendedor.id));
+
+        let vendas = await query;
+
+        // Filtra por ano se fornecido
+        if (input?.ano) {
+          vendas = vendas.filter(v => v.ano === input.ano);
+        }
+
+        // Agrupa por destino
+        const destinosMap = new Map<string, { vendas: number; valor: number }>();
+        
+        vendas.forEach(venda => {
+          const destino = venda.destino || 'Não informado';
+          const atual = destinosMap.get(destino) || { vendas: 0, valor: 0 };
+          destinosMap.set(destino, {
+            vendas: atual.vendas + 1,
+            valor: atual.valor + venda.valorTotal
+          });
+        });
+
+        // Converte para array e ordena por valor
+        const topDestinos = Array.from(destinosMap.entries())
+          .map(([destino, dados]) => ({
+            destino,
+            quantidadeVendas: dados.vendas,
+            valorTotal: db.centavosParaReais(dados.valor)
+          }))
+          .sort((a, b) => b.valorTotal - a.valorTotal)
+          .slice(0, input?.limit || 10);
+
+        return topDestinos;
+      }),
   }),
 });
 
