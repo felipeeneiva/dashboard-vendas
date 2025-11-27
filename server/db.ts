@@ -1,4 +1,4 @@
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, like } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, vendedores, metricas, atualizacoes, Vendedor, Metrica, InsertVendedor, InsertMetrica, InsertAtualizacao } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -289,4 +289,122 @@ export function percentualParaDecimal(percentual: number): number {
  */
 export function decimalParaPercentual(decimal: number): number {
   return Math.round(decimal * 100);
+}
+
+/**
+ * Salva dados de fornecedores no banco
+ */
+export async function salvarDadosFornecedores(
+  vendedorId: number,
+  mes: string,
+  fornecedores: Array<{
+    operadora: string;
+    operadoraNormalizada: string;
+    tarifa: number;
+    taxa: number;
+    duTebOver: number;
+    incentivo: number;
+    valorTotal: number;
+  }>
+): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot save fornecedores: database not available");
+    return;
+  }
+
+  try {
+    const { fornecedores: fornecedoresTable } = await import('../drizzle/schema');
+    
+    // Remove dados antigos deste vendedor/mês antes de inserir novos
+    await db.delete(fornecedoresTable).where(
+      eq(fornecedoresTable.vendedorId, vendedorId) && eq(fornecedoresTable.mes, mes)
+    );
+    
+    // Insere novos dados
+    for (const f of fornecedores) {
+      await db.insert(fornecedoresTable).values({
+        vendedorId,
+        mes,
+        operadora: f.operadora,
+        operadoraNormalizada: f.operadoraNormalizada,
+        tarifa: f.tarifa,
+        taxa: f.taxa,
+        duTebOver: f.duTebOver,
+        incentivo: f.incentivo,
+        valorTotal: f.valorTotal,
+        dataExtracao: new Date(),
+      });
+    }
+    
+    console.log(`[Database] Salvos ${fornecedores.length} fornecedores de ${mes} para vendedor ${vendedorId}`);
+  } catch (error) {
+    console.error("[Database] Failed to save fornecedores:", error);
+    throw error;
+  }
+}
+
+/**
+ * Consulta dados consolidados de fornecedores por mês
+ */
+export async function consultarFornecedoresPorMes(mes: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot query fornecedores: database not available");
+    return [];
+  }
+
+  try {
+    const { fornecedores: fornecedoresTable } = await import('../drizzle/schema');
+    
+    const result = await db
+      .select({
+        operadoraNormalizada: fornecedoresTable.operadoraNormalizada,
+        tarifa: fornecedoresTable.tarifa,
+        taxa: fornecedoresTable.taxa,
+        duTebOver: fornecedoresTable.duTebOver,
+        incentivo: fornecedoresTable.incentivo,
+        valorTotal: fornecedoresTable.valorTotal,
+      })
+      .from(fornecedoresTable)
+      .where(eq(fornecedoresTable.mes, mes));
+    
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to query fornecedores:", error);
+    return [];
+  }
+}
+
+/**
+ * Consulta dados consolidados de fornecedores por ano
+ */
+export async function consultarFornecedoresPorAno(ano: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot query fornecedores: database not available");
+    return [];
+  }
+
+  try {
+    const { fornecedores: fornecedoresTable } = await import('../drizzle/schema');
+    
+    const result = await db
+      .select({
+        operadoraNormalizada: fornecedoresTable.operadoraNormalizada,
+        mes: fornecedoresTable.mes,
+        tarifa: fornecedoresTable.tarifa,
+        taxa: fornecedoresTable.taxa,
+        duTebOver: fornecedoresTable.duTebOver,
+        incentivo: fornecedoresTable.incentivo,
+        valorTotal: fornecedoresTable.valorTotal,
+      })
+      .from(fornecedoresTable)
+      .where(like(fornecedoresTable.mes, `%/${ano}`));
+    
+    return result;
+  } catch (error) {
+    console.error("[Database] Failed to query fornecedores:", error);
+    return [];
+  }
 }

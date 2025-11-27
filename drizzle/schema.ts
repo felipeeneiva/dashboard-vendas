@@ -74,3 +74,28 @@ export const atualizacoes = mysqlTable("atualizacoes", {
 
 export type Atualizacao = typeof atualizacoes.$inferSelect;
 export type InsertAtualizacao = typeof atualizacoes.$inferInsert;
+
+/**
+ * Tabela de dados de fornecedores (operadoras) por vendedor e mês
+ */
+export const fornecedores = mysqlTable("fornecedores", {
+  id: int("id").autoincrement().primaryKey(),
+  vendedorId: int("vendedorId").notNull(),
+  mes: varchar("mes", { length: 20 }).notNull(), // Formato: "Janeiro/2025"
+  operadora: varchar("operadora", { length: 200 }).notNull(), // Nome da operadora
+  operadoraNormalizada: varchar("operadoraNormalizada", { length: 200 }).notNull(), // Nome normalizado para agrupamento
+  tarifa: int("tarifa").default(0).notNull(), // Em centavos
+  taxa: int("taxa").default(0).notNull(), // Em centavos
+  duTebOver: int("duTebOver").default(0).notNull(), // DU/TEB/OVER em centavos
+  incentivo: int("incentivo").default(0).notNull(), // Em centavos
+  valorTotal: int("valorTotal").default(0).notNull(), // Total da venda em centavos
+  dataExtracao: timestamp("dataExtracao").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  // Índice para consultas por operadora normalizada
+  operadoraNormalizadaIdx: uniqueIndex("operadoraNormalizada_idx").on(table.operadoraNormalizada, table.mes, table.vendedorId),
+}));
+
+export type Fornecedor = typeof fornecedores.$inferSelect;
+export type InsertFornecedor = typeof fornecedores.$inferInsert;

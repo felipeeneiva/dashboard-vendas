@@ -107,3 +107,13 @@
 - [x] Corrigir filtro para somar apenas Setembro/2025, Outubro/2025 e Novembro/2025
 - [x] Validar que cada vendedor tem apenas esses 3 meses somados
 - [x] Testar que o total geral está correto
+
+### Relatório de Fornecedores
+- [ ] Investigar estrutura das planilhas para identificar colunas OPERADORA, TARIFA, TAXA, DU/TEB/OVER, INCENTIVO
+- [x] Criar tabela no banco para armazenar dados de fornecedores por mês/ano
+- [x] Implementar normalização de nomes (FRT Operadora = frt operadora = FRT OPERADORA)
+- [x] Criar extração de dados de fornecedores das planilhas
+- [ ] Criar endpoints tRPC para consultar fornecedores (mensal e anual)
+- [ ] Desenvolver página de relatório com tabela consolidada
+- [ ] Adicionar filtros por fornecedor, mês e ano
+- [ ] Testar e validar valores TARIFA, TAXA, DU/TEB/OVER, INCENTIVO e VALOR TOTAL
