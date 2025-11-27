@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE fornecedores \nSET operadoraNormalizada = 'soul travel' \nWHERE operadoraNormalizada IN ('soul', 'soul traveler', 'soultraveler')",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute UPDATE fornecedores \nSET operadoraNormalizada = 'soul travel' \nWHERE operadoraNormalizada IN ('soul', 'soul traveler', 'soultraveler')",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 71
+}

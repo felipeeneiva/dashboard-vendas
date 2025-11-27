@@ -218,9 +218,33 @@ function normalizarNomeOperadora(nome: string): string {
 const ALIASES_OPERADORAS: Record<string, string> = {
   'frt': 'frt consolidadora',
   'frt operadora': 'frt consolidadora',
+  'frt op': 'frt consolidadora',
   'hero': 'hero seguro',
+  'hero seguros': 'hero seguro',
+  'heroseguros': 'hero seguro',
   'mundo pro': 'mundo pro viagens',
   'machu picchu': 'machu picchu time',
+  // Unificar variações de Soul Travel
+  'soul': 'soul travel',
+  'soul traveler': 'soul travel',
+  'soultraveler': 'soul travel',
+  // Unificar variações de Reserva Facil
+  'reservafacil': 'reserva facil',
+  // Unificar variações de Travel Global
+  'travelglobal': 'travel global',
+  // Unificar variações de Up Traslados
+  'up translado': 'up traslados',
+  // Unificar variações de Ancora
+  'ancora tur': 'ancora',
+  'ancoratur': 'ancora',
+  // Unificar variações de Brazuca
+  'brazuka': 'brazuca',
+  // Unificar variações de Abreu
+  'abreutur': 'abreu',
+  // Unificar variações de 12go
+  '12 go': '12go',
+  '12 go asia': '12goasia',
+  '12go asia': '12goasia',
 };
 
 /**

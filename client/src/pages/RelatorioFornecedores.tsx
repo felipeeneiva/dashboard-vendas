@@ -29,6 +29,7 @@ export default function RelatorioFornecedores() {
   const [tipoVisualizacao, setTipoVisualizacao] = useState<"mensal" | "anual">("anual");
   const [mesSelecionado, setMesSelecionado] = useState<string>("Novembro/2025");
   const [anoSelecionado, setAnoSelecionado] = useState<number>(2025);
+  const [ordenacao, setOrdenacao] = useState<"valorTotal" | "nome" | "quantidade">("valorTotal");
 
   // Query mensal
   const { data: dadosMensal, isLoading: loadingMensal } = trpc.fornecedores.porMes.useQuery(
@@ -42,8 +43,21 @@ export default function RelatorioFornecedores() {
     { enabled: tipoVisualizacao === "anual" }
   );
 
-  const dados = tipoVisualizacao === "mensal" ? dadosMensal : dadosAnual;
+  let dados = tipoVisualizacao === "mensal" ? dadosMensal : dadosAnual;
   const isLoading = tipoVisualizacao === "mensal" ? loadingMensal : loadingAnual;
+
+  // Aplicar ordenação
+  if (dados) {
+    dados = [...dados].sort((a, b) => {
+      if (ordenacao === "nome") {
+        return a.operadora.localeCompare(b.operadora);
+      } else if (ordenacao === "quantidade") {
+        return b.quantidade - a.quantidade;
+      } else {
+        return b.valorTotal - a.valorTotal;
+      }
+    });
+  }
 
   // Calcula totais
   const totais = dados?.reduce(
@@ -75,7 +89,7 @@ export default function RelatorioFornecedores() {
             <CardDescription>Selecione o período para análise</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label className="text-sm font-medium mb-2 block">Tipo de Visualização</label>
                 <Select
@@ -127,6 +141,20 @@ export default function RelatorioFornecedores() {
                   </Select>
                 </div>
               )}
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">Ordenar por</label>
+                <Select value={ordenacao} onValueChange={(value: any) => setOrdenacao(value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="valorTotal">Valor Total ↓</SelectItem>
+                    <SelectItem value="nome">Nome A-Z</SelectItem>
+                    <SelectItem value="quantidade">Número de Vendas ↓</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -179,3 +179,28 @@
 - [x] Adicionar botão "Monitoramento" que redireciona para /monitoramento
 - [x] Posicionar ao lado dos botões existentes (Análises, Metas Trimestral)
 - [x] Testar navegação (botões aparecendo corretamente no cabeçalho)
+
+
+### Investigação e Melhorias de Fornecedores
+- [x] Investigar diferença de valores entre Dashboard (R$ 2,7M) e Relatório de Fornecedores (R$ 2,0M) em Novembro/2025
+  - Dashboard mostra VENDAS TOTAIS (valor bruto)
+  - Fornecedores mostra CUSTOS COM FORNECEDORES (tarifa + taxa + du/teb/over + incentivo)
+  - Diferença representa margem de lucro, comissões e outros custos
+- [x] Adicionar ordenação por Nome (A-Z) no Relatório de Fornecedores
+- [x] Adicionar ordenação por Número de Vendas (maior primeiro) no Relatório de Fornecedores
+- [x] Adicionar dropdown de ordenação nos filtros
+- [x] Unificar variações de "Soul Travel" (soul travel, soultraveler, soul traveler, Soul)
+- [x] Unificar variações de "Hero Seguro" (hero seguro, hero seguros, heroseguros)
+- [x] Unificar variações de "Reserva Facil" (reserva facil, reservafacil)
+- [x] Unificar variações de "Travel Global" (travel global, travelglobal)
+- [x] Unificar variações de "Up Traslados" (up traslados, up translado)
+- [x] Unificar variações de "Ancora" (ancora, ancora tur, ancoratur)
+- [x] Unificar variações de "Brazuca" (brazuca, brazuka)
+- [x] Unificar variações de "Abreu" (abreu, abreutur)
+- [x] Unificar variações de "12go" (12go, 12 go, 12goasia, 12 go asia, 12go asia)
+- [x] Unificar variações de "FRT Consolidadora" (frt consolidadora, frt, frt operadora, frt op)
+- [x] Testar ordenações e validar totais
+- [x] Validar ordenação por Valor Total (padrão)
+- [x] Validar ordenação por Nome A-Z
+- [x] Validar ordenação por Número de Vendas
+- [x] Validar unificações de fornecedores (Soul Travel, Hero Seguro, etc.)
