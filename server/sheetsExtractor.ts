@@ -254,53 +254,56 @@ export async function extrairDadosFornecedores(
     const response = await axios.get(url, { timeout: 10000 });
     const html = response.data;
     
-    // Extrai JSON da resposta HTML
-    const match = html.match(/google\.visualization\.Query\.setResponse\((.*)\);/);
-    
-    if (!match || !match[1]) {
-      console.warn(`[Fornecedores] Não foi possível extrair dados de ${nomeAba}`);
-      return [];
-    }
-    
-    const jsonData = JSON.parse(match[1]);
-    
-    if (!jsonData.table || !jsonData.table.rows) {
-      console.warn(`[Fornecedores] Sem dados em ${nomeAba}`);
+    if (!html || html.length < 100) {
       return [];
     }
     
     const fornecedores: DadosFornecedor[] = [];
     
-    // Índices das colunas (baseado no mapeamento)
-    const COL_OPERADORA = 12; // M
-    const COL_TARIFA = 14; // O
-    const COL_TAXA = 15; // P
-    const COL_DU_TEB_OVER = 17; // R
-    const COL_INCENTIVO = 18; // S
-    const COL_VALOR_TOTAL = 19; // T
+    // Regex para extrair linhas da tabela HTML
+    const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/g;
+    const cellRegex = /<td[^>]*>([\s\S]*?)<\/td>/g;
     
-    // Processa cada linha (pula cabeçalho na linha 0 e linha 1)
-    for (let i = 2; i < jsonData.table.rows.length; i++) {
-      const row = jsonData.table.rows[i];
+    let rowMatch;
+    let rowIndex = 0;
+    
+    while ((rowMatch = rowRegex.exec(html)) !== null) {
+      rowIndex++;
       
-      if (!row.c || row.c.length === 0) {
-        continue; // Linha vazia
+      // Pula primeiras 2 linhas (cabeçalho)
+      if (rowIndex <= 2) {
+        continue;
       }
       
-      // Extrai operadora
-      const operadoraCell = row.c[COL_OPERADORA];
-      const operadora = operadoraCell?.v || operadoraCell?.f || '';
+      const rowHtml = rowMatch[1];
+      const cells: string[] = [];
+      
+      let cellMatch;
+      while ((cellMatch = cellRegex.exec(rowHtml)) !== null) {
+        // Remove tags HTML e pega texto
+        const cellText = cellMatch[1]
+          .replace(/<[^>]*>/g, '')
+          .replace(/&nbsp;/g, '')
+          .trim();
+        cells.push(cellText);
+      }
+      
+      // Verifica se tem colunas suficientes
+      if (cells.length < 20) {
+        continue;
+      }
+      
+      // Índices das colunas (baseado no mapeamento)
+      const operadora = cells[12]; // M
+      const tarifa = cells[14]; // O
+      const taxa = cells[15]; // P
+      const duTebOver = cells[17]; // R
+      const incentivo = cells[18]; // S
+      const valorTotal = cells[19]; // T
       
       if (!operadora || operadora.trim() === '') {
         continue; // Pula linhas sem operadora
       }
-      
-      // Extrai valores monetários
-      const tarifa = limparValorMonetario(row.c[COL_TARIFA]?.v || row.c[COL_TARIFA]?.f || '0');
-      const taxa = limparValorMonetario(row.c[COL_TAXA]?.v || row.c[COL_TAXA]?.f || '0');
-      const duTebOver = limparValorMonetario(row.c[COL_DU_TEB_OVER]?.v || row.c[COL_DU_TEB_OVER]?.f || '0');
-      const incentivo = limparValorMonetario(row.c[COL_INCENTIVO]?.v || row.c[COL_INCENTIVO]?.f || '0');
-      const valorTotal = limparValorMonetario(row.c[COL_VALOR_TOTAL]?.v || row.c[COL_VALOR_TOTAL]?.f || '0');
       
       // Normaliza nome da operadora
       const nomeNormalizado = normalizarNomeOperadora(operadora);
@@ -309,15 +312,17 @@ export async function extrairDadosFornecedores(
       fornecedores.push({
         operadora: operadora.trim(),
         operadoraNormalizada,
-        tarifa,
-        taxa,
-        duTebOver,
-        incentivo,
-        valorTotal,
+        tarifa: limparValorMonetario(tarifa),
+        taxa: limparValorMonetario(taxa),
+        duTebOver: limparValorMonetario(duTebOver),
+        incentivo: limparValorMonetario(incentivo),
+        valorTotal: limparValorMonetario(valorTotal),
       });
     }
     
-    console.log(`[Fornecedores] Extraídos ${fornecedores.length} registros de ${nomeAba}`);
+    if (fornecedores.length > 0) {
+      console.log(`[Fornecedores] Extraídos ${fornecedores.length} registros de ${nomeAba}`);
+    }
     return fornecedores;
     
   } catch (error: any) {

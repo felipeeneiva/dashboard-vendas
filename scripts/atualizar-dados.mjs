@@ -4,9 +4,9 @@
  */
 
 import { drizzle } from 'drizzle-orm/mysql2';
-import { eq } from 'drizzle-orm';
-import { vendedores, metricas } from '../drizzle/schema.ts';
-import { extrairDadosVendedor, gerarListaMeses } from '../server/sheetsExtractor.ts';
+import { eq, and } from 'drizzle-orm';
+import { vendedores, metricas, fornecedores } from '../drizzle/schema.ts';
+import { extrairDadosVendedor, extrairDadosFornecedores, gerarListaMeses } from '../server/sheetsExtractor.ts';
 
 // Conecta ao banco
 const db = drizzle(process.env.DATABASE_URL);
@@ -24,6 +24,7 @@ console.log(`📅 Buscando dados de ${meses.length} meses (2024-2025)\n`);
 let vendedoresAtualizados = 0;
 let totalRegistros = 0;
 let totalComDados = 0;
+let totalFornecedores = 0;
 
 for (const vendedor of todosVendedores) {
   try {
@@ -33,6 +34,8 @@ for (const vendedor of todosVendedores) {
     const resultados = await extrairDadosVendedor(vendedor.sheetId, meses);
     
     let mesesComDados = 0;
+    let fornecedoresDoVendedor = 0;
+    
     for (const resultado of resultados) {
       const metricasData = resultado.metricas;
       
@@ -60,11 +63,48 @@ for (const vendedor of todosVendedores) {
       if (metricasData?.encontrado) {
         mesesComDados++;
         totalComDados++;
+        
+        // Extrai dados de fornecedores deste mês
+        try {
+          const dadosFornecedores = await extrairDadosFornecedores(vendedor.sheetId, resultado.mes);
+          
+          if (dadosFornecedores.length > 0) {
+            // Remove dados antigos deste vendedor/mês
+            await db.delete(fornecedores)
+              .where(and(
+                eq(fornecedores.vendedorId, vendedor.id),
+                eq(fornecedores.mes, resultado.mes)
+              ));
+            
+            // Insere novos dados
+            for (const f of dadosFornecedores) {
+              await db.insert(fornecedores).values({
+                vendedorId: vendedor.id,
+                mes: resultado.mes,
+                operadora: f.operadora,
+                operadoraNormalizada: f.operadoraNormalizada,
+                tarifa: f.tarifa,
+                taxa: f.taxa,
+                duTebOver: f.duTebOver,
+                incentivo: f.incentivo,
+                valorTotal: f.valorTotal,
+                dataExtracao: new Date()
+              });
+              fornecedoresDoVendedor++;
+              totalFornecedores++;
+            }
+          }
+        } catch (errorFornecedor) {
+          console.warn(`   ⚠️  Erro ao extrair fornecedores de ${resultado.mes}:`, errorFornecedor.message);
+        }
       }
       totalRegistros++;
     }
     
     console.log(`   ✅ ${mesesComDados} meses com dados de ${meses.length} meses processados`);
+    if (fornecedoresDoVendedor > 0) {
+      console.log(`   📦 ${fornecedoresDoVendedor} registros de fornecedores salvos`);
+    }
     vendedoresAtualizados++;
     
   } catch (error) {
@@ -79,6 +119,7 @@ console.log(`✅ Vendedores atualizados: ${vendedoresAtualizados}/${todosVendedo
 console.log(`📝 Total de registros processados: ${totalRegistros}`);
 console.log(`📊 Registros com dados: ${totalComDados}`);
 console.log(`🔍 Registros sem dados: ${totalRegistros - totalComDados}`);
+console.log(`📦 Total de fornecedores salvos: ${totalFornecedores}`);
 console.log('='.repeat(60));
 console.log('\n✨ Atualização concluída!\n');
 

@@ -113,7 +113,11 @@
 - [x] Criar tabela no banco para armazenar dados de fornecedores por mês/ano
 - [x] Implementar normalização de nomes (FRT Operadora = frt operadora = FRT OPERADORA)
 - [x] Criar extração de dados de fornecedores das planilhas
-- [ ] Criar endpoints tRPC para consultar fornecedores (mensal e anual)
-- [ ] Desenvolver página de relatório com tabela consolidada
-- [ ] Adicionar filtros por fornecedor, mês e ano
-- [ ] Testar e validar valores TARIFA, TAXA, DU/TEB/OVER, INCENTIVO e VALOR TOTAL
+- [x] Criar endpoints tRPC para consultar fornecedores (mensal e anual)
+- [x] Desenvolver página de relatório com tabela consolidada
+- [x] Adicionar filtros por fornecedor, mês e ano
+- [x] Modificar script atualizar-dados.mjs para incluir extração de fornecedores
+- [x] Criar dashboard executivo com gráficos de top 10 fornecedores
+- [x] Adicionar gráfico de evolução mensal por operadora
+- [x] Criar comparativo de custos (TARIFA vs TAXA vs DU/TEB/OVER)
+- [x] Testar e validar valores TARIFA, TAXA, DU/TEB/OVER, INCENTIVO e VALOR TOTAL

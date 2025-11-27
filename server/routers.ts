@@ -593,6 +593,169 @@ export const appRouter = router({
       };
     }),
   }),
+
+  fornecedores: router({
+    // Consulta dados consolidados por mês
+    porMes: protectedProcedure
+      .input(z.object({ mes: z.string() }))
+      .query(async ({ input }) => {
+        const dados = await db.consultarFornecedoresPorMes(input.mes);
+        
+        // Agrupa por operadora normalizada
+        const consolidado = new Map<string, {
+          operadoraNormalizada: string;
+          tarifa: number;
+          taxa: number;
+          duTebOver: number;
+          incentivo: number;
+          valorTotal: number;
+          quantidade: number;
+        }>();
+        
+        for (const item of dados) {
+          if (!consolidado.has(item.operadoraNormalizada)) {
+            consolidado.set(item.operadoraNormalizada, {
+              operadoraNormalizada: item.operadoraNormalizada,
+              tarifa: 0,
+              taxa: 0,
+              duTebOver: 0,
+              incentivo: 0,
+              valorTotal: 0,
+              quantidade: 0
+            });
+          }
+          const atual = consolidado.get(item.operadoraNormalizada)!;
+          atual.tarifa += item.tarifa;
+          atual.taxa += item.taxa;
+          atual.duTebOver += item.duTebOver;
+          atual.incentivo += item.incentivo;
+          atual.valorTotal += item.valorTotal;
+          atual.quantidade++;
+        }
+        
+        // Converte para array e ordena por valor total
+        return Array.from(consolidado.values())
+          .map(f => ({
+            operadora: f.operadoraNormalizada,
+            tarifa: db.centavosParaReais(f.tarifa),
+            taxa: db.centavosParaReais(f.taxa),
+            duTebOver: db.centavosParaReais(f.duTebOver),
+            incentivo: db.centavosParaReais(f.incentivo),
+            valorTotal: db.centavosParaReais(f.valorTotal),
+            quantidade: f.quantidade
+          }))
+          .sort((a, b) => b.valorTotal - a.valorTotal);
+      }),
+
+    // Consulta dados consolidados por ano
+    porAno: protectedProcedure
+      .input(z.object({ ano: z.number() }))
+      .query(async ({ input }) => {
+        const dados = await db.consultarFornecedoresPorAno(input.ano);
+        
+        // Agrupa por operadora normalizada
+        const consolidado = new Map<string, {
+          operadoraNormalizada: string;
+          tarifa: number;
+          taxa: number;
+          duTebOver: number;
+          incentivo: number;
+          valorTotal: number;
+          quantidade: number;
+          meses: Set<string>;
+        }>();
+        
+        for (const item of dados) {
+          if (!consolidado.has(item.operadoraNormalizada)) {
+            consolidado.set(item.operadoraNormalizada, {
+              operadoraNormalizada: item.operadoraNormalizada,
+              tarifa: 0,
+              taxa: 0,
+              duTebOver: 0,
+              incentivo: 0,
+              valorTotal: 0,
+              quantidade: 0,
+              meses: new Set()
+            });
+          }
+          const atual = consolidado.get(item.operadoraNormalizada)!;
+          atual.tarifa += item.tarifa;
+          atual.taxa += item.taxa;
+          atual.duTebOver += item.duTebOver;
+          atual.incentivo += item.incentivo;
+          atual.valorTotal += item.valorTotal;
+          atual.quantidade++;
+          atual.meses.add(item.mes);
+        }
+        
+        // Converte para array e ordena por valor total
+        return Array.from(consolidado.values())
+          .map(f => ({
+            operadora: f.operadoraNormalizada,
+            tarifa: db.centavosParaReais(f.tarifa),
+            taxa: db.centavosParaReais(f.taxa),
+            duTebOver: db.centavosParaReais(f.duTebOver),
+            incentivo: db.centavosParaReais(f.incentivo),
+            valorTotal: db.centavosParaReais(f.valorTotal),
+            quantidade: f.quantidade,
+            mesesAtivos: f.meses.size
+          }))
+          .sort((a, b) => b.valorTotal - a.valorTotal);
+      }),
+
+    // Top 10 fornecedores por período
+    top10: protectedProcedure
+      .input(z.object({ ano: z.number() }))
+      .query(async ({ input }) => {
+        const dados = await db.consultarFornecedoresPorAno(input.ano);
+        
+        const consolidado = new Map<string, number>();
+        
+        for (const item of dados) {
+          const atual = consolidado.get(item.operadoraNormalizada) || 0;
+          consolidado.set(item.operadoraNormalizada, atual + item.valorTotal);
+        }
+        
+        return Array.from(consolidado.entries())
+          .map(([operadora, valorTotal]) => ({
+            operadora,
+            valorTotal: db.centavosParaReais(valorTotal)
+          }))
+          .sort((a, b) => b.valorTotal - a.valorTotal)
+          .slice(0, 10);
+      }),
+
+    // Evolução mensal de uma operadora
+    evolucaoMensal: protectedProcedure
+      .input(z.object({ 
+        operadora: z.string(),
+        ano: z.number()
+      }))
+      .query(async ({ input }) => {
+        const dados = await db.consultarFornecedoresPorAno(input.ano);
+        
+        const porMes = new Map<string, number>();
+        
+        for (const item of dados) {
+          if (item.operadoraNormalizada === input.operadora) {
+            const atual = porMes.get(item.mes) || 0;
+            porMes.set(item.mes, atual + item.valorTotal);
+          }
+        }
+        
+        return Array.from(porMes.entries())
+          .map(([mes, valorTotal]) => ({
+            mes,
+            valorTotal: db.centavosParaReais(valorTotal)
+          }))
+          .sort((a, b) => {
+            // Ordena por data (assumindo formato "Mês/Ano")
+            const [mesA, anoA] = a.mes.split('/');
+            const [mesB, anoB] = b.mes.split('/');
+            return anoA === anoB ? mesA.localeCompare(mesB) : anoA.localeCompare(anoB);
+          });
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
