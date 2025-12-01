@@ -119,3 +119,26 @@ export const vendasDiarias = mysqlTable("vendas_diarias", {
 
 export type VendaDiaria = typeof vendasDiarias.$inferSelect;
 export type InsertVendaDiaria = typeof vendasDiarias.$inferInsert;
+
+/**
+ * Tabela de metas trimestrais
+ * Suporta múltiplos trimestres por vendedor
+ */
+export const metasTrimestrais = mysqlTable("metas_trimestrais", {
+  id: int("id").autoincrement().primaryKey(),
+  vendedorId: int("vendedorId").notNull().references(() => vendedores.id),
+  trimestre: varchar("trimestre", { length: 50 }).notNull(), // Ex: "T3-2025" (Set-Out-Nov), "T4-2025" (Dez-Jan-Fev)
+  metaTrimestral: int("metaTrimestral").notNull(), // Meta em centavos
+  superMeta: int("superMeta").notNull(), // Super meta (+20%) em centavos
+  bonusMeta: int("bonusMeta").notNull(), // Bônus se atingir meta (1%) em centavos
+  bonusSuperMeta: int("bonusSuperMeta").notNull(), // Bônus se atingir super meta (1,1%) em centavos
+  metaAgencia: int("metaAgencia").default(0), // Meta geral da agência (0 = sem meta de agência)
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+}, (table) => ({
+  // Índice único: um vendedor não pode ter duas metas para o mesmo trimestre
+  uniqueVendedorTrimestre: uniqueIndex("unique_vendedor_trimestre").on(table.vendedorId, table.trimestre),
+}));
+
+export type MetaTrimestral = typeof metasTrimestrais.$inferSelect;
+export type InsertMetaTrimestral = typeof metasTrimestrais.$inferInsert;

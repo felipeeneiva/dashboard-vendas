@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE `metas_trimestrais` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`vendedorId` int NOT NULL,\n\t`trimestre` varchar(50) NOT NULL,\n\t`metaTrimestral` int NOT NULL,\n\t`superMeta` int NOT NULL,\n\t`bonusMeta` int NOT NULL,\n\t`bonusSuperMeta` int NOT NULL,\n\t`metaAgencia` int DEFAULT 0,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `metas_trimestrais_id` PRIMARY KEY(`id`),\n\tCONSTRAINT `unique_vendedor_trimestre` UNIQUE(`vendedorId`,`trimestre`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute CREATE TABLE `metas_trimestrais` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`vendedorId` int NOT NULL,\n\t`trimestre` varchar(50) NOT NULL,\n\t`metaTrimestral` int NOT NULL,\n\t`superMeta` int NOT NULL,\n\t`bonusMeta` int NOT NULL,\n\t`bonusSuperMeta` int NOT NULL,\n\t`metaAgencia` int DEFAULT 0,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `metas_trimestrais_id` PRIMARY KEY(`id`),\n\tCONSTRAINT `unique_vendedor_trimestre` UNIQUE(`vendedorId`,`trimestre`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 210
+}

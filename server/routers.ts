@@ -345,7 +345,10 @@ export const appRouter = router({
     // Atualiza dados de todos os vendedores
     atualizarTodos: protectedProcedure.mutation(async () => {
       const vendedores = await db.getAllVendedores();
-      const meses = gerarListaMeses();
+      // Atualiza apenas os últimos 2 meses (atual + anterior)
+      // Meses fechados não precisam ser reprocessados
+      const { gerarUltimosMeses } = await import('./sheetsExtractor');
+      const meses = gerarUltimosMeses(2);
       
       let vendedoresAtualizados = 0;
       let totalRegistros = 0;

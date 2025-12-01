@@ -175,6 +175,33 @@ export function gerarListaMeses(): string[] {
 }
 
 /**
+ * Gera lista apenas dos últimos N meses (padrão: 2)
+ * Usado para atualizações incrementais (apenas mês atual + anterior)
+ */
+export function gerarUltimosMeses(quantidade: number = 2): string[] {
+  const mesesNomes = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+  
+  const agora = new Date();
+  const mesAtual = agora.getMonth(); // 0-11
+  const anoAtual = agora.getFullYear();
+  
+  const meses: string[] = [];
+  
+  for (let i = 0; i < quantidade; i++) {
+    const dataAlvo = new Date(anoAtual, mesAtual - i, 1);
+    const mes = dataAlvo.getMonth();
+    const ano = dataAlvo.getFullYear();
+    
+    meses.push(`${mesesNomes[mes]}/${ano}`);
+  }
+  
+  return meses;
+}
+
+/**
  * Extrai dados de todos os meses de um vendedor
  */
 export async function extrairDadosVendedor(
@@ -208,286 +235,80 @@ function normalizarNomeOperadora(nome: string): string {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // Remove acentos
-    .replace(/\s+/g, ' ') // Remove espaços extras
+    .replace(/\s+/g, '_') // Substitui espaços por underscore
+    .replace(/[^a-z0-9_]/g, '') // Remove caracteres especiais
     .trim();
 }
 
 /**
- * Mapeia aliases comuns de operadoras para nomes padronizados
+ * Extrai dados de fornecedores (operadoras) de uma aba
  */
-const ALIASES_OPERADORAS: Record<string, string> = {
-  'frt': 'frt consolidadora',
-  'frt operadora': 'frt consolidadora',
-  'frt op': 'frt consolidadora',
-  'hero': 'hero seguro',
-  'hero seguros': 'hero seguro',
-  'heroseguros': 'hero seguro',
-  'mundo pro': 'mundo pro viagens',
-  'machu picchu': 'machu picchu time',
-  // Unificar variações de Soul Travel
-  'soul': 'soul travel',
-  'soul traveler': 'soul travel',
-  'soultraveler': 'soul travel',
-  // Unificar variações de Reserva Facil
-  'reservafacil': 'reserva facil',
-  // Unificar variações de Travel Global
-  'travelglobal': 'travel global',
-  // Unificar variações de Up Traslados
-  'up translado': 'up traslados',
-  // Unificar variações de Ancora
-  'ancora tur': 'ancora',
-  'ancoratur': 'ancora',
-  // Unificar variações de Brazuca
-  'brazuka': 'brazuca',
-  // Unificar variações de Abreu
-  'abreutur': 'abreu',
-  // Unificar variações de 12go
-  '12 go': '12go',
-  '12 go asia': '12goasia',
-  '12go asia': '12goasia',
-};
-
-/**
- * Aplica mapeamento de aliases para normalizar nomes
- */
-function aplicarAliases(nomeNormalizado: string): string {
-  return ALIASES_OPERADORAS[nomeNormalizado] || nomeNormalizado;
-}
-
-export interface DadosFornecedor {
-  operadora: string; // Nome original
-  operadoraNormalizada: string; // Nome normalizado para agrupamento
-  tarifa: number; // Em centavos
-  taxa: number; // Em centavos
-  duTebOver: number; // Em centavos
-  incentivo: number; // Em centavos
-  valorTotal: number; // Em centavos
-}
-
-/**
- * Extrai dados de fornecedores de uma aba da planilha
- * Retorna array com dados de cada linha (venda)
- */
-export async function extrairDadosFornecedores(
+export async function extrairFornecedoresAba(
   sheetId: string,
   nomeAba: string
-): Promise<DadosFornecedor[]> {
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:html&sheet=${encodeURIComponent(nomeAba)}`;
-  
+): Promise<Array<{
+  operadora: string;
+  operadoraNormalizada: string;
+  tarifa: number;
+  taxa: number;
+  duTebOver: number;
+  incentivo: number;
+  valorTotal: number;
+}>> {
   try {
-    const response = await axios.get(url, { timeout: 10000 });
-    const html = response.data;
+    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:html&sheet=${encodeURIComponent(nomeAba)}`;
     
-    if (!html || html.length < 100) {
+    const response = await axios.get(url, {
+      timeout: 15000,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+    
+    if (response.status !== 200) {
       return [];
     }
     
-    const fornecedores: DadosFornecedor[] = [];
+    const htmlContent = response.data;
     
-    // Regex para extrair linhas da tabela HTML
-    const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/g;
-    const cellRegex = /<td[^>]*>([\s\S]*?)<\/td>/g;
+    // Regex para extrair linhas de dados de fornecedores
+    // Formato esperado: Nome da Operadora | Tarifa | Taxa | DU/TEB/OVER | Incentivo | Total
+    const linhaRegex = /<tr[^>]*>.*?<td[^>]*>(.*?)<\/td>.*?<td[^>]*>R\$\s*([\d.,]+)<\/td>.*?<td[^>]*>R\$\s*([\d.,]+)<\/td>.*?<td[^>]*>R\$\s*([\d.,]+)<\/td>.*?<td[^>]*>R\$\s*([\d.,]+)<\/td>.*?<td[^>]*>R\$\s*([\d.,]+)<\/td>.*?<\/tr>/gi;
     
-    let rowMatch;
-    let rowIndex = 0;
+    const fornecedores: Array<{
+      operadora: string;
+      operadoraNormalizada: string;
+      tarifa: number;
+      taxa: number;
+      duTebOver: number;
+      incentivo: number;
+      valorTotal: number;
+    }> = [];
     
-    while ((rowMatch = rowRegex.exec(html)) !== null) {
-      rowIndex++;
+    let match;
+    while ((match = linhaRegex.exec(htmlContent)) !== null) {
+      const operadora = match[1].replace(/<[^>]+>/g, '').trim();
       
-      // Pula primeiras 2 linhas (cabeçalho)
-      if (rowIndex <= 2) {
+      // Ignora linhas de total ou vazias
+      if (!operadora || operadora.toLowerCase().includes('total') || operadora.length < 2) {
         continue;
       }
-      
-      const rowHtml = rowMatch[1];
-      const cells: string[] = [];
-      
-      let cellMatch;
-      while ((cellMatch = cellRegex.exec(rowHtml)) !== null) {
-        // Remove tags HTML e pega texto
-        const cellText = cellMatch[1]
-          .replace(/<[^>]*>/g, '')
-          .replace(/&nbsp;/g, '')
-          .trim();
-        cells.push(cellText);
-      }
-      
-      // Verifica se tem colunas suficientes
-      if (cells.length < 20) {
-        continue;
-      }
-      
-      // Índices das colunas (baseado no mapeamento)
-      const operadora = cells[12]; // M
-      const tarifa = cells[14]; // O
-      const taxa = cells[15]; // P
-      const duTebOver = cells[17]; // R
-      const incentivo = cells[18]; // S
-      const valorTotal = cells[19]; // T
-      
-      if (!operadora || operadora.trim() === '') {
-        continue; // Pula linhas sem operadora
-      }
-      
-      // Normaliza nome da operadora
-      const nomeNormalizado = normalizarNomeOperadora(operadora);
-      const operadoraNormalizada = aplicarAliases(nomeNormalizado);
       
       fornecedores.push({
-        operadora: operadora.trim(),
-        operadoraNormalizada,
-        tarifa: limparValorMonetario(tarifa),
-        taxa: limparValorMonetario(taxa),
-        duTebOver: limparValorMonetario(duTebOver),
-        incentivo: limparValorMonetario(incentivo),
-        valorTotal: limparValorMonetario(valorTotal),
+        operadora,
+        operadoraNormalizada: normalizarNomeOperadora(operadora),
+        tarifa: limparValorMonetario(match[2]),
+        taxa: limparValorMonetario(match[3]),
+        duTebOver: limparValorMonetario(match[4]),
+        incentivo: limparValorMonetario(match[5]),
+        valorTotal: limparValorMonetario(match[6])
       });
     }
     
-    if (fornecedores.length > 0) {
-      console.log(`[Fornecedores] Extraídos ${fornecedores.length} registros de ${nomeAba}`);
-    }
     return fornecedores;
     
-  } catch (error: any) {
-    console.error(`[Fornecedores] Erro ao extrair ${nomeAba}:`, error.message);
-    return [];
-  }
-}
-
-/**
- * Extrai dados de fornecedores de todas as abas (meses) de um vendedor
- */
-export async function extrairDadosFornecedoresVendedor(
-  sheetId: string,
-  meses?: string[]
-): Promise<Map<string, DadosFornecedor[]>> {
-  const mesesParaExtrair = meses || gerarListaMeses();
-  const dadosPorMes = new Map<string, DadosFornecedor[]>();
-  
-  for (const mes of mesesParaExtrair) {
-    const dados = await extrairDadosFornecedores(sheetId, mes);
-    dadosPorMes.set(mes, dados);
-    
-    // Pequeno delay para não sobrecarregar a API do Google
-    await new Promise(resolve => setTimeout(resolve, 500));
-  }
-  
-  return dadosPorMes;
-}
-
-export interface VendaDiariaExtraida {
-  dataVenda: Date; // Coluna H
-  nomePassageiros: string; // Coluna L - identifica venda única
-  valorTotal: number; // Em centavos (coluna T)
-  destino: string; // Coluna K
-}
-
-/**
- * Extrai vendas diárias de uma aba da planilha
- * Agrupa por nome de passageiros (coluna L) para identificar vendas únicas
- */
-export async function extrairVendasDiarias(
-  sheetId: string,
-  nomeAba: string
-): Promise<VendaDiariaExtraida[]> {
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:html&sheet=${encodeURIComponent(nomeAba)}`;
-  
-  try {
-    const response = await axios.get(url, { timeout: 10000 });
-    const html = response.data;
-    
-    if (!html || html.length < 100) {
-      return [];
-    }
-    
-    const vendasMap = new Map<string, VendaDiariaExtraida>();
-    
-    // Regex para extrair linhas da tabela HTML
-    const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/g;
-    const cellRegex = /<td[^>]*>([\s\S]*?)<\/td>/g;
-    
-    let rowMatch;
-    let rowIndex = 0;
-    
-    while ((rowMatch = rowRegex.exec(html)) !== null) {
-      rowIndex++;
-      
-      // Pula primeiras 2 linhas (cabeçalho)
-      if (rowIndex <= 2) {
-        continue;
-      }
-      
-      const rowHtml = rowMatch[1];
-      const cells: string[] = [];
-      
-      let cellMatch;
-      while ((cellMatch = cellRegex.exec(rowHtml)) !== null) {
-        // Remove tags HTML e pega texto
-        const cellText = cellMatch[1]
-          .replace(/<[^>]*>/g, '')
-          .replace(/&nbsp;/g, '')
-          .trim();
-        cells.push(cellText);
-      }
-      
-      // Verifica se tem colunas suficientes
-      if (cells.length < 20) {
-        continue;
-      }
-      
-      // Índices das colunas
-      const dataVendaStr = cells[7]; // H (índice 7)
-      const destino = cells[10]; // K (índice 10)
-      const nomePassageiros = cells[11]; // L (índice 11)
-      const valorTotalStr = cells[19]; // T (índice 19)
-      
-      if (!nomePassageiros || nomePassageiros.trim() === '' || nomePassageiros === 'comentário') {
-        continue; // Pula linhas sem nome de passageiros
-      }
-      
-      if (!dataVendaStr || dataVendaStr.trim() === '') {
-        continue; // Pula linhas sem data
-      }
-      
-      // Parse da data (formato DD/MM/YYYY)
-      const dataMatch = dataVendaStr.match(/(\d{2})\/(\d{2})\/(\d{4})/);
-      if (!dataMatch) {
-        continue; // Pula se não conseguir fazer parse da data
-      }
-      
-      const dia = parseInt(dataMatch[1]);
-      const mes = parseInt(dataMatch[2]) - 1; // JavaScript months são 0-indexed
-      const ano = parseInt(dataMatch[3]);
-      const dataVenda = new Date(ano, mes, dia);
-      
-      // Chave única: data + nome passageiros (para agrupar linhas da mesma venda)
-      const chave = `${dataVendaStr}_${nomePassageiros.toLowerCase().trim()}`;
-      
-      // Se já existe essa venda, soma o valor (múltiplas linhas da mesma venda)
-      if (vendasMap.has(chave)) {
-        const vendaExistente = vendasMap.get(chave)!;
-        vendaExistente.valorTotal += limparValorMonetario(valorTotalStr);
-      } else {
-        vendasMap.set(chave, {
-          dataVenda,
-          nomePassageiros: nomePassageiros.trim(),
-          valorTotal: limparValorMonetario(valorTotalStr),
-          destino: destino.trim(),
-        });
-      }
-    }
-    
-    const vendas = Array.from(vendasMap.values());
-    
-    if (vendas.length > 0) {
-      console.log(`[Vendas Diárias] Extraídas ${vendas.length} vendas únicas de ${nomeAba}`);
-    }
-    
-    return vendas;
-    
-  } catch (error: any) {
-    console.error(`[Vendas Diárias] Erro ao extrair ${nomeAba}:`, error.message);
+  } catch (error) {
+    console.error(`Erro ao extrair fornecedores da aba "${nomeAba}":`, error);
     return [];
   }
 }

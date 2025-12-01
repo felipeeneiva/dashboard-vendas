@@ -252,3 +252,15 @@
 - [x] Adicionar ranking de top destinos na página MeuPainel
 - [x] Adicionar estatísticas pessoais (ticket médio, melhor mês, crescimento)
 - [x] Testar com vendedores que só têm dados de 2025
+
+- [ ] Otimizar atualização para processar apenas últimos 2 meses (atual + anterior)
+- [ ] Corrigir timeout que causa erro JSON no botão "Atualizar Dados"
+- [ ] Testar atualização rápida após otimização
+
+### Novo Trimestre de Metas (Dez/2025-Fev/2026)
+- [x] Ler planilha editada com valores arredondados (bônus 1,1%)
+- [x] Criar estrutura no banco para suportar múltiplos trimestres
+- [x] Inserir metas do trimestre Dez/2025-Fev/2026 no banco
+- [ ] Adicionar filtro de trimestre no dashboard admin
+- [ ] Atualizar painel individual para mostrar metas do novo trimestre
+- [ ] Testar visualização de ambos os trimestres (Set-Out-Nov e Dez-Jan-Fev)
