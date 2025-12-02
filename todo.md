@@ -411,3 +411,16 @@
 - [x] Adicionar colunas "Bônus Meta" e "Bônus Super" na tabela
 - [x] Manter layout profissional e organizado com cores distintas
 - [x] Aplicar mesmas colunas nas metas anteriores (collapsible)
+
+
+### 🎯 Melhorias Dashboard Admin - Visualizações para Reuniões
+- [x] Clarificar card "Média % Receita" indicando "(Mês Atual)" no título
+- [x] Criar gráfico consolidado mostrando Vendas x Receita x % Receita mês a mês em 2025
+- [x] Implementar gráfico com 2 eixos Y (valores em R$ à esquerda, % à direita)
+- [x] Endpoint backend rankingPercentualReceita já existe e retorna dados de 2025
+- [x] Implementar tabela de ranking mostrando: Vendedor, Total Vendas, Total Receita, % Receita
+- [x] Ordenar ranking por % de receita (maior primeiro)
+- [x] Adicionar cores/badges indicando performance (Excelente/Melhor/Normal/Atenção)
+- [x] Adicionar medalhas de ouro/prata/bronze para top 3
+- [x] Posicionar visualizações estrategicamente no dashboard
+- [x] Testar com dados reais de 2025

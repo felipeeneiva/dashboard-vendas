@@ -5,7 +5,7 @@ import { trpc } from "@/lib/trpc";
 import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ComposedChart, Bar } from 'recharts';
 import { APP_TITLE } from "@/const";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
@@ -44,6 +44,7 @@ export default function Home() {
   const [percentualReceita, setPercentualReceita] = useState<any>(null);
   const [metasTrimestrais, setMetasTrimestrais] = useState<any>(null);
   const [evolucaoReceita, setEvolucaoReceita] = useState<any>(null);
+  const [rankingReceita, setRankingReceita] = useState<any>(null);
 
   useEffect(() => {
     // Buscar % de receita consolidada
@@ -66,6 +67,12 @@ export default function Home() {
       .then(res => res.json())
       .then(data => setEvolucaoReceita(data.result?.data?.json))
       .catch(err => console.error('Erro ao buscar evolução de % de receita:', err));
+
+    // Buscar ranking de % de receita por vendedor
+    fetch(`/api/trpc/vendedores.rankingPercentualReceita`)
+      .then(res => res.json())
+      .then(data => setRankingReceita(data.result?.data?.json))
+      .catch(err => console.error('Erro ao buscar ranking de % de receita:', err));
   }, []);
 
   // Mutation para limpar dados antigos
@@ -366,10 +373,10 @@ export default function Home() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
                   <Percent className="h-4 w-4" />
-                  Média % Receita {percentualReceita.mes.mesAno}
+                  Média % Receita {percentualReceita.mes.mesAno} (Mês Atual)
                 </CardTitle>
                 <CardDescription className="text-xs">
-                  Margem de lucro do mês (Receita ÷ Vendas)
+                  Margem de lucro do mês atual (Receita ÷ Vendas)
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -396,6 +403,176 @@ export default function Home() {
               </CardContent>
             </Card>
           </div>
+        )}
+
+        {/* Gráfico Consolidado: Vendas x Receita x % Receita */}
+        {evolucaoReceita && evolucaoReceita.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="h-5 w-5" />
+                Evolução Mensal: Vendas x Receita x % Receita (2025)
+              </CardTitle>
+              <CardDescription>
+                Visão consolidada da performance financeira da equipe ao longo do ano
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={400}>
+                <ComposedChart data={evolucaoReceita}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis 
+                    dataKey="mes" 
+                    stroke="#64748b"
+                    style={{ fontSize: '12px' }}
+                  />
+                  <YAxis 
+                    yAxisId="left"
+                    stroke="#64748b"
+                    style={{ fontSize: '12px' }}
+                    label={{ value: 'Valores (R$)', angle: -90, position: 'insideLeft', style: { fontSize: '12px' } }}
+                    tickFormatter={(value) => `R$ ${(value / 1000).toFixed(0)}k`}
+                  />
+                  <YAxis 
+                    yAxisId="right"
+                    orientation="right"
+                    stroke="#8b5cf6"
+                    style={{ fontSize: '12px' }}
+                    label={{ value: '% de Receita', angle: 90, position: 'insideRight', style: { fontSize: '12px' } }}
+                    domain={[0, 25]}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#fff', 
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '8px',
+                      padding: '12px'
+                    }}
+                    formatter={(value: any, name: string) => {
+                      if (name === 'Vendas' || name === 'Receita') {
+                        return [`R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, name];
+                      }
+                      if (name === '% de Receita') {
+                        return [`${Number(value).toFixed(2)}%`, name];
+                      }
+                      return [value, name];
+                    }}
+                  />
+                  <Legend />
+                  <Bar 
+                    yAxisId="left"
+                    dataKey="totalVendas" 
+                    fill="#3b82f6" 
+                    name="Vendas"
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar 
+                    yAxisId="left"
+                    dataKey="totalReceita" 
+                    fill="#10b981" 
+                    name="Receita"
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Line 
+                    yAxisId="right"
+                    type="monotone" 
+                    dataKey="percentual" 
+                    stroke="#8b5cf6" 
+                    strokeWidth={3}
+                    dot={{ fill: '#8b5cf6', r: 5 }}
+                    activeDot={{ r: 7 }}
+                    name="% de Receita"
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Ranking de % de Receita por Vendedor */}
+        {rankingReceita && rankingReceita.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Award className="h-5 w-5" />
+                Ranking de Performance por Vendedor (2025)
+              </CardTitle>
+              <CardDescription>
+                Classificação por % de receita - Ideal para apresentações e reuniões
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <th className="py-3 px-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Posição</th>
+                      <th className="py-3 px-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Vendedor</th>
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Total Vendas</th>
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Total Receita</th>
+                      <th className="py-3 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">% Receita</th>
+                      <th className="py-3 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Performance</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {rankingReceita.map((vendedor: any, index: number) => (
+                      <tr key={vendedor.vendedorId} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                        <td className="py-3 px-4">
+                          <div className="flex items-center justify-center w-10 h-10 rounded-full font-bold text-white text-sm" style={{
+                            background: index === 0 ? 'linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)' :
+                                       index === 1 ? 'linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%)' :
+                                       index === 2 ? 'linear-gradient(135deg, #cd7f32 0%, #e8a87c 100%)' :
+                                       'linear-gradient(135deg, #64748b 0%, #94a3b8 100%)',
+                            color: index <= 2 ? '#000' : '#fff'
+                          }}>
+                            {index + 1}
+                          </div>
+                        </td>
+                        <td className="py-3 px-4">
+                          <span className="font-medium text-slate-900 dark:text-slate-100">
+                            {vendedor.nome}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-right font-mono text-sm">
+                          R$ {vendedor.totalVendas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        </td>
+                        <td className="py-3 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
+                          R$ {vendedor.totalReceita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          <span className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                            {vendedor.percentual.toFixed(2)}%
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          {vendedor.percentual >= 17 && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                              🌟 Excelente
+                            </span>
+                          )}
+                          {vendedor.percentual >= 15 && vendedor.percentual < 17 && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                              ✅ Melhor
+                            </span>
+                          )}
+                          {vendedor.percentual >= 14 && vendedor.percentual < 15 && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                              🟡 Normal
+                            </span>
+                          )}
+                          {vendedor.percentual < 14 && (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+                              ⚠️ Atenção
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Gráfico de Evolução de % de Receita */}
