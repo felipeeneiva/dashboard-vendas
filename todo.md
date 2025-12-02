@@ -424,3 +424,10 @@
 - [x] Adicionar medalhas de ouro/prata/bronze para top 3
 - [x] Posicionar visualizações estrategicamente no dashboard
 - [x] Testar com dados reais de 2025
+
+
+### 🐛 Correção de Erro: metricas.resumoGeral não encontrado
+- [x] Investigar onde `metricas.resumoGeral` está sendo chamado no frontend
+- [x] Verificar que procedimento existe no backend dentro do router vendedores
+- [x] Corrigir chamada de `trpc.metricas.resumoGeral` para `trpc.vendedores.resumoGeral`
+- [x] Testar que dashboard funciona corretamente

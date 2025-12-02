@@ -33,7 +33,7 @@ export default function Home() {
   const [ordenacao, setOrdenacao] = useState<'receita' | 'vendas' | 'comissao' | 'nome'>('receita');
 
   // Busca resumo geral
-  const { data: resumo, isLoading, refetch } = trpc.metricas.resumoGeral.useQuery(
+  const { data: resumo, isLoading, refetch } = trpc.vendedores.resumoGeral.useQuery(
     anoFiltro || mesFiltro ? { ano: anoFiltro, mes: mesFiltro } : undefined
   );
 
@@ -701,7 +701,7 @@ export default function Home() {
                   </thead>
                   <tbody>
                     {resumo
-                      .sort((a, b) => {
+                      .sort((a: any, b: any) => {
                         switch (ordenacao) {
                           case 'receita':
                             return b.totais.receita - a.totais.receita;
@@ -715,7 +715,7 @@ export default function Home() {
                             return 0;
                         }
                       })
-                      .map((item, index) => (
+                      .map((item: any, index: number) => (
                         <tr
                           key={item.vendedor.id}
                           className="border-b hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
