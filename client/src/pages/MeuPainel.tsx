@@ -170,9 +170,6 @@ export default function MeuPainel() {
                   </span>
                 )}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                Receita / Vendas
-              </p>
             </CardContent>
           </Card>
 
@@ -217,9 +214,6 @@ export default function MeuPainel() {
                   </span>
                 )}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                Receita / Vendas
-              </p>
             </CardContent>
           </Card>
         </div>
