@@ -230,6 +230,166 @@ export const appRouter = router({
 
         return { success: true };
       }),
+
+    // Metas trimestrais de todos os vendedores (para dashboard admin)
+    metasTrimestraisAdmin: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      const metas = await db.getAllMetasTrimestrais();
+      
+      // Agrupa metas por trimestre
+      const metasPorTrimestre = new Map<string, any>();
+      
+      for (const meta of metas) {
+        if (!metasPorTrimestre.has(meta.trimestre)) {
+          metasPorTrimestre.set(meta.trimestre, {
+            trimestre: meta.trimestre,
+            metaAgencia: meta.metaAgencia || 0,
+            vendedores: []
+          });
+        }
+        
+        // Busca vendedor
+        const vendedor = vendedores.find(v => v.id === meta.vendedorId);
+        if (!vendedor) continue;
+        
+        // Determina meses do trimestre
+        let mesesTrimestre: string[] = [];
+        if (meta.trimestre === 'Meta Trimestral 1') {
+          mesesTrimestre = ['Dezembro/2024', 'Janeiro/2025', 'Fevereiro/2025'];
+        } else if (meta.trimestre === 'Meta Trimestral 4') {
+          mesesTrimestre = ['Setembro/2025', 'Outubro/2025', 'Novembro/2025'];
+        }
+        
+        // Busca vendas do trimestre
+        const metricas = await db.getMetricasByVendedor(vendedor.id);
+        const metricasTrimestre = metricas.filter(m => 
+          mesesTrimestre.includes(m.mes) && m.status === 'com_dados'
+        );
+        
+        const totalVendido = metricasTrimestre.reduce((sum, m) => sum + m.totalVendas, 0);
+        const falta = meta.metaTrimestral - totalVendido;
+        const percentual = meta.metaTrimestral > 0 ? ((totalVendido / meta.metaTrimestral) * 100).toFixed(2) : '0.00';
+        
+        metasPorTrimestre.get(meta.trimestre)!.vendedores.push({
+          vendedorId: vendedor.id,
+          vendedorNome: vendedor.nome,
+          meta: db.centavosParaReais(meta.metaTrimestral),
+          superMeta: db.centavosParaReais(meta.superMeta),
+          bonusMeta: db.centavosParaReais(meta.bonusMeta),
+          bonusSuperMeta: db.centavosParaReais(meta.bonusSuperMeta),
+          vendido: db.centavosParaReais(totalVendido),
+          falta: db.centavosParaReais(falta),
+          percentual
+        });
+      }
+      
+      // Calcula progresso da agência para cada trimestre
+      const resultado = [];
+      for (const [trimestre, dados] of Array.from(metasPorTrimestre.entries())) {
+        const totalVendidoEquipe = dados.vendedores.reduce((sum: number, v: any) => {
+          return sum + (v.vendido * 100); // Converte de volta para centavos
+        }, 0);
+        
+        const faltaEquipe = dados.metaAgencia - totalVendidoEquipe;
+        const percentualEquipe = dados.metaAgencia > 0 
+          ? ((totalVendidoEquipe / dados.metaAgencia) * 100).toFixed(2)
+          : '0.00';
+        
+        resultado.push({
+          trimestre,
+          metaAgencia: db.centavosParaReais(dados.metaAgencia),
+          vendidoEquipe: db.centavosParaReais(totalVendidoEquipe),
+          faltaEquipe: db.centavosParaReais(faltaEquipe),
+          percentualEquipe,
+          vendedores: dados.vendedores.sort((a: any, b: any) => parseFloat(b.percentual) - parseFloat(a.percentual))
+        });
+      }
+      
+      // Ordena por trimestre (mais recente primeiro)
+      return resultado.sort((a, b) => {
+        const ordem = ['Meta Trimestral 1', 'Meta Trimestral 4'];
+        return ordem.indexOf(a.trimestre) - ordem.indexOf(b.trimestre);
+      });
+    }),
+
+    // Percentual de receita consolidado (ano e mês atual)
+    percentualReceitaConsolidado: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      
+      // Calcula % de receita do ano
+      let totalVendasAno = 0;
+      let totalReceitaAno = 0;
+      
+      // Calcula % de receita do mês atual (Dezembro/2025)
+      let totalVendasMes = 0;
+      let totalReceitaMes = 0;
+      const mesAtual = 'Dezembro/2025';
+      
+      for (const vendedor of vendedores) {
+        const metricas = await db.getMetricasByVendedor(vendedor.id);
+        const metricas2025 = metricas.filter(m => m.mes.endsWith('/2025') && m.status === 'com_dados');
+        
+        totalVendasAno += metricas2025.reduce((sum, m) => sum + m.totalVendas, 0);
+        totalReceitaAno += metricas2025.reduce((sum, m) => sum + m.totalReceita, 0);
+        
+        const metricaMes = metricas.find(m => m.mes === mesAtual && m.status === 'com_dados');
+        if (metricaMes) {
+          totalVendasMes += metricaMes.totalVendas;
+          totalReceitaMes += metricaMes.totalReceita;
+        }
+      }
+      
+      const percentualAno = totalVendasAno > 0 
+        ? parseFloat(((totalReceitaAno / totalVendasAno) * 100).toFixed(2))
+        : 0;
+      
+      const percentualMes = totalVendasMes > 0
+        ? parseFloat(((totalReceitaMes / totalVendasMes) * 100).toFixed(2))
+        : 0;
+      
+      return {
+        ano: {
+          totalVendas: db.centavosParaReais(totalVendasAno),
+          totalReceita: db.centavosParaReais(totalReceitaAno),
+          percentual: percentualAno
+        },
+        mes: {
+          mesNome: mesAtual,
+          totalVendas: db.centavosParaReais(totalVendasMes),
+          totalReceita: db.centavosParaReais(totalReceitaMes),
+          percentual: percentualMes
+        }
+      };
+    }),
+
+    // Ranking de vendedores por melhor % de receita
+    rankingPercentualReceita: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      const ranking = [];
+      
+      for (const vendedor of vendedores) {
+        const metricas = await db.getMetricasByVendedor(vendedor.id);
+        const metricas2025 = metricas.filter(m => m.mes.endsWith('/2025') && m.status === 'com_dados');
+        
+        const totalVendas = metricas2025.reduce((sum, m) => sum + m.totalVendas, 0);
+        const totalReceita = metricas2025.reduce((sum, m) => sum + m.totalReceita, 0);
+        
+        const percentual = totalVendas > 0
+          ? parseFloat(((totalReceita / totalVendas) * 100).toFixed(2))
+          : 0;
+        
+        ranking.push({
+          vendedorId: vendedor.id,
+          vendedorNome: vendedor.nome,
+          totalVendas: db.centavosParaReais(totalVendas),
+          totalReceita: db.centavosParaReais(totalReceita),
+          percentual
+        });
+      }
+      
+      // Ordena por percentual (maior primeiro)
+      return ranking.sort((a, b) => b.percentual - a.percentual);
+    })
   }),
 
   metricas: router({
