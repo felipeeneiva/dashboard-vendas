@@ -453,3 +453,9 @@
 - [x] Adaptar lógica para contexto administrativo (consolidação de todos vendedores)
 - [x] Manter consistência visual entre painéis (cores, layout, tipografia)
 - [x] Criar teste unitário para endpoint comparativoMesAtualAnterior (5/5 testes passando)
+
+
+### 🔧 Correção de Títulos e Textos dos Cards
+- [x] Títulos dos cards principais já estavam corretos (Total de Vendas / Total de Receita / Total de Comissões)
+- [x] Remover texto "(Receita ÷ Vendas)" do card de % Média % Receita (Mês Atual)
+- [x] Manter apenas "Margem de lucro do mês atual" na descrição

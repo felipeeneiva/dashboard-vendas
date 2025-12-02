@@ -384,7 +384,7 @@ export default function Home() {
                   Média % Receita {percentualReceita.mes.mesAno} (Mês Atual)
                 </CardTitle>
                 <CardDescription className="text-xs">
-                  Margem de lucro do mês atual (Receita ÷ Vendas)
+                  Margem de lucro do mês atual
                 </CardDescription>
               </CardHeader>
               <CardContent>
