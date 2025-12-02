@@ -273,3 +273,9 @@
 - [x] Adicionar dropdown de metas anteriores no painel individual
 - [ ] Atualizar dashboard admin com meta atual
 - [x] Testar visualização no painel individual (5 testes passando)
+
+### Ajuste de Textos - Metas Trimestrais
+- [x] Remover "(1%)" e "(1,1%)" dos labels de bônus
+- [x] Remover "(+20%)" do label Super Meta
+- [x] Alterar texto para "🎯 Atinja 100% da meta e ganhe R$ X"
+- [x] Alterar texto para "🚀 Atinja sua super meta e ganhe + R$ X"

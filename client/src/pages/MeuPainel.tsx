@@ -342,19 +342,19 @@ export default function MeuPainel() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Super Meta (+20%)</p>
+                    <p className="text-sm text-muted-foreground">Super Meta</p>
                     <p className="text-xl font-bold text-purple-600">
                       R$ {minhasMetas[0].superMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Bônus Meta (1%)</p>
+                    <p className="text-sm text-muted-foreground">Bônus Meta</p>
                     <p className="text-xl font-bold text-green-600">
                       R$ {minhasMetas[0].bonusMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Bônus Super (1,1%)</p>
+                    <p className="text-sm text-muted-foreground">Bônus Super Meta</p>
                     <p className="text-xl font-bold text-orange-600">
                       R$ {minhasMetas[0].bonusSuperMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
@@ -366,7 +366,7 @@ export default function MeuPainel() {
                     🎯 Atinja 100% da meta e ganhe <span className="font-bold">R$ {minhasMetas[0].bonusMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                   </p>
                   <p className="text-sm font-medium text-blue-900 dark:text-blue-100 mt-1">
-                    🚀 Atinja 120% (super meta) e ganhe <span className="font-bold">R$ {minhasMetas[0].bonusSuperMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    🚀 Atinja sua super meta e ganhe + <span className="font-bold">R$ {(minhasMetas[0].bonusSuperMeta - minhasMetas[0].bonusMeta).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                   </p>
                 </div>
               </CardContent>
