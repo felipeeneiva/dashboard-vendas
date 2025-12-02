@@ -38,8 +38,13 @@ export default function Home() {
   // Busca últimas atualizações
   const { data: atualizacoes } = trpc.atualizacoes.ultimas.useQuery({ limit: 5 });
 
-  // TODO: Adicionar query de % de receita consolidada
+  // Busca % de receita consolidada (PROBLEMA TÉCNICO: TypeScript não reconhece endpoint)
   // const { data: percentualReceita } = trpc.vendedores.percentualReceitaConsolidado.useQuery();
+  const percentualReceita = undefined;
+
+  // Busca metas trimestrais de todos os vendedores (PROBLEMA TÉCNICO: TypeScript não reconhece endpoint)
+  // const { data: metasTrimestrais } = trpc.vendedores.metasTrimestraisAdmin.useQuery();
+  const metasTrimestrais = undefined;
 
   // Mutation para limpar dados antigos
   const limparDados = trpc.metricas.limparDadosAntigos.useMutation({

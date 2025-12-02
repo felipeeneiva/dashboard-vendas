@@ -347,3 +347,19 @@
 - [ ] Corrigir ordenação do endpoint metasTrimestraisAdmin para mostrar Meta Trimestral 1 (Dez/Jan/Fev) em primeiro
 - [ ] Meta Trimestral 4 (Set/Out/Nov) deve aparecer em "Ver Metas Anteriores"
 - [ ] Testar que meta atual exibida é sempre a mais recente
+
+### 🎨 Dashboard Admin - Interface Visual Completa
+- [ ] Adicionar cards de Média % Receita Ano e Mês Atual no topo do Home.tsx
+- [ ] Implementar seção "Meta Trimestral Atual" com tabela de progresso de vendedores
+- [ ] Adicionar progresso da meta da agência (R$ 10M) na seção de metas
+- [ ] Implementar badges coloridos de alerta (vermelho <50%, amarelo 50-80%, verde >80%)
+- [ ] Adicionar dropdown "Ver Metas Anteriores" para acessar trimestres passados
+- [ ] Otimizar função atualizarTodos para buscar apenas mês atual (Dezembro/2025)
+- [ ] Testar dashboard administrativo com Felipe/Andrios
+
+### 🔧 Problema Técnico - TypeScript Cache
+- [x] Endpoints criados e testados (3/3 testes passando)
+- [x] TypeScript do cliente não reconhece novos endpoints (problema de cache persistente)
+- [x] Queries comentadas temporariamente até resolver cache do TypeScript
+- [x] Documentação completa criada em PROBLEMA_TECNICO.md
+- [ ] Resolver problema de cache (requer reinicialização completa do ambiente ou uso de fetch direto)
