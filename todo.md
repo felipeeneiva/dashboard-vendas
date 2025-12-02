@@ -323,3 +323,7 @@
 - [x] Adicionar linha laranja de % de receita no gráfico
 - [x] Configurar eixo direito para % (separado do eixo de R$)
 - [x] Testar visualização com dados do Felipe (pico de ~20% em junho/2025)
+
+### 🎨 Ajuste de Layout - Reordenar Seções do Painel
+- [x] Mover seção de Meta Trimestral para depois da Evolução Mensal
+- [x] Testar nova ordem das seções (Meta Trimestral agora aparece antes do Comparativo)

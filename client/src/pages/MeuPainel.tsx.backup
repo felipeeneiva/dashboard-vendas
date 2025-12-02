@@ -268,6 +268,111 @@ export default function MeuPainel() {
           </CardContent>
         </Card>
 
+        {/* Comparativo 2024 vs 2025 */}
+        {comparativo && comparativo.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-green-600" />
+                Comparativo 2024 vs 2025
+              </CardTitle>
+              <CardDescription>
+                Veja como suas vendas evoluíram ano a ano
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loadingComparativo ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="h-8 w-8 animate-spin" />
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b">
+                        <th className="text-left p-2">Mês</th>
+                        <th className="text-right p-2">Vendas 2024</th>
+                        <th className="text-right p-2">Vendas 2025</th>
+                        <th className="text-right p-2">Variação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {comparativo.map((item) => {
+                        const variacao = parseFloat(item.variacaoVendas);
+                        const corVariacao = variacao > 0 ? 'text-green-600' : variacao < 0 ? 'text-red-600' : 'text-gray-600';
+                        const iconeVariacao = variacao > 0 ? <TrendingUp className="h-4 w-4 inline" /> : variacao < 0 ? <TrendingDown className="h-4 w-4 inline" /> : null;
+                        
+                        return (
+                          <tr key={item.mes} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <td className="p-2 font-medium">{item.mes}</td>
+                            <td className="p-2 text-right">
+                              {item.temDados2024 ? `R$ ${item.vendas2024.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '-'}
+                            </td>
+                            <td className="p-2 text-right">
+                              {item.temDados2025 ? `R$ ${item.vendas2025.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '-'}
+                            </td>
+                            <td className={`p-2 text-right font-medium ${corVariacao}`}>
+                              {item.temDados2024 && item.temDados2025 ? (
+                                <span className="flex items-center justify-end gap-1">
+                                  {iconeVariacao}
+                                  {variacao > 0 ? '+' : ''}{variacao.toFixed(1)}%
+                                </span>
+                              ) : '-'}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Top Destinos */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="h-5 w-5 text-purple-600" />
+              Top 10 Destinos Mais Vendidos
+            </CardTitle>
+            <CardDescription>
+              Seus destinos com maior volume de vendas
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {loadingDestinos ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin" />
+              </div>
+            ) : topDestinos && topDestinos.length > 0 ? (
+              <div className="space-y-3">
+                {topDestinos.map((destino, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 font-bold">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <p className="font-medium">{destino.destino}</p>
+                        <p className="text-sm text-muted-foreground">{destino.quantidadeVendas} vendas</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-purple-600">
+                        R$ {destino.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-muted-foreground py-8">Nenhum destino registrado</p>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Metas Trimestrais */}
         {minhasMetas && minhasMetas.length > 0 && (
           <div className="space-y-4">
@@ -509,113 +614,6 @@ export default function MeuPainel() {
             )}
           </div>
         )}
-
-
-        {/* Comparativo 2024 vs 2025 */}
-        {comparativo && comparativo.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-green-600" />
-                Comparativo 2024 vs 2025
-              </CardTitle>
-              <CardDescription>
-                Veja como suas vendas evoluíram ano a ano
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {loadingComparativo ? (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="h-8 w-8 animate-spin" />
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left p-2">Mês</th>
-                        <th className="text-right p-2">Vendas 2024</th>
-                        <th className="text-right p-2">Vendas 2025</th>
-                        <th className="text-right p-2">Variação</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {comparativo.map((item) => {
-                        const variacao = parseFloat(item.variacaoVendas);
-                        const corVariacao = variacao > 0 ? 'text-green-600' : variacao < 0 ? 'text-red-600' : 'text-gray-600';
-                        const iconeVariacao = variacao > 0 ? <TrendingUp className="h-4 w-4 inline" /> : variacao < 0 ? <TrendingDown className="h-4 w-4 inline" /> : null;
-                        
-                        return (
-                          <tr key={item.mes} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <td className="p-2 font-medium">{item.mes}</td>
-                            <td className="p-2 text-right">
-                              {item.temDados2024 ? `R$ ${item.vendas2024.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '-'}
-                            </td>
-                            <td className="p-2 text-right">
-                              {item.temDados2025 ? `R$ ${item.vendas2025.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '-'}
-                            </td>
-                            <td className={`p-2 text-right font-medium ${corVariacao}`}>
-                              {item.temDados2024 && item.temDados2025 ? (
-                                <span className="flex items-center justify-end gap-1">
-                                  {iconeVariacao}
-                                  {variacao > 0 ? '+' : ''}{variacao.toFixed(1)}%
-                                </span>
-                              ) : '-'}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Top Destinos */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MapPin className="h-5 w-5 text-purple-600" />
-              Top 10 Destinos Mais Vendidos
-            </CardTitle>
-            <CardDescription>
-              Seus destinos com maior volume de vendas
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {loadingDestinos ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-8 w-8 animate-spin" />
-              </div>
-            ) : topDestinos && topDestinos.length > 0 ? (
-              <div className="space-y-3">
-                {topDestinos.map((destino, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 font-bold">
-                        {index + 1}
-                      </div>
-                      <div>
-                        <p className="font-medium">{destino.destino}</p>
-                        <p className="text-sm text-muted-foreground">{destino.quantidadeVendas} vendas</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-purple-600">
-                        R$ {destino.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-center text-muted-foreground py-8">Nenhum destino registrado</p>
-            )}
-          </CardContent>
-        </Card>
-
       </div>
     </div>
   );
