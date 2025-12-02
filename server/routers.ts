@@ -670,6 +670,106 @@ export const appRouter = router({
         };
       }),
     
+    // Comparativo 2024 vs 2025 consolidado (todos vendedores)
+    comparativo2024vs2025: publicProcedure
+      .query(async () => {
+        const vendedores = await db.getAllVendedores();
+        const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        
+        const comparativo = [];
+        
+        for (const mesNome of meses) {
+          let totalVendas2024 = 0;
+          let totalVendas2025 = 0;
+          let totalReceita2024 = 0;
+          let totalReceita2025 = 0;
+          let temDados2024 = false;
+          let temDados2025 = false;
+          
+          for (const vendedor of vendedores) {
+            const metricas = await db.getMetricasByVendedor(vendedor.id);
+            const metrica2024 = metricas.find(m => m.mes === `${mesNome}/2024` && m.status === 'com_dados');
+            const metrica2025 = metricas.find(m => m.mes === `${mesNome}/2025` && m.status === 'com_dados');
+            
+            if (metrica2024) {
+              totalVendas2024 += metrica2024.totalVendas;
+              totalReceita2024 += metrica2024.totalReceita;
+              temDados2024 = true;
+            }
+            if (metrica2025) {
+              totalVendas2025 += metrica2025.totalVendas;
+              totalReceita2025 += metrica2025.totalReceita;
+              temDados2025 = true;
+            }
+          }
+          
+          // Só adiciona meses com dados
+          if (temDados2024 || temDados2025) {
+            let variacaoVendas = 0;
+            let variacaoReceita = 0;
+            if (totalVendas2024 > 0) {
+              variacaoVendas = ((totalVendas2025 - totalVendas2024) / totalVendas2024) * 100;
+            }
+            if (totalReceita2024 > 0) {
+              variacaoReceita = ((totalReceita2025 - totalReceita2024) / totalReceita2024) * 100;
+            }
+            
+            comparativo.push({
+              mes: mesNome,
+              vendas2024: db.centavosParaReais(totalVendas2024),
+              vendas2025: db.centavosParaReais(totalVendas2025),
+              receita2024: db.centavosParaReais(totalReceita2024),
+              receita2025: db.centavosParaReais(totalReceita2025),
+              variacaoVendas: variacaoVendas.toFixed(2),
+              variacaoReceita: variacaoReceita.toFixed(2),
+              temDados2024,
+              temDados2025
+            });
+          }
+        }
+        
+        return comparativo;
+      }),
+    
+    // Top destinos consolidado (todos vendedores)
+    topDestinosConsolidado: publicProcedure
+      .input(z.object({ limit: z.number().default(10) }).optional())
+      .query(async ({ input }) => {
+        const vendedores = await db.getAllVendedores();
+        const destinosMap = new Map<string, { valorTotal: number, quantidade: number }>();
+        
+        for (const vendedor of vendedores) {
+          const metricas = await db.getMetricasByVendedor(vendedor.id);
+          const metricasComDados = metricas.filter(m => m.status === 'com_dados');
+          
+          for (const metrica of metricasComDados) {
+            if (metrica.destinos && Array.isArray(metrica.destinos)) {
+              for (const destino of metrica.destinos) {
+                const destinoNome = destino.nome || 'Desconhecido';
+                const destinoValor = destino.valor || 0;
+                
+                const atual = destinosMap.get(destinoNome) || { valorTotal: 0, quantidade: 0 };
+                destinosMap.set(destinoNome, {
+                  valorTotal: atual.valorTotal + destinoValor,
+                  quantidade: atual.quantidade + 1
+                });
+              }
+            }
+          }
+        }
+        
+        const topDestinos = Array.from(destinosMap.entries())
+          .map(([nome, dados]) => ({
+            destino: nome,
+            valorTotal: db.centavosParaReais(dados.valorTotal),
+            quantidade: dados.quantidade
+          }))
+          .sort((a, b) => b.valorTotal - a.valorTotal)
+          .slice(0, input?.limit || 10);
+        
+        return topDestinos;
+      }),
+    
     // Evolução mensal do % de receita consolidado
     evolucaoPercentualReceita: publicProcedure
       .input(z.object({ ano: z.number().default(2025) }))

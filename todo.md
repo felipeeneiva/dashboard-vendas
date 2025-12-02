@@ -468,3 +468,16 @@
 - [x] Gráfico unificado mostra 3 métricas: barras Vendas (azul), barras Receita (verde), linha % (roxa)
 - [x] Testar que gráfico exibe dados corretamente com filtro 2025
 - [x] Filtro de período funcionando (2024/2025/Todos)
+
+
+### 🔍 Replicação do Painel Individual no Dashboard Admin
+- [x] Ler código de MeuPainel.tsx para identificar visualizações
+- [x] Comparar estrutura de MeuPainel.tsx com Home.tsx (dashboard admin)
+- [x] Identificar componentes/seções faltantes: Comparativo 2024 vs 2025 e Top Destinos
+- [x] Criar endpoint backend comparativo2024vs2025 (consolidado de todos vendedores)
+- [x] Criar endpoint backend topDestinosConsolidado (top 10 destinos de todos vendedores)
+- [x] Implementar gráfico Comparativo 2024 vs 2025 no dashboard admin
+- [x] Implementar tabela Top 10 Destinos no dashboard admin
+- [x] Garantir que dashboard admin mostra dados consolidados de todos vendedores
+- [x] Corrigir gráfico duplicado (removido "Evolução Mensal da Margem de Lucro", mantido apenas gráfico consolidado)
+- [x] Criar testes unitários para comparativo2024vs2025 e topDestinosConsolidado (7/7 testes passando)

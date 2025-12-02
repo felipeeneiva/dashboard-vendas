@@ -114,4 +114,51 @@ describe('Endpoints Dashboard Admin', () => {
       expect(primeiroMes.mesCompleto).toContain('/2025');
     }
   });
+
+  it('deve retornar comparativo 2024 vs 2025 consolidado', async () => {
+    const resultado = await caller.vendedores.comparativo2024vs2025();
+    
+    expect(resultado).toBeDefined();
+    expect(Array.isArray(resultado)).toBe(true);
+    
+    if (resultado.length > 0) {
+      const primeiroMes = resultado[0];
+      expect(primeiroMes).toHaveProperty('mes');
+      expect(primeiroMes).toHaveProperty('vendas2024');
+      expect(primeiroMes).toHaveProperty('vendas2025');
+      expect(primeiroMes).toHaveProperty('receita2024');
+      expect(primeiroMes).toHaveProperty('receita2025');
+      expect(primeiroMes).toHaveProperty('variacaoVendas');
+      expect(primeiroMes).toHaveProperty('variacaoReceita');
+      
+      // Valores devem ser números
+      expect(typeof primeiroMes.vendas2024).toBe('number');
+      expect(typeof primeiroMes.vendas2025).toBe('number');
+      expect(typeof primeiroMes.receita2024).toBe('number');
+      expect(typeof primeiroMes.receita2025).toBe('number');
+    }
+  });
+
+  it('deve retornar top 10 destinos consolidado', async () => {
+    const resultado = await caller.vendedores.topDestinosConsolidado({ limit: 10 });
+    
+    expect(resultado).toBeDefined();
+    expect(Array.isArray(resultado)).toBe(true);
+    
+    if (resultado.length > 0) {
+      const primeiroDestino = resultado[0];
+      expect(primeiroDestino).toHaveProperty('destino');
+      expect(primeiroDestino).toHaveProperty('valorTotal');
+      expect(primeiroDestino).toHaveProperty('quantidade');
+      
+      // Valores devem ser números positivos
+      expect(primeiroDestino.valorTotal).toBeGreaterThan(0);
+      expect(primeiroDestino.quantidade).toBeGreaterThan(0);
+      
+      // Verifica que está ordenado por valor (maior primeiro)
+      if (resultado.length > 1) {
+        expect(resultado[0].valorTotal).toBeGreaterThanOrEqual(resultado[1].valorTotal);
+      }
+    }
+  });
 });

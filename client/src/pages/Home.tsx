@@ -5,7 +5,7 @@ import { trpc } from "@/lib/trpc";
 import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar, ArrowUp, ArrowDown } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ComposedChart, Bar } from 'recharts';
+import { LineChart, Line, BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ComposedChart, Bar } from 'recharts';
 import { APP_TITLE } from "@/const";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
@@ -46,6 +46,8 @@ export default function Home() {
   const [evolucaoReceita, setEvolucaoReceita] = useState<any>(null);
   const [rankingReceita, setRankingReceita] = useState<any>(null);
   const [comparativo, setComparativo] = useState<any>(null);
+  const [comparativo2024vs2025, setComparativo2024vs2025] = useState<any>(null);
+  const [topDestinos, setTopDestinos] = useState<any>(null);
   const [anoGrafico, setAnoGrafico] = useState<'2024' | '2025' | 'todos'>('2025');
 
   useEffect(() => {
@@ -81,6 +83,19 @@ export default function Home() {
       .then(res => res.json())
       .then(data => setComparativo(data.result?.data?.json))
       .catch(err => console.error('Erro ao buscar comparativo mensal:', err));
+
+    // Buscar comparativo 2024 vs 2025
+    fetch(`/api/trpc/vendedores.comparativo2024vs2025`)
+      .then(res => res.json())
+      .then(data => setComparativo2024vs2025(data.result?.data?.json))
+      .catch(err => console.error('Erro ao buscar comparativo 2024 vs 2025:', err));
+
+    // Buscar top destinos consolidado
+    const inputTopDestinos = encodeURIComponent(JSON.stringify({ json: { limit: 10 } }));
+    fetch(`/api/trpc/vendedores.topDestinosConsolidado?input=${inputTopDestinos}`)
+      .then(res => res.json())
+      .then(data => setTopDestinos(data.result?.data?.json))
+      .catch(err => console.error('Erro ao buscar top destinos:', err));
   }, []);
 
   // Mutation para limpar dados antigos
@@ -715,6 +730,105 @@ export default function Home() {
                               ⚠️ Atenção
                             </span>
                           )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Comparativo 2024 vs 2025 */}
+        {comparativo2024vs2025 && comparativo2024vs2025.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-green-600" />
+                Comparativo 2024 vs 2025
+              </CardTitle>
+              <CardDescription>
+                Evolução consolidada de Vendas e Receita entre os anos
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={comparativo2024vs2025}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-slate-200 dark:stroke-slate-700" />
+                  <XAxis 
+                    dataKey="mes" 
+                    className="text-xs"
+                    tick={{ fill: 'currentColor' }}
+                  />
+                  <YAxis 
+                    className="text-xs"
+                    tick={{ fill: 'currentColor' }}
+                    tickFormatter={(value) => `R$ ${(value / 1000).toFixed(0)}k`}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '8px'
+                    }}
+                    formatter={(value: any) => `R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                  />
+                  <Legend />
+                  <Bar dataKey="vendas2024" name="Vendas 2024" fill="#3b82f6" />
+                  <Bar dataKey="vendas2025" name="Vendas 2025" fill="#8b5cf6" />
+                  <Bar dataKey="receita2024" name="Receita 2024" fill="#10b981" />
+                  <Bar dataKey="receita2025" name="Receita 2025" fill="#f59e0b" />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Top 10 Destinos Mais Vendidos */}
+        {topDestinos && topDestinos.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5 text-purple-600" />
+                Top 10 Destinos Mais Vendidos
+              </CardTitle>
+              <CardDescription>
+                Ranking consolidado dos destinos mais populares de toda a equipe
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <th className="py-3 px-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">#</th>
+                      <th className="py-3 px-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Destino</th>
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Valor Total</th>
+                      <th className="py-3 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Quantidade</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {topDestinos.map((destino: any, index: number) => (
+                      <tr key={index} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                        <td className="py-3 px-4">
+                          <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ${
+                            index === 0 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                            index === 1 ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200' :
+                            index === 2 ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' :
+                            'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                          }`}>
+                            {index + 1}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 font-medium">{destino.destino}</td>
+                        <td className="py-3 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
+                          R$ {Number(destino.valorTotal).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            {destino.quantidade} vendas
+                          </span>
                         </td>
                       </tr>
                     ))}
