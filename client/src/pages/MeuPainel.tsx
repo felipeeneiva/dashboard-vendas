@@ -239,13 +239,18 @@ export default function MeuPainel() {
                 <LineChart data={evolucao}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="mes" angle={-45} textAnchor="end" height={100} />
-                  <YAxis />
+                  <YAxis yAxisId="left" />
+                  <YAxis yAxisId="right" orientation="right" />
                   <Tooltip 
-                    formatter={(value: number) => `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                    formatter={(value: number, name: string) => {
+                      if (name === '% Receita') return `${value.toFixed(2)}%`;
+                      return `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                    }}
                   />
                   <Legend />
-                  <Line type="monotone" dataKey="vendas" stroke="#2563eb" name="Vendas" strokeWidth={2} />
-                  <Line type="monotone" dataKey="receita" stroke="#16a34a" name="Receita" strokeWidth={2} />
+                  <Line yAxisId="left" type="monotone" dataKey="vendas" stroke="#2563eb" name="Vendas" strokeWidth={2} />
+                  <Line yAxisId="left" type="monotone" dataKey="receita" stroke="#16a34a" name="Receita" strokeWidth={2} />
+                  <Line yAxisId="right" type="monotone" dataKey="percentualReceita" stroke="#ea580c" name="% Receita" strokeWidth={2} />
                 </LineChart>
               </ResponsiveContainer>
             ) : (

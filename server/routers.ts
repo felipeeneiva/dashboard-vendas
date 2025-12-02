@@ -1038,11 +1038,16 @@ export const appRouter = router({
             const [mesNome, ano] = m.mes.split('/');
             const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
             const mesNumero = meses.indexOf(mesNome) + 1;
+            const vendas = db.centavosParaReais(m.totalVendas);
+            const receita = db.centavosParaReais(m.totalReceita);
+            const percentualReceita = vendas > 0 ? parseFloat(((receita / vendas) * 100).toFixed(2)) : 0;
+            
             return {
               mes: m.mes,
-              vendas: db.centavosParaReais(m.totalVendas),
-              receita: db.centavosParaReais(m.totalReceita),
+              vendas,
+              receita,
               comissao: db.centavosParaReais(m.comissaoTotal),
+              percentualReceita,
               ano: parseInt(ano),
               mesNumero,
               ordenacao: parseInt(ano) * 100 + mesNumero

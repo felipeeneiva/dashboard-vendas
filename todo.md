@@ -317,3 +317,9 @@
 - [x] Implementar classificação de qualidade (14% normal, 15-16% melhor, 17%+ excelente)
 - [x] Adicionar indicadores visuais (cores/badges) para mostrar qualidade
 - [x] Testar com dados do Danilo (17,93% ano = Excelente, 16,73% novembro = Melhor)
+
+### 📊 Nova Feature - % de Receita no Gráfico de Evolução Mensal
+- [x] Modificar endpoint evolucaoMensal para incluir % de receita por mês
+- [x] Adicionar linha laranja de % de receita no gráfico
+- [x] Configurar eixo direito para % (separado do eixo de R$)
+- [x] Testar visualização com dados do Felipe (pico de ~20% em junho/2025)
