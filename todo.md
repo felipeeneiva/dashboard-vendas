@@ -459,3 +459,12 @@
 - [x] Títulos dos cards principais já estavam corretos (Total de Vendas / Total de Receita / Total de Comissões)
 - [x] Remover texto "(Receita ÷ Vendas)" do card de % Média % Receita (Mês Atual)
 - [x] Manter apenas "Margem de lucro do mês atual" na descrição
+
+
+### 🐛 Correção: Gráfico Evolução Mensal Vazio e Unificação
+- [x] Corrigir filtro do gráfico para usar `item.mesCompleto` ao invés de `item.mes`
+- [x] Remover gráfico duplicado "Evolução Mensal da Margem de Lucro (% de Receita)"
+- [x] Manter apenas gráfico consolidado "Evolução Mensal: Vendas x Receita x % Receita"
+- [x] Gráfico unificado mostra 3 métricas: barras Vendas (azul), barras Receita (verde), linha % (roxa)
+- [x] Testar que gráfico exibe dados corretamente com filtro 2025
+- [x] Filtro de período funcionando (2024/2025/Todos)
