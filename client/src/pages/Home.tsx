@@ -2,8 +2,9 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target } from 'lucide-react';
+import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { APP_TITLE } from "@/const";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
@@ -38,13 +39,25 @@ export default function Home() {
   // Busca últimas atualizações
   const { data: atualizacoes } = trpc.atualizacoes.ultimas.useQuery({ limit: 5 });
 
-  // Busca % de receita consolidada (PROBLEMA TÉCNICO: TypeScript não reconhece endpoint)
-  // const { data: percentualReceita } = trpc.vendedores.percentualReceitaConsolidado.useQuery();
-  const percentualReceita = undefined;
+  // Busca % de receita consolidada (usando fetch direto para contornar problema de cache do TypeScript)
+  const [percentualReceita, setPercentualReceita] = useState<any>(null);
+  const [metasTrimestrais, setMetasTrimestrais] = useState<any>(null);
 
-  // Busca metas trimestrais de todos os vendedores (PROBLEMA TÉCNICO: TypeScript não reconhece endpoint)
-  // const { data: metasTrimestrais } = trpc.vendedores.metasTrimestraisAdmin.useQuery();
-  const metasTrimestrais = undefined;
+  useEffect(() => {
+    // Buscar % de receita consolidada
+    const inputReceita = encodeURIComponent(JSON.stringify({ json: { ano: 2025 } }));
+    fetch(`/api/trpc/vendedores.percentualReceitaConsolidado?input=${inputReceita}`)
+      .then(res => res.json())
+      .then(data => setPercentualReceita(data.result?.data?.json))
+      .catch(err => console.error('Erro ao buscar % de receita:', err));
+
+    // Buscar metas trimestrais
+    const inputMetas = encodeURIComponent(JSON.stringify({ json: { ano: 2025 } }));
+    fetch(`/api/trpc/vendedores.metasTrimestraisAdmin?input=${inputMetas}`)
+      .then(res => res.json())
+      .then(data => setMetasTrimestrais(data.result?.data?.json))
+      .catch(err => console.error('Erro ao buscar metas trimestrais:', err));
+  }, []);
 
   // Mutation para limpar dados antigos
   const limparDados = trpc.metricas.limparDadosAntigos.useMutation({
@@ -306,6 +319,73 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* Cards de % de Receita */}
+        {percentualReceita && percentualReceita.ano && percentualReceita.mes && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <Card className="border-l-4 border-l-orange-500">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                  <Percent className="h-4 w-4" />
+                  Média % Receita Ano 2025
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+                    {percentualReceita.ano.percentual.toFixed(2)}%
+                  </div>
+                  {percentualReceita.ano.percentual >= 17 && (
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      Excelente
+                    </span>
+                  )}
+                  {percentualReceita.ano.percentual >= 15 && percentualReceita.ano.percentual < 17 && (
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                      Melhor
+                    </span>
+                  )}
+                  {percentualReceita.ano.percentual >= 14 && percentualReceita.ano.percentual < 15 && (
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                      Normal
+                    </span>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-l-4 border-l-pink-500">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                  <Percent className="h-4 w-4" />
+                  Média % Receita {percentualReceita.mes.mesAno}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+                    {percentualReceita.mes.percentual.toFixed(2)}%
+                  </div>
+                  {percentualReceita.mes.percentual >= 17 && (
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      Excelente
+                    </span>
+                  )}
+                  {percentualReceita.mes.percentual >= 15 && percentualReceita.mes.percentual < 17 && (
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                      Melhor
+                    </span>
+                  )}
+                  {percentualReceita.mes.percentual >= 14 && percentualReceita.mes.percentual < 15 && (
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                      Normal
+                    </span>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Tabela de Vendedores */}
         <Card>
           <CardHeader>
@@ -410,6 +490,235 @@ export default function Home() {
             )}
           </CardContent>
         </Card>
+
+        {/* Meta Trimestral Atual */}
+        {metasTrimestrais && metasTrimestrais.length > 0 && (
+          <Card className="mt-8">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5" />
+                    {metasTrimestrais[0].trimestre}
+                  </CardTitle>
+                  <CardDescription>
+                    Progresso das metas trimestrais de cada vendedor
+                  </CardDescription>
+                </div>
+                {metasTrimestrais.length > 1 && (
+                  <Collapsible>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <Calendar className="h-4 w-4" />
+                        Ver Metas Anteriores ({metasTrimestrais.length - 1})
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-4">
+                      <div className="space-y-6">
+                        {metasTrimestrais.slice(1).map((meta: any, idx: number) => (
+                          <div key={idx} className="border-t border-slate-200 dark:border-slate-700 pt-6">
+                            <h3 className="text-lg font-semibold mb-4">{meta.trimestre}</h3>
+                            {/* Progresso da Meta da Agência (Anterior) */}
+                            <div className="mb-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                              <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Meta da Agência</h4>
+                              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+                                <div>
+                                  <p className="text-xs text-slate-600 dark:text-slate-400">Meta</p>
+                                  <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                                    R$ {((meta.metaAgencia || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p className="text-xs text-slate-600 dark:text-slate-400">Vendido</p>
+                                  <p className="text-lg font-bold text-green-600 dark:text-green-400">
+                                    R$ {((meta.progressoEquipe?.totalVendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p className="text-xs text-slate-600 dark:text-slate-400">Falta</p>
+                                  <p className="text-lg font-bold text-orange-600 dark:text-orange-400">
+                                    R$ {((meta.progressoEquipe?.totalFalta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p className="text-xs text-slate-600 dark:text-slate-400">Progresso</p>
+                                  <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                                    {(meta.progressoEquipe?.percentual || 0).toFixed(2)}%
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3">
+                                <div
+                                  className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500"
+                                  style={{ width: `${Math.min(meta.progressoEquipe?.percentual || 0, 100)}%` }}
+                                />
+                              </div>
+                            </div>
+                            {/* Top 5 Vendedores (Anterior) */}
+                            <div className="overflow-x-auto">
+                              <table className="w-full">
+                                <thead>
+                                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                                    <th className="py-2 px-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400">Vendedor</th>
+                                    <th className="py-2 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">Meta</th>
+                                    <th className="py-2 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">Vendido</th>
+                                    <th className="py-2 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400">%</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                                  {meta.vendedores
+                                    .sort((a: any, b: any) => b.percentual - a.percentual)
+                                    .slice(0, 5)
+                                    .map((vendedor: any, index: number) => (
+                                      <tr key={vendedor.vendedorId} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                        <td className="py-2 px-4 text-sm font-medium">{vendedor.nome}</td>
+                                        <td className="py-2 px-4 text-right font-mono text-sm">
+                                          R$ {((vendedor.meta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                        </td>
+                                        <td className="py-2 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
+                                          R$ {((vendedor.vendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                        </td>
+                                        <td className="py-2 px-4 text-center">
+                                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                                            vendedor.percentual >= 80
+                                              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                                              : vendedor.percentual >= 50
+                                              ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                                              : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                                          }`}>
+                                            {(Number(vendedor.percentual) || 0).toFixed(2)}%
+                                          </span>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent>
+              {/* Progresso da Meta da Agência */}
+              <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 border border-blue-200 dark:border-blue-800">
+                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Meta da Agência</h3>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">Meta</p>
+                    <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                      R$ {((metasTrimestrais[0].metaAgencia || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">Vendido</p>
+                    <p className="text-lg font-bold text-green-600 dark:text-green-400">
+                      R$ {((metasTrimestrais[0].progressoEquipe?.totalVendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">Falta</p>
+                    <p className="text-lg font-bold text-orange-600 dark:text-orange-400">
+                      R$ {((metasTrimestrais[0].progressoEquipe?.totalFalta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">Progresso</p>
+                    <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                      {(metasTrimestrais[0].progressoEquipe?.percentual || 0).toFixed(2)}%
+                    </p>
+                  </div>
+                </div>
+                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3">
+                  <div
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500"
+                    style={{ width: `${Math.min(metasTrimestrais[0].progressoEquipe?.percentual || 0, 100)}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Tabela de Progresso por Vendedor */}
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <th className="py-3 px-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Vendedor</th>
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Meta</th>
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Vendido</th>
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Falta</th>
+                      <th className="py-3 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Progresso</th>
+                      <th className="py-3 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {metasTrimestrais[0].vendedores
+                      .sort((a: any, b: any) => b.percentual - a.percentual)
+                      .map((vendedor: any, index: number) => (
+                        <tr key={vendedor.vendedorId} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold text-sm">
+                                {index + 1}
+                              </div>
+                              <span className="font-medium text-slate-900 dark:text-slate-100">
+                                {vendedor.nome}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-right font-mono text-sm">
+                            R$ {((vendedor.meta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          </td>
+                          <td className="py-3 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
+                            R$ {((vendedor.vendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          </td>
+                          <td className="py-3 px-4 text-right font-mono text-sm text-orange-600 dark:text-orange-400">
+                            R$ {((vendedor.falta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="flex flex-col items-center gap-1">
+                              <span className="text-sm font-semibold">{(Number(vendedor.percentual) || 0).toFixed(2)}%</span>
+                              <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                                <div
+                                  className={`h-2 rounded-full transition-all duration-500 ${
+                                    vendedor.percentual >= 80
+                                      ? 'bg-green-500'
+                                      : vendedor.percentual >= 50
+                                      ? 'bg-yellow-500'
+                                      : 'bg-red-500'
+                                  }`}
+                                  style={{ width: `${Math.min(vendedor.percentual, 100)}%` }}
+                                />
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-center">
+                            {vendedor.percentual >= 80 && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                No caminho
+                              </span>
+                            )}
+                            {vendedor.percentual >= 50 && vendedor.percentual < 80 && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                                Atenção
+                              </span>
+                            )}
+                            {vendedor.percentual < 50 && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                Em risco
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Últimas Atualizações */}
         {atualizacoes && atualizacoes.length > 0 && (

@@ -29,13 +29,28 @@ function gerarListaMeses(): string[] {
   return lista;
 }
 
+// Gera lista apenas com o mês atual (para atualizações incrementais)
+function gerarMesAtual(): string[] {
+  const meses = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+  
+  const agora = new Date();
+  const mesAtual = meses[agora.getMonth()];
+  const anoAtual = agora.getFullYear();
+  
+  return [`${mesAtual}/${anoAtual}`];
+}
+
 // Função para atualizar dados de todos os vendedores
 async function atualizarTodosOsDados() {
-  console.log('[Scheduler] Iniciando atualização automática...');
+  console.log('[Scheduler] Iniciando atualização automática (apenas mês atual)...');
   
   try {
     const vendedores = await db.getAllVendedores();
-    const meses = gerarListaMeses();
+    // Otimização: buscar apenas mês atual ao invés de todos os meses
+    const meses = gerarMesAtual();
     
     let vendedoresAtualizados = 0;
     let totalRegistros = 0;
