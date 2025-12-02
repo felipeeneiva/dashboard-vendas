@@ -146,45 +146,79 @@ export default function MeuPainel() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Receita</CardTitle>
-              <DollarSign className="h-4 w-4 text-green-600" />
+              <CardTitle className="text-sm font-medium">Média % Ano</CardTitle>
+              <Percent className="h-4 w-4 text-green-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">
-                R$ {totais.receita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold text-green-600">
+                  {totais.percentualReceita}%
+                </div>
+                {parseFloat(totais.percentualReceita) >= 17 && (
+                  <span className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded-full font-medium">
+                    Excelente
+                  </span>
+                )}
+                {parseFloat(totais.percentualReceita) >= 15 && parseFloat(totais.percentualReceita) < 17 && (
+                  <span className="text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded-full font-medium">
+                    Melhor
+                  </span>
+                )}
+                {parseFloat(totais.percentualReceita) >= 14 && parseFloat(totais.percentualReceita) < 15 && (
+                  <span className="text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-2 py-1 rounded-full font-medium">
+                    Normal
+                  </span>
+                )}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Ano {anoSelecionado}
+                Receita / Vendas
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Comissões</CardTitle>
-              <Percent className="h-4 w-4 text-purple-600" />
+              <CardTitle className="text-sm font-medium">Total do Mês Atual</CardTitle>
+              <DollarSign className="h-4 w-4 text-purple-600" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-purple-600">
-                R$ {totais.comissao.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                R$ {data.mesAtual.vendas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Ano {anoSelecionado}
+                {data.mesAtual.mes}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Média Mensal</CardTitle>
+              <CardTitle className="text-sm font-medium">Média % Mês Atual</CardTitle>
               <Award className="h-4 w-4 text-orange-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-orange-600">
-                R$ {ticketMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold text-orange-600">
+                  {data.mesAtual.percentualReceita}%
+                </div>
+                {parseFloat(data.mesAtual.percentualReceita) >= 17 && (
+                  <span className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded-full font-medium">
+                    Excelente
+                  </span>
+                )}
+                {parseFloat(data.mesAtual.percentualReceita) >= 15 && parseFloat(data.mesAtual.percentualReceita) < 17 && (
+                  <span className="text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded-full font-medium">
+                    Melhor
+                  </span>
+                )}
+                {parseFloat(data.mesAtual.percentualReceita) >= 14 && parseFloat(data.mesAtual.percentualReceita) < 15 && (
+                  <span className="text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-2 py-1 rounded-full font-medium">
+                    Normal
+                  </span>
+                )}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Vendas por mês ativo
+                Receita / Vendas
               </p>
             </CardContent>
           </Card>

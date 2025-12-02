@@ -963,6 +963,23 @@ export const appRouter = router({
         
         const metaGeralEquipe = 1000000000; // R$ 10 milhões em centavos
         
+        // Calcula % de receita do ano
+        const percentualReceitaAno = totalVendas > 0 
+          ? ((totalReceita / totalVendas) * 100).toFixed(2)
+          : '0.00';
+        
+        // Busca dados do mês atual
+        const dataAtual = new Date();
+        const mesAtual = dataAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+        const mesAtualFormatado = mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1); // Ex: "Dezembro/2025"
+        
+        const metricaMesAtual = metricas.find(m => m.mes === mesAtualFormatado && m.status === 'com_dados');
+        const vendasMesAtual = metricaMesAtual ? metricaMesAtual.totalVendas : 0;
+        const receitaMesAtual = metricaMesAtual ? metricaMesAtual.totalReceita : 0;
+        const percentualReceitaMes = vendasMesAtual > 0
+          ? ((receitaMesAtual / vendasMesAtual) * 100).toFixed(2)
+          : '0.00';
+        
         return {
           vendedor: {
             id: vendedor.id,
@@ -973,7 +990,14 @@ export const appRouter = router({
           totais: {
             vendas: db.centavosParaReais(totalVendas),
             receita: db.centavosParaReais(totalReceita),
-            comissao: db.centavosParaReais(totalComissao)
+            comissao: db.centavosParaReais(totalComissao),
+            percentualReceita: percentualReceitaAno
+          },
+          mesAtual: {
+            mes: mesAtualFormatado,
+            vendas: db.centavosParaReais(vendasMesAtual),
+            receita: db.centavosParaReais(receitaMesAtual),
+            percentualReceita: percentualReceitaMes
           },
           metaTrimestralIndividual: {
             meta: db.centavosParaReais(vendedor.metaTrimestral || 0),

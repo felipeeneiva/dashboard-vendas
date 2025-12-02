@@ -308,3 +308,12 @@
 - [x] Exibir Meta/Vendido/Falta da agência com barra de progresso
 - [x] Testar com Danilo (Meta: R$ 800k, Vendido: R$ 660k, Progresso: 82,61%)
 - [x] Validar progresso da equipe (Meta: R$ 10M, Vendido: R$ 6,68M, Progresso: 66,80%)
+
+### 🎯 Nova Feature - Indicadores de % de Receita
+- [x] Modificar cards superiores do painel individual
+- [x] Adicionar card "Média % Ano" (receita/vendas do ano)
+- [x] Adicionar card "Total do Mês Atual" (vendas do mês atual)
+- [x] Adicionar card "Média % Mês Atual" (receita/vendas do mês)
+- [x] Implementar classificação de qualidade (14% normal, 15-16% melhor, 17%+ excelente)
+- [x] Adicionar indicadores visuais (cores/badges) para mostrar qualidade
+- [x] Testar com dados do Danilo (17,93% ano = Excelente, 16,73% novembro = Melhor)
