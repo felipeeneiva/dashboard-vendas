@@ -264,3 +264,12 @@
 - [ ] Adicionar filtro de trimestre no dashboard admin
 - [ ] Atualizar painel individual para mostrar metas do novo trimestre
 - [ ] Testar visualização de ambos os trimestres (Set-Out-Nov e Dez-Jan-Fev)
+
+### Implementação de Visualização de Metas Trimestrais
+- [x] Atualizar nomenclatura das metas no banco (T4-2025 → Meta Trimestral 1, etc.)
+- [x] Migrar meta antiga (Set-Out-Nov) para tabela metas_trimestrais como Meta Trimestral 4
+- [x] Criar endpoints tRPC para buscar meta atual e histórico
+- [x] Atualizar painel individual (/meu-painel) com meta atual em destaque
+- [x] Adicionar dropdown de metas anteriores no painel individual
+- [ ] Atualizar dashboard admin com meta atual
+- [x] Testar visualização no painel individual (5 testes passando)

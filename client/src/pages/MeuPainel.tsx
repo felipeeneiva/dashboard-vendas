@@ -26,6 +26,10 @@ export default function MeuPainel() {
     { limit: 10 },
     { enabled: isAuthenticated }
   );
+  
+  const { data: minhasMetas, isLoading: loadingMetas } = trpc.painelVendedor.minhasMetas.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
 
   // Mostrar loading enquanto verifica autenticação
   if (authLoading || isLoading) {
@@ -315,91 +319,119 @@ export default function MeuPainel() {
           </CardContent>
         </Card>
 
-        {/* Meta Trimestral Individual */}
-        <Card className="border-2 border-blue-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="h-5 w-5 text-blue-600" />
-              Sua Meta Trimestral (Set-Out-Nov/2025)
-            </CardTitle>
-            <CardDescription>
-              Acompanhe seu progresso em relação à meta do trimestre
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Meta Individual</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  R$ {metaTrimestralIndividual.meta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Vendido</p>
-                <p className="text-2xl font-bold text-green-600">
-                  R$ {metaTrimestralIndividual.vendido.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Falta</p>
-                <p className="text-2xl font-bold text-orange-600">
-                  R$ {metaTrimestralIndividual.falta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium">Progresso</span>
-                <span className="text-sm font-medium">{metaTrimestralIndividual.percentual}%</span>
-              </div>
-              <Progress value={parseFloat(metaTrimestralIndividual.percentual)} className="h-3" />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Meta Geral da Equipe */}
-        <Card className="border-2 border-purple-500">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="h-5 w-5 text-purple-600" />
-              Meta Geral da Equipe (Set-Out-Nov/2025)
-            </CardTitle>
-            <CardDescription>
-              Desempenho coletivo de todos os vendedores
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Meta da Equipe</p>
-                <p className="text-2xl font-bold text-purple-600">
-                  R$ {metaGeralEquipe.meta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Vendido pela Equipe</p>
-                <p className="text-2xl font-bold text-green-600">
-                  R$ {metaGeralEquipe.vendido.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Falta para a Meta</p>
-                <p className="text-2xl font-bold text-orange-600">
-                  R$ {metaGeralEquipe.falta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium">Progresso da Equipe</span>
-                <span className="text-sm font-medium">{metaGeralEquipe.percentual}%</span>
-              </div>
-              <Progress value={parseFloat(metaGeralEquipe.percentual)} className="h-3" />
-            </div>
-          </CardContent>
-        </Card>
+        {/* Metas Trimestrais */}
+        {minhasMetas && minhasMetas.length > 0 && (
+          <div className="space-y-4">
+            {/* Meta Atual (primeira da lista) */}
+            <Card className="border-2 border-blue-500">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="h-5 w-5 text-blue-600" />
+                  {minhasMetas[0].trimestre} - Dezembro/Janeiro/Fevereiro
+                </CardTitle>
+                <CardDescription>
+                  Sua meta atual do trimestre
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Meta</p>
+                    <p className="text-xl font-bold text-blue-600">
+                      R$ {minhasMetas[0].meta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Super Meta (+20%)</p>
+                    <p className="text-xl font-bold text-purple-600">
+                      R$ {minhasMetas[0].superMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Bônus Meta (1%)</p>
+                    <p className="text-xl font-bold text-green-600">
+                      R$ {minhasMetas[0].bonusMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Bônus Super (1,1%)</p>
+                    <p className="text-xl font-bold text-orange-600">
+                      R$ {minhasMetas[0].bonusSuperMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                  <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                    🎯 Atinja 100% da meta e ganhe <span className="font-bold">R$ {minhasMetas[0].bonusMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                  </p>
+                  <p className="text-sm font-medium text-blue-900 dark:text-blue-100 mt-1">
+                    🚀 Atinja 120% (super meta) e ganhe <span className="font-bold">R$ {minhasMetas[0].bonusSuperMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+            
+            {/* Metas Anteriores */}
+            {minhasMetas.length > 1 && (
+              <details className="group">
+                <summary className="cursor-pointer list-none">
+                  <Card className="hover:bg-accent transition-colors">
+                    <CardHeader>
+                      <CardTitle className="flex items-center justify-between text-base">
+                        <span className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                          Ver Metas Anteriores ({minhasMetas.length - 1})
+                        </span>
+                        <TrendingDown className="h-4 w-4 text-muted-foreground group-open:rotate-180 transition-transform" />
+                      </CardTitle>
+                    </CardHeader>
+                  </Card>
+                </summary>
+                
+                <div className="mt-4 space-y-4">
+                  {minhasMetas.slice(1).map((meta, index) => (
+                    <Card key={index} className="border-muted">
+                      <CardHeader>
+                        <CardTitle className="text-base">
+                          {meta.trimestre} - Setembro/Outubro/Novembro
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div>
+                            <p className="text-muted-foreground">Meta</p>
+                            <p className="font-bold">R$ {meta.meta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                          </div>
+                          <div>
+                            <p className="text-muted-foreground">Super Meta</p>
+                            <p className="font-bold">R$ {meta.superMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                          </div>
+                          <div>
+                            <p className="text-muted-foreground">Bônus Meta</p>
+                            <p className="font-bold">R$ {meta.bonusMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                          </div>
+                          <div>
+                            <p className="text-muted-foreground">Bônus Super</p>
+                            <p className="font-bold">R$ {meta.bonusSuperMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                          </div>
+                        </div>
+                        {meta.metaAgencia > 0 && (
+                          <div className="mt-4 pt-4 border-t">
+                            <p className="text-sm text-muted-foreground">Meta da Agência (Equipe)</p>
+                            <p className="text-lg font-bold text-purple-600">
+                              R$ {meta.metaAgencia.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            </p>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </details>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

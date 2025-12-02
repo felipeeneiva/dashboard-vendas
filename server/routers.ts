@@ -1072,6 +1072,41 @@ export const appRouter = router({
         return comparativo;
       }),
 
+    // Buscar metas trimestrais do vendedor
+    minhasMetas: protectedProcedure
+      .query(async ({ ctx }) => {
+        const vendedor = await db.getVendedorByEmail(ctx.user.email);
+        if (!vendedor) throw new Error('Vendedor não encontrado');
+
+        const dbInstance = await db.getDb();
+        if (!dbInstance) throw new Error('Database não disponível');
+
+        const { metasTrimestrais } = await import('../drizzle/schema');
+        const { eq } = await import('drizzle-orm');
+
+        // Busca todas as metas do vendedor
+        const metas = await dbInstance
+          .select()
+          .from(metasTrimestrais)
+          .where(eq(metasTrimestrais.vendedorId, vendedor.id));
+
+        // Ordena: Meta Trimestral 1 primeiro (atual), depois as outras
+        const metasOrdenadas = metas.sort((a, b) => {
+          if (a.trimestre === 'Meta Trimestral 1') return -1;
+          if (b.trimestre === 'Meta Trimestral 1') return 1;
+          return b.trimestre.localeCompare(a.trimestre);
+        });
+
+        return metasOrdenadas.map(m => ({
+          trimestre: m.trimestre,
+          meta: db.centavosParaReais(m.metaTrimestral),
+          superMeta: db.centavosParaReais(m.superMeta),
+          bonusMeta: db.centavosParaReais(m.bonusMeta),
+          bonusSuperMeta: db.centavosParaReais(m.bonusSuperMeta),
+          metaAgencia: m.metaAgencia ? db.centavosParaReais(m.metaAgencia) : 0
+        }));
+      }),
+
     // Top destinos do vendedor
     topDestinos: protectedProcedure
       .input(z.object({
