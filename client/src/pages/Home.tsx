@@ -368,6 +368,9 @@ export default function Home() {
                   <Percent className="h-4 w-4" />
                   Média % Receita {percentualReceita.mes.mesAno}
                 </CardTitle>
+                <CardDescription className="text-xs">
+                  Margem de lucro do mês (Receita ÷ Vendas)
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-3">
@@ -660,8 +663,11 @@ export default function Home() {
                                   <tr className="border-b border-slate-200 dark:border-slate-700">
                                     <th className="py-2 px-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400">Vendedor</th>
                                     <th className="py-2 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">Meta</th>
+                                    <th className="py-2 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">Super Meta</th>
                                     <th className="py-2 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">Vendido</th>
                                     <th className="py-2 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400">%</th>
+                                    <th className="py-2 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">Bônus Meta</th>
+                                    <th className="py-2 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400">Bônus Super</th>
                                   </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -673,6 +679,9 @@ export default function Home() {
                                         <td className="py-2 px-4 text-sm font-medium">{vendedor.nome}</td>
                                         <td className="py-2 px-4 text-right font-mono text-sm">
                                           R$ {((vendedor.meta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                        </td>
+                                        <td className="py-2 px-4 text-right font-mono text-sm text-purple-600 dark:text-purple-400">
+                                          R$ {((vendedor.superMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                         </td>
                                         <td className="py-2 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
                                           R$ {((vendedor.vendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -687,6 +696,12 @@ export default function Home() {
                                           }`}>
                                             {(Number(vendedor.percentual) || 0).toFixed(2)}%
                                           </span>
+                                        </td>
+                                        <td className="py-2 px-4 text-right font-mono text-sm text-blue-600 dark:text-blue-400">
+                                          R$ {((vendedor.bonusMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                        </td>
+                                        <td className="py-2 px-4 text-right font-mono text-sm text-indigo-600 dark:text-indigo-400">
+                                          R$ {((vendedor.bonusSuperMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                         </td>
                                       </tr>
                                     ))}
@@ -746,9 +761,12 @@ export default function Home() {
                     <tr className="border-b border-slate-200 dark:border-slate-700">
                       <th className="py-3 px-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Vendedor</th>
                       <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Meta</th>
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Super Meta</th>
                       <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Vendido</th>
                       <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Falta</th>
                       <th className="py-3 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Progresso</th>
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Bônus Meta</th>
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Bônus Super</th>
                       <th className="py-3 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Status</th>
                     </tr>
                   </thead>
@@ -769,6 +787,9 @@ export default function Home() {
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-sm">
                             R$ {((vendedor.meta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          </td>
+                          <td className="py-3 px-4 text-right font-mono text-sm text-purple-600 dark:text-purple-400">
+                            R$ {((vendedor.superMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
                             R$ {((vendedor.vendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -792,6 +813,12 @@ export default function Home() {
                                 />
                               </div>
                             </div>
+                          </td>
+                          <td className="py-3 px-4 text-right font-mono text-sm text-blue-600 dark:text-blue-400">
+                            R$ {((vendedor.bonusMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          </td>
+                          <td className="py-3 px-4 text-right font-mono text-sm text-indigo-600 dark:text-indigo-400">
+                            R$ {((vendedor.bonusSuperMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3 px-4 text-center">
                             {vendedor.percentual >= 80 && (

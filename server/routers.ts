@@ -255,7 +255,7 @@ export const appRouter = router({
         // Determina meses do trimestre
         let mesesTrimestre: string[] = [];
         if (meta.trimestre === 'Meta Trimestral 1') {
-          mesesTrimestre = ['Dezembro/2024', 'Janeiro/2025', 'Fevereiro/2025'];
+          mesesTrimestre = ['Dezembro/2025', 'Janeiro/2026', 'Fevereiro/2026'];
         } else if (meta.trimestre === 'Meta Trimestral 4') {
           mesesTrimestre = ['Setembro/2025', 'Outubro/2025', 'Novembro/2025'];
         }

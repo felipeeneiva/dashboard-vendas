@@ -391,3 +391,23 @@
 - [x] Integrar gráfico na página Home.tsx
 - [x] Testar com dados de 2025
 - [x] Criar teste unitário validando endpoint (4/4 testes passando)
+
+
+### 🔧 Correção: Ordenação de Metas Trimestrais no Dashboard Admin
+- [x] Investigar por que Meta Trimestral 4 (Set/Out/Nov) aparece como meta atual
+- [x] Corrigir ordenação para mostrar Meta Trimestral 1 (Dez/Jan/Fev) como meta atual
+- [x] Corrigir meses da Meta Trimestral 1: Dezembro/2025, Janeiro/2026, Fevereiro/2026
+- [x] Testar que Meta Trimestral 1 aparece em primeiro lugar
+- [x] Validar que dropdown "Ver Metas Anteriores" mostra Meta Trimestral 4
+
+
+### 💡 Melhorias de UX e Clarificação
+- [x] Adicionar tooltip/descrição explicando que "Média % Receita" refere-se ao mês atual (Dezembro/2025)
+- [x] Adicionar descrição: "Margem de lucro do mês (Receita ÷ Vendas)"
+
+### 📋 Visualização Completa de Metas no Dashboard Admin
+- [x] Expandir seção de Meta Trimestral para mostrar informações completas como no painel individual
+- [x] Adicionar coluna "Super Meta" na tabela de vendedores
+- [x] Adicionar colunas "Bônus Meta" e "Bônus Super" na tabela
+- [x] Manter layout profissional e organizado com cores distintas
+- [x] Aplicar mesmas colunas nas metas anteriores (collapsible)
