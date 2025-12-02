@@ -431,3 +431,25 @@
 - [x] Verificar que procedimento existe no backend dentro do router vendedores
 - [x] Corrigir chamada de `trpc.metricas.resumoGeral` para `trpc.vendedores.resumoGeral`
 - [x] Testar que dashboard funciona corretamente
+
+
+### 📊 Comparativo Mês Atual vs Mês Anterior
+- [x] Criar endpoint backend comparativoMesAtualAnterior (Dezembro vs Novembro/2025)
+- [x] Calcular variação percentual entre meses (Vendas, Receita, % Receita)
+- [x] Implementar cards de comparativo com setas de tendência (↑ crescimento / ↓ queda)
+- [x] Adicionar cores indicando melhoria (verde) ou piora (vermelho)
+- [x] Posicionar cards após cards de % de receita
+- [x] Exibir valores absolutos de cada mês + variação percentual
+
+### 🔍 Filtro de Período no Gráfico Consolidado
+- [x] Adicionar seletor de ano (2024 / 2025 / Todos)
+- [x] Atualizar gráfico consolidado baseado no filtro selecionado
+- [x] Manter estado do filtro selecionado (useState)
+- [x] Filtrar dados do gráfico usando .filter() baseado no ano
+- [x] Testar transições entre períodos
+
+### ♻️ Reutilização de Componentes do Painel Individual
+- [x] Revisar componentes do painel individual (cards de comparação, filtros)
+- [x] Adaptar lógica para contexto administrativo (consolidação de todos vendedores)
+- [x] Manter consistência visual entre painéis (cores, layout, tipografia)
+- [x] Criar teste unitário para endpoint comparativoMesAtualAnterior (5/5 testes passando)

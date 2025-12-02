@@ -362,6 +362,79 @@ export const appRouter = router({
       };
     }),
 
+    // Comparativo mês atual vs mês anterior
+    comparativoMesAtualAnterior: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      
+      const mesAtual = 'Dezembro/2025';
+      const mesAnterior = 'Novembro/2025';
+      
+      // Dados do mês atual
+      let vendasAtual = 0;
+      let receitaAtual = 0;
+      
+      // Dados do mês anterior
+      let vendasAnterior = 0;
+      let receitaAnterior = 0;
+      
+      for (const vendedor of vendedores) {
+        const metricas = await db.getMetricasByVendedor(vendedor.id);
+        
+        const metricaAtual = metricas.find(m => m.mes === mesAtual && m.status === 'com_dados');
+        if (metricaAtual) {
+          vendasAtual += metricaAtual.totalVendas;
+          receitaAtual += metricaAtual.totalReceita;
+        }
+        
+        const metricaAnterior = metricas.find(m => m.mes === mesAnterior && m.status === 'com_dados');
+        if (metricaAnterior) {
+          vendasAnterior += metricaAnterior.totalVendas;
+          receitaAnterior += metricaAnterior.totalReceita;
+        }
+      }
+      
+      const percentualAtual = vendasAtual > 0 
+        ? parseFloat(((receitaAtual / vendasAtual) * 100).toFixed(2))
+        : 0;
+      
+      const percentualAnterior = vendasAnterior > 0
+        ? parseFloat(((receitaAnterior / vendasAnterior) * 100).toFixed(2))
+        : 0;
+      
+      // Calcula variações percentuais
+      const variacaoVendas = vendasAnterior > 0
+        ? parseFloat((((vendasAtual - vendasAnterior) / vendasAnterior) * 100).toFixed(2))
+        : 0;
+      
+      const variacaoReceita = receitaAnterior > 0
+        ? parseFloat((((receitaAtual - receitaAnterior) / receitaAnterior) * 100).toFixed(2))
+        : 0;
+      
+      const variacaoPercentual = percentualAnterior > 0
+        ? parseFloat((percentualAtual - percentualAnterior).toFixed(2))
+        : 0;
+      
+      return {
+        mesAtual: {
+          mes: mesAtual,
+          vendas: db.centavosParaReais(vendasAtual),
+          receita: db.centavosParaReais(receitaAtual),
+          percentual: percentualAtual
+        },
+        mesAnterior: {
+          mes: mesAnterior,
+          vendas: db.centavosParaReais(vendasAnterior),
+          receita: db.centavosParaReais(receitaAnterior),
+          percentual: percentualAnterior
+        },
+        variacoes: {
+          vendas: variacaoVendas,
+          receita: variacaoReceita,
+          percentual: variacaoPercentual
+        }
+      };
+    }),
+
     // Ranking de vendedores por melhor % de receita
     rankingPercentualReceita: publicProcedure.query(async () => {
       const vendedores = await db.getAllVendedores();

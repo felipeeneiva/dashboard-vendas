@@ -62,6 +62,32 @@ describe('Endpoints Dashboard Admin', () => {
     }
   });
 
+  it('deve retornar comparativo mês atual vs mês anterior', async () => {
+    const resultado = await caller.vendedores.comparativoMesAtualAnterior();
+    
+    expect(resultado).toBeDefined();
+    expect(resultado).toHaveProperty('mesAtual');
+    expect(resultado).toHaveProperty('mesAnterior');
+    expect(resultado).toHaveProperty('variacoes');
+    
+    // Verifica estrutura do mês atual
+    expect(resultado.mesAtual.mes).toBe('Dezembro/2025');
+    expect(typeof resultado.mesAtual.vendas).toBe('number');
+    expect(typeof resultado.mesAtual.receita).toBe('number');
+    expect(typeof resultado.mesAtual.percentual).toBe('number');
+    
+    // Verifica estrutura do mês anterior
+    expect(resultado.mesAnterior.mes).toBe('Novembro/2025');
+    expect(typeof resultado.mesAnterior.vendas).toBe('number');
+    expect(typeof resultado.mesAnterior.receita).toBe('number');
+    expect(typeof resultado.mesAnterior.percentual).toBe('number');
+    
+    // Verifica estrutura das variações
+    expect(typeof resultado.variacoes.vendas).toBe('number');
+    expect(typeof resultado.variacoes.receita).toBe('number');
+    expect(typeof resultado.variacoes.percentual).toBe('number');
+  });
+
   it('deve retornar evolução mensal do percentual de receita', async () => {
     const resultado = await caller.vendedores.evolucaoPercentualReceita({ ano: 2025 });
     

@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar } from 'lucide-react';
+import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar, ArrowUp, ArrowDown } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ComposedChart, Bar } from 'recharts';
@@ -45,6 +45,8 @@ export default function Home() {
   const [metasTrimestrais, setMetasTrimestrais] = useState<any>(null);
   const [evolucaoReceita, setEvolucaoReceita] = useState<any>(null);
   const [rankingReceita, setRankingReceita] = useState<any>(null);
+  const [comparativo, setComparativo] = useState<any>(null);
+  const [anoGrafico, setAnoGrafico] = useState<'2024' | '2025' | 'todos'>('2025');
 
   useEffect(() => {
     // Buscar % de receita consolidada
@@ -73,6 +75,12 @@ export default function Home() {
       .then(res => res.json())
       .then(data => setRankingReceita(data.result?.data?.json))
       .catch(err => console.error('Erro ao buscar ranking de % de receita:', err));
+
+    // Buscar comparativo mês atual vs anterior
+    fetch(`/api/trpc/vendedores.comparativoMesAtualAnterior`)
+      .then(res => res.json())
+      .then(data => setComparativo(data.result?.data?.json))
+      .catch(err => console.error('Erro ao buscar comparativo mensal:', err));
   }, []);
 
   // Mutation para limpar dados antigos
@@ -405,21 +413,163 @@ export default function Home() {
           </div>
         )}
 
+        {/* Comparativo Mês Atual vs Mês Anterior */}
+        {comparativo && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+              <Calendar className="h-5 w-5" />
+              Comparativo: {comparativo.mesAtual.mes} vs {comparativo.mesAnterior.mes}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Variação de Vendas */}
+              <Card className="border-l-4 border-l-blue-500">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4" />
+                    Variação de Vendas
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-400">Mês Atual</span>
+                      <span className="text-sm font-semibold">R$ {comparativo.mesAtual.vendas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-400">Mês Anterior</span>
+                      <span className="text-sm font-semibold">R$ {comparativo.mesAnterior.vendas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    </div>
+                    <div className="pt-2 border-t">
+                      <div className="flex items-center gap-2">
+                        {comparativo.variacoes.vendas > 0 ? (
+                          <ArrowUp className="h-5 w-5 text-green-600" />
+                        ) : comparativo.variacoes.vendas < 0 ? (
+                          <ArrowDown className="h-5 w-5 text-red-600" />
+                        ) : null}
+                        <span className={`text-2xl font-bold ${
+                          comparativo.variacoes.vendas > 0 ? 'text-green-600' : 
+                          comparativo.variacoes.vendas < 0 ? 'text-red-600' : 
+                          'text-slate-600'
+                        }`}>
+                          {comparativo.variacoes.vendas > 0 ? '+' : ''}{comparativo.variacoes.vendas.toFixed(2)}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Variação de Receita */}
+              <Card className="border-l-4 border-l-green-500">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                    <DollarSign className="h-4 w-4" />
+                    Variação de Receita
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-400">Mês Atual</span>
+                      <span className="text-sm font-semibold">R$ {comparativo.mesAtual.receita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-400">Mês Anterior</span>
+                      <span className="text-sm font-semibold">R$ {comparativo.mesAnterior.receita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    </div>
+                    <div className="pt-2 border-t">
+                      <div className="flex items-center gap-2">
+                        {comparativo.variacoes.receita > 0 ? (
+                          <ArrowUp className="h-5 w-5 text-green-600" />
+                        ) : comparativo.variacoes.receita < 0 ? (
+                          <ArrowDown className="h-5 w-5 text-red-600" />
+                        ) : null}
+                        <span className={`text-2xl font-bold ${
+                          comparativo.variacoes.receita > 0 ? 'text-green-600' : 
+                          comparativo.variacoes.receita < 0 ? 'text-red-600' : 
+                          'text-slate-600'
+                        }`}>
+                          {comparativo.variacoes.receita > 0 ? '+' : ''}{comparativo.variacoes.receita.toFixed(2)}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Variação de % Receita */}
+              <Card className="border-l-4 border-l-purple-500">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                    <Percent className="h-4 w-4" />
+                    Variação de % Receita
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-400">Mês Atual</span>
+                      <span className="text-sm font-semibold">{comparativo.mesAtual.percentual.toFixed(2)}%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-slate-600 dark:text-slate-400">Mês Anterior</span>
+                      <span className="text-sm font-semibold">{comparativo.mesAnterior.percentual.toFixed(2)}%</span>
+                    </div>
+                    <div className="pt-2 border-t">
+                      <div className="flex items-center gap-2">
+                        {comparativo.variacoes.percentual > 0 ? (
+                          <ArrowUp className="h-5 w-5 text-green-600" />
+                        ) : comparativo.variacoes.percentual < 0 ? (
+                          <ArrowDown className="h-5 w-5 text-red-600" />
+                        ) : null}
+                        <span className={`text-2xl font-bold ${
+                          comparativo.variacoes.percentual > 0 ? 'text-green-600' : 
+                          comparativo.variacoes.percentual < 0 ? 'text-red-600' : 
+                          'text-slate-600'
+                        }`}>
+                          {comparativo.variacoes.percentual > 0 ? '+' : ''}{comparativo.variacoes.percentual.toFixed(2)} p.p.
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
         {/* Gráfico Consolidado: Vendas x Receita x % Receita */}
         {evolucaoReceita && evolucaoReceita.length > 0 && (
           <Card className="mb-8">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
-                Evolução Mensal: Vendas x Receita x % Receita (2025)
-              </CardTitle>
-              <CardDescription>
-                Visão consolidada da performance financeira da equipe ao longo do ano
-              </CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5" />
+                    Evolução Mensal: Vendas x Receita x % Receita
+                  </CardTitle>
+                  <CardDescription>
+                    Visão consolidada da performance financeira da equipe
+                  </CardDescription>
+                </div>
+                <Select value={anoGrafico} onValueChange={(value: any) => setAnoGrafico(value)}>
+                  <SelectTrigger className="w-[140px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2024">2024</SelectItem>
+                    <SelectItem value="2025">2025</SelectItem>
+                    <SelectItem value="todos">Todos</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>
-                <ComposedChart data={evolucaoReceita}>
+                <ComposedChart data={evolucaoReceita.filter((item: any) => {
+                  if (anoGrafico === 'todos') return true;
+                  return item.mes.endsWith(`/${anoGrafico}`);
+                })}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis 
                     dataKey="mes" 
