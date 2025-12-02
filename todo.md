@@ -327,3 +327,18 @@
 ### 🎨 Ajuste de Layout - Reordenar Seções do Painel
 - [x] Mover seção de Meta Trimestral para depois da Evolução Mensal
 - [x] Testar nova ordem das seções (Meta Trimestral agora aparece antes do Comparativo)
+
+### 🎯 Dashboard Admin - Metas Trimestrais e % de Receita
+- [x] Criar endpoint para buscar metas trimestrais de todos os vendedores (metasTrimestraisAdmin)
+- [x] Criar endpoint para calcular % de receita consolidada (percentualReceitaConsolidado)
+- [x] Criar endpoint para ranking de vendedores por % de receita (rankingPercentualReceita)
+- [x] Adicionar função getAllMetasTrimestrais no db.ts
+- [x] Atualizar metaAgencia para R$ 10M em todas as metas
+- [ ] Adicionar seção "Meta Trimestral Atual" no Home.tsx
+- [ ] Mostrar progresso de cada vendedor na meta trimestral
+- [ ] Adicionar progresso da meta da agência (R$ 10M)
+- [ ] Criar dropdown "Ver Metas Anteriores" para trimestres passados
+- [ ] Adicionar cards de Média % Receita Ano e Mês Atual
+- [ ] Criar ranking de vendedores por melhor % de receita no frontend
+- [ ] Otimizar busca de dados para puxar apenas mês atual (não reprocessar meses antigos)
+- [ ] Testar dashboard administrativo com Felipe/Andrios

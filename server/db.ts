@@ -1,6 +1,6 @@
 import { eq, and, desc, like } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, vendedores, metricas, atualizacoes, vendasDiarias, Vendedor, Metrica, VendaDiaria, InsertVendedor, InsertMetrica, InsertAtualizacao, InsertVendaDiaria } from "../drizzle/schema";
+import { InsertUser, users, vendedores, metricas, atualizacoes, vendasDiarias, metasTrimestrais, Vendedor, Metrica, VendaDiaria, MetaTrimestral, InsertVendedor, InsertMetrica, InsertAtualizacao, InsertVendaDiaria } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -494,5 +494,18 @@ export async function getVendasPorVendedor(vendedorId: number, dataInicio: Date,
       )
     );
 
+  return result;
+}
+
+
+// ==================== METAS TRIMESTRAIS FUNCTIONS ====================
+
+export async function getAllMetasTrimestrais(): Promise<MetaTrimestral[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get metas trimestrais: database not available");
+    return [];
+  }
+  const result = await db.select().from(metasTrimestrais);
   return result;
 }
