@@ -38,6 +38,9 @@ export default function Home() {
   // Busca últimas atualizações
   const { data: atualizacoes } = trpc.atualizacoes.ultimas.useQuery({ limit: 5 });
 
+  // TODO: Adicionar query de % de receita consolidada
+  // const { data: percentualReceita } = trpc.vendedores.percentualReceitaConsolidado.useQuery();
+
   // Mutation para limpar dados antigos
   const limparDados = trpc.metricas.limparDadosAntigos.useMutation({
     onSuccess: (data) => {

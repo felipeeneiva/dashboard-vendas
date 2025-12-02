@@ -1,0 +1,18 @@
+{
+  "query": "SELECT DISTINCT trimestre, COUNT(*) as total FROM metas_trimestrais GROUP BY trimestre",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT DISTINCT trimestre, COUNT(*) as total FROM metas_trimestrais GROUP BY trimestre",
+  "rows": [
+    {
+      "trimestre": "Meta Trimestral 4",
+      "total": "14"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "total": "14"
+    }
+  ],
+  "messages": [],
+  "stdout": "trimestre\ttotal\nMeta Trimestral 4\t14\nMeta Trimestral 1\t14\n",
+  "stderr": "",
+  "execution_time_ms": 534
+}

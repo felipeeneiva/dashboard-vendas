@@ -342,3 +342,8 @@
 - [ ] Criar ranking de vendedores por melhor % de receita no frontend
 - [ ] Otimizar busca de dados para puxar apenas mês atual (não reprocessar meses antigos)
 - [ ] Testar dashboard administrativo com Felipe/Andrios
+
+### 🐛 Bug - Ordenação de Metas Trimestrais
+- [ ] Corrigir ordenação do endpoint metasTrimestraisAdmin para mostrar Meta Trimestral 1 (Dez/Jan/Fev) em primeiro
+- [ ] Meta Trimestral 4 (Set/Out/Nov) deve aparecer em "Ver Metas Anteriores"
+- [ ] Testar que meta atual exibida é sempre a mais recente
