@@ -5,6 +5,7 @@ import { trpc } from "@/lib/trpc";
 import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { APP_TITLE } from "@/const";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
@@ -42,6 +43,7 @@ export default function Home() {
   // Busca % de receita consolidada (usando fetch direto para contornar problema de cache do TypeScript)
   const [percentualReceita, setPercentualReceita] = useState<any>(null);
   const [metasTrimestrais, setMetasTrimestrais] = useState<any>(null);
+  const [evolucaoReceita, setEvolucaoReceita] = useState<any>(null);
 
   useEffect(() => {
     // Buscar % de receita consolidada
@@ -57,6 +59,13 @@ export default function Home() {
       .then(res => res.json())
       .then(data => setMetasTrimestrais(data.result?.data?.json))
       .catch(err => console.error('Erro ao buscar metas trimestrais:', err));
+
+    // Buscar evolução de % de receita
+    const inputEvolucao = encodeURIComponent(JSON.stringify({ json: { ano: 2025 } }));
+    fetch(`/api/trpc/vendedores.evolucaoPercentualReceita?input=${inputEvolucao}`)
+      .then(res => res.json())
+      .then(data => setEvolucaoReceita(data.result?.data?.json))
+      .catch(err => console.error('Erro ao buscar evolução de % de receita:', err));
   }, []);
 
   // Mutation para limpar dados antigos
@@ -384,6 +393,96 @@ export default function Home() {
               </CardContent>
             </Card>
           </div>
+        )}
+
+        {/* Gráfico de Evolução de % de Receita */}
+        {evolucaoReceita && evolucaoReceita.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
+                Evolução Mensal da Margem de Lucro (% de Receita)
+              </CardTitle>
+              <CardDescription>
+                Acompanhe a tendência da rentabilidade da equipe ao longo de 2025
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={350}>
+                <LineChart data={evolucaoReceita}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis 
+                    dataKey="mes" 
+                    stroke="#64748b"
+                    style={{ fontSize: '12px' }}
+                  />
+                  <YAxis 
+                    stroke="#64748b"
+                    style={{ fontSize: '12px' }}
+                    label={{ value: '% de Receita', angle: -90, position: 'insideLeft', style: { fontSize: '12px' } }}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#fff', 
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '8px',
+                      padding: '12px'
+                    }}
+                    formatter={(value: any, name: string) => {
+                      if (name === 'percentual') return [`${value.toFixed(2)}%`, '% de Receita'];
+                      return [value, name];
+                    }}
+                  />
+                  <Legend />
+                  <ReferenceLine 
+                    y={15} 
+                    stroke="#10b981" 
+                    strokeDasharray="5 5" 
+                    label={{ value: 'Meta: 15% (Melhor)', position: 'right', fill: '#10b981', fontSize: 12 }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="percentual" 
+                    stroke="#8b5cf6" 
+                    strokeWidth={3}
+                    dot={{ fill: '#8b5cf6', r: 5 }}
+                    activeDot={{ r: 7 }}
+                    name="% de Receita"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+              
+              {/* Indicadores de Melhor e Pior Mês */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800">
+                  <p className="text-xs text-green-600 dark:text-green-400 font-semibold mb-1">🏆 Melhor Mês</p>
+                  <p className="text-lg font-bold text-green-700 dark:text-green-300">
+                    {evolucaoReceita.reduce((max: any, item: any) => 
+                      item.percentual > max.percentual ? item : max
+                    ).mes}
+                  </p>
+                  <p className="text-sm text-green-600 dark:text-green-400">
+                    {evolucaoReceita.reduce((max: any, item: any) => 
+                      item.percentual > max.percentual ? item : max
+                    ).percentual.toFixed(2)}% de receita
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg bg-orange-50 dark:bg-orange-950 border border-orange-200 dark:border-orange-800">
+                  <p className="text-xs text-orange-600 dark:text-orange-400 font-semibold mb-1">⚠️ Pior Mês</p>
+                  <p className="text-lg font-bold text-orange-700 dark:text-orange-300">
+                    {evolucaoReceita.reduce((min: any, item: any) => 
+                      item.percentual < min.percentual ? item : min
+                    ).mes}
+                  </p>
+                  <p className="text-sm text-orange-600 dark:text-orange-400">
+                    {evolucaoReceita.reduce((min: any, item: any) => 
+                      item.percentual < min.percentual ? item : min
+                    ).percentual.toFixed(2)}% de receita
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Tabela de Vendedores */}

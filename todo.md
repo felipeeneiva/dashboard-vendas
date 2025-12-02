@@ -381,3 +381,13 @@
 - [x] Adicionar dropdown "Ver Metas Anteriores" para acessar Meta Trimestral 4
 - [x] Otimizar função atualizarTodos para buscar apenas mês atual (Dezembro/2025)
 - [x] Testar interface completa (funcionando perfeitamente!)
+
+### 📊 Gráfico de Evolução de % de Receita (Dashboard Admin)
+- [x] Criar endpoint backend evolucaoPercentualReceita (retorna série temporal mês a mês)
+- [x] Calcular % de receita consolidada por mês (soma total receita / soma total vendas)
+- [x] Implementar gráfico de linha com Recharts
+- [x] Adicionar indicadores de melhor e pior mês
+- [x] Adicionar linha de referência para meta de 15% (Melhor)
+- [x] Integrar gráfico na página Home.tsx
+- [x] Testar com dados de 2025
+- [x] Criar teste unitário validando endpoint (4/4 testes passando)

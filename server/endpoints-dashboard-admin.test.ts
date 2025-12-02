@@ -61,4 +61,31 @@ describe('Endpoints Dashboard Admin', () => {
       }
     }
   });
+
+  it('deve retornar evolução mensal do percentual de receita', async () => {
+    const resultado = await caller.vendedores.evolucaoPercentualReceita({ ano: 2025 });
+    
+    expect(resultado).toBeDefined();
+    expect(Array.isArray(resultado)).toBe(true);
+    
+    if (resultado.length > 0) {
+      const primeiroMes = resultado[0];
+      expect(primeiroMes).toHaveProperty('mes');
+      expect(primeiroMes).toHaveProperty('mesCompleto');
+      expect(primeiroMes).toHaveProperty('totalVendas');
+      expect(primeiroMes).toHaveProperty('totalReceita');
+      expect(primeiroMes).toHaveProperty('percentual');
+      
+      // Percentual deve estar entre 0 e 100
+      expect(primeiroMes.percentual).toBeGreaterThanOrEqual(0);
+      expect(primeiroMes.percentual).toBeLessThanOrEqual(100);
+      
+      // Deve retornar apenas meses com dados
+      expect(primeiroMes.totalVendas).toBeGreaterThan(0);
+      expect(primeiroMes.totalReceita).toBeGreaterThan(0);
+      
+      // Verifica formato do mes
+      expect(primeiroMes.mesCompleto).toContain('/2025');
+    }
+  });
 });
