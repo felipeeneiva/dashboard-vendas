@@ -100,23 +100,23 @@ export default function Home() {
 
   // Mutation para limpar dados antigos
   const limparDados = trpc.metricas.limparDadosAntigos.useMutation({
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       toast.success(`Dados de ${data.ano} removidos! ${data.removidos} registros excluídos.`);
       refetch();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(`Erro ao limpar dados: ${error.message}`);
     }
   });
   
   // Mutation para atualizar todos os dados
-  const atualizarTodos = trpc.metricas.atualizarTodos.useMutation({
-    onSuccess: (data) => {
+  const atualizarTodos = trpc.vendedores.atualizarTodos.useMutation({
+    onSuccess: (data: any) => {
       toast.success(`Atualização concluída! ${data.vendedoresAtualizados} vendedores atualizados.`);
       refetch();
       setIsRefreshing(false);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(`Erro ao atualizar: ${error.message}`);
       setIsRefreshing(false);
     }
@@ -124,11 +124,11 @@ export default function Home() {
 
   // Mutation para inicializar vendedores (executar uma vez)
   const inicializarVendedores = trpc.vendedores.inicializar.useMutation({
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       toast.success(`${data.total} vendedores inicializados!`);
       refetch();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(`Erro ao inicializar: ${error.message}`);
     }
   });

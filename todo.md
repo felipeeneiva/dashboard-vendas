@@ -481,3 +481,10 @@
 - [x] Garantir que dashboard admin mostra dados consolidados de todos vendedores
 - [x] Corrigir gráfico duplicado (removido "Evolução Mensal da Margem de Lucro", mantido apenas gráfico consolidado)
 - [x] Criar testes unitários para comparativo2024vs2025 e topDestinosConsolidado (7/7 testes passando)
+
+
+### 🐛 Correção de Erro: metricas.atualizarTodos não encontrado
+- [x] Investigar onde `metricas.atualizarTodos` está sendo chamado no frontend (linha 113 Home.tsx)
+- [x] Verificar que procedimento existe no backend no router vendedores (linha 579 routers.ts)
+- [x] Corrigir chamada de `trpc.metricas.atualizarTodos` para `trpc.vendedores.atualizarTodos`
+- [x] Testar que dashboard funciona corretamente sem erros em runtime
