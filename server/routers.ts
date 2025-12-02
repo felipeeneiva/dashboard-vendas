@@ -1106,6 +1106,14 @@ export const appRouter = router({
         // Busca métricas do vendedor para calcular progresso
         const metricas = await db.getMetricasByVendedor(vendedor.id);
 
+        // Busca métricas de TODOS os vendedores para calcular progresso da agência
+        const todosVendedores = await db.getAllVendedores();
+        const todasMetricas: any[] = [];
+        for (const v of todosVendedores) {
+          const m = await db.getMetricasByVendedor(v.id);
+          todasMetricas.push(...m);
+        }
+
         // Mapeia meses de cada trimestre
         const mesesPorTrimestre: Record<string, string[]> = {
           'Meta Trimestral 1': ['Dezembro/2025', 'Janeiro/2026', 'Fevereiro/2026'],
@@ -1113,7 +1121,7 @@ export const appRouter = router({
         };
 
         return metasOrdenadas.map(m => {
-          // Calcula vendas do trimestre
+          // Calcula vendas do trimestre (vendedor individual)
           const mesesTrimestre = mesesPorTrimestre[m.trimestre] || [];
           const metricasTrimestre = metricas.filter(met => mesesTrimestre.includes(met.mes));
           const vendidoCentavos = metricasTrimestre.reduce((acc, met) => acc + (met.totalVendas || 0), 0);
@@ -1122,17 +1130,29 @@ export const appRouter = router({
           const falta = Math.max(0, meta - vendido);
           const percentual = meta > 0 ? ((vendido / meta) * 100).toFixed(2) : '0.00';
 
+          // Calcula vendas do trimestre (equipe toda)
+          const metricasTrimestreEquipe = todasMetricas.filter(met => mesesTrimestre.includes(met.mes));
+          const vendidoEquipeCentavos = metricasTrimestreEquipe.reduce((acc, met) => acc + (met.totalVendas || 0), 0);
+          const vendidoEquipe = db.centavosParaReais(vendidoEquipeCentavos);
+          const metaAgenciaValor = m.metaAgencia ? db.centavosParaReais(m.metaAgencia) : 0;
+          const faltaEquipe = Math.max(0, metaAgenciaValor - vendidoEquipe);
+          const percentualEquipe = metaAgenciaValor > 0 ? ((vendidoEquipe / metaAgenciaValor) * 100).toFixed(2) : '0.00';
+
           return {
             trimestre: m.trimestre,
             meta,
             superMeta: db.centavosParaReais(m.superMeta),
             bonusMeta: db.centavosParaReais(m.bonusMeta),
             bonusSuperMeta: db.centavosParaReais(m.bonusSuperMeta),
-            metaAgencia: m.metaAgencia ? db.centavosParaReais(m.metaAgencia) : 0,
-            // Indicadores de progresso
+            metaAgencia: metaAgenciaValor,
+            // Indicadores de progresso (individual)
             vendido,
             falta,
-            percentual
+            percentual,
+            // Indicadores de progresso (equipe)
+            vendidoEquipe,
+            faltaEquipe,
+            percentualEquipe
           };
         });
       }),

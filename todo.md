@@ -300,3 +300,11 @@
 - [x] Inserir metas para Felipe e Andrios (diretores com vendas ocasionais: R$ 200k)
 - [x] Criar testes unitários validando cálculos de progresso
 - [x] Validar que Gabriel (57,15% da meta) vê indicadores corretamente
+
+### ✅ Correção Completa - Indicadores de Progresso nas Metas Anteriores
+- [x] Adicionar indicadores Meta/Vendido/Falta nas metas anteriores
+- [x] Adicionar barra de progresso com percentual nas metas anteriores
+- [x] Calcular progresso da meta da agência (vendido pela equipe toda)
+- [x] Exibir Meta/Vendido/Falta da agência com barra de progresso
+- [x] Testar com Danilo (Meta: R$ 800k, Vendido: R$ 660k, Progresso: 82,61%)
+- [x] Validar progresso da equipe (Meta: R$ 10M, Vendido: R$ 6,68M, Progresso: 66,80%)
