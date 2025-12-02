@@ -6,17 +6,22 @@ import { Loader2, TrendingUp, DollarSign, Percent, Target, MapPin, Calendar, Awa
 import { trpc } from "@/lib/trpc";
 import { getLoginUrl } from "@/const";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
 
 export default function MeuPainel() {
   const { user, loading: authLoading, isAuthenticated } = useAuth();
+  const [anoSelecionado, setAnoSelecionado] = useState<number>(2025);
   
-  const { data, isLoading } = trpc.painelVendedor.meusDados.useQuery(undefined, {
-    enabled: isAuthenticated,
-  });
+  const { data, isLoading } = trpc.painelVendedor.meusDados.useQuery(
+    { ano: anoSelecionado },
+    { enabled: isAuthenticated }
+  );
   
-  const { data: evolucao, isLoading: loadingEvolucao } = trpc.painelVendedor.evolucaoMensal.useQuery(undefined, {
-    enabled: isAuthenticated,
-  });
+  const { data: evolucao, isLoading: loadingEvolucao } = trpc.painelVendedor.evolucaoMensal.useQuery(
+    { ano: anoSelecionado },
+    { enabled: isAuthenticated }
+  );
   
   const { data: comparativo, isLoading: loadingComparativo } = trpc.painelVendedor.comparativoAnos.useQuery(undefined, {
     enabled: isAuthenticated,
@@ -98,12 +103,28 @@ export default function MeuPainel() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Olá, {vendedor.nome}! 👋
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-2">
-            Aqui está o resumo completo do seu desempenho
-          </p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                Olá, {vendedor.nome}! 👋
+              </h1>
+              <p className="text-gray-600 dark:text-gray-300 mt-2">
+                Aqui está o resumo completo do seu desempenho
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <Select value={anoSelecionado.toString()} onValueChange={(v) => setAnoSelecionado(Number(v))}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="2025">Ano 2025</SelectItem>
+                  <SelectItem value="2024">Ano 2024</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </div>
 
         {/* Cards de Métricas Gerais */}
@@ -118,7 +139,7 @@ export default function MeuPainel() {
                 R$ {totais.vendas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Acumulado 2024-2025
+                Ano {anoSelecionado}
               </p>
             </CardContent>
           </Card>
@@ -133,7 +154,7 @@ export default function MeuPainel() {
                 R$ {totais.receita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Acumulado 2024-2025
+                Ano {anoSelecionado}
               </p>
             </CardContent>
           </Card>
@@ -148,14 +169,14 @@ export default function MeuPainel() {
                 R$ {totais.comissao.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Acumulado 2024-2025
+                Ano {anoSelecionado}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Ticket Médio</CardTitle>
+              <CardTitle className="text-sm font-medium">Média Mensal</CardTitle>
               <Award className="h-4 w-4 text-orange-600" />
             </CardHeader>
             <CardContent>
@@ -163,7 +184,7 @@ export default function MeuPainel() {
                 R$ {ticketMedio.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Por mês ativo
+                Vendas por mês ativo
               </p>
             </CardContent>
           </Card>
@@ -356,7 +377,7 @@ export default function MeuPainel() {
                   <div>
                     <p className="text-sm text-muted-foreground">Bônus Super Meta</p>
                     <p className="text-xl font-bold text-orange-600">
-                      R$ {minhasMetas[0].bonusSuperMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      + R$ {(minhasMetas[0].bonusSuperMeta - minhasMetas[0].bonusMeta).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                 </div>

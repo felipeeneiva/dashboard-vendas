@@ -279,3 +279,14 @@
 - [x] Remover "(+20%)" do label Super Meta
 - [x] Alterar texto para "🎯 Atinja 100% da meta e ganhe R$ X"
 - [x] Alterar texto para "🚀 Atinja sua super meta e ganhe + R$ X"
+
+### Melhorias do Painel Individual e Dashboard Admin
+- [x] Adicionar filtro/dropdown de ano (2024/2025) no painel individual
+- [x] Mostrar por padrão apenas dados de 2025
+- [x] Permitir acesso ao histórico de 2024 em seção separada
+- [x] Renomear "Ticket Médio" para "Média Mensal" ou "Vendas Médias/Mês"
+- [x] Clarificar que Bônus Super Meta é adicional (+ R$ X)
+- [ ] Criar seção "Metas Trimestral" no dashboard admin (Home.tsx)
+- [ ] Adicionar tabela consolidada com meta, super meta e bônus de cada vendedor
+- [ ] Adicionar dropdown para alternar entre trimestres no dashboard admin
+- [x] Testar filtro de ano no painel individual

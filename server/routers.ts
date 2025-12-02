@@ -995,12 +995,18 @@ export const appRouter = router({
 
     // Evolução mensal do vendedor
     evolucaoMensal: protectedProcedure
-      .query(async ({ ctx }) => {
+      .input(z.object({ ano: z.number().optional() }).optional())
+      .query(async ({ ctx, input }) => {
         const vendedor = await db.getVendedorByEmail(ctx.user.email);
         if (!vendedor) throw new Error('Vendedor não encontrado');
 
         const metricas = await db.getMetricasByVendedor(vendedor.id);
-        const metricasComDados = metricas.filter(m => m.status === 'com_dados');
+        let metricasComDados = metricas.filter(m => m.status === 'com_dados');
+        
+        // Filtrar por ano se especificado
+        if (input?.ano) {
+          metricasComDados = metricasComDados.filter(m => m.mes.endsWith(`/${input.ano}`));
+        }
 
         // Ordena por data (mês/ano)
         const evolucao = metricasComDados
