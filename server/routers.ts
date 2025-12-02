@@ -1103,14 +1103,38 @@ export const appRouter = router({
           return b.trimestre.localeCompare(a.trimestre);
         });
 
-        return metasOrdenadas.map(m => ({
-          trimestre: m.trimestre,
-          meta: db.centavosParaReais(m.metaTrimestral),
-          superMeta: db.centavosParaReais(m.superMeta),
-          bonusMeta: db.centavosParaReais(m.bonusMeta),
-          bonusSuperMeta: db.centavosParaReais(m.bonusSuperMeta),
-          metaAgencia: m.metaAgencia ? db.centavosParaReais(m.metaAgencia) : 0
-        }));
+        // Busca métricas do vendedor para calcular progresso
+        const metricas = await db.getMetricasByVendedor(vendedor.id);
+
+        // Mapeia meses de cada trimestre
+        const mesesPorTrimestre: Record<string, string[]> = {
+          'Meta Trimestral 1': ['Dezembro/2025', 'Janeiro/2026', 'Fevereiro/2026'],
+          'Meta Trimestral 4': ['Setembro/2025', 'Outubro/2025', 'Novembro/2025'],
+        };
+
+        return metasOrdenadas.map(m => {
+          // Calcula vendas do trimestre
+          const mesesTrimestre = mesesPorTrimestre[m.trimestre] || [];
+          const metricasTrimestre = metricas.filter(met => mesesTrimestre.includes(met.mes));
+          const vendidoCentavos = metricasTrimestre.reduce((acc, met) => acc + (met.totalVendas || 0), 0);
+          const vendido = db.centavosParaReais(vendidoCentavos);
+          const meta = db.centavosParaReais(m.metaTrimestral);
+          const falta = Math.max(0, meta - vendido);
+          const percentual = meta > 0 ? ((vendido / meta) * 100).toFixed(2) : '0.00';
+
+          return {
+            trimestre: m.trimestre,
+            meta,
+            superMeta: db.centavosParaReais(m.superMeta),
+            bonusMeta: db.centavosParaReais(m.bonusMeta),
+            bonusSuperMeta: db.centavosParaReais(m.bonusSuperMeta),
+            metaAgencia: m.metaAgencia ? db.centavosParaReais(m.metaAgencia) : 0,
+            // Indicadores de progresso
+            vendido,
+            falta,
+            percentual
+          };
+        });
       }),
 
     // Top destinos do vendedor

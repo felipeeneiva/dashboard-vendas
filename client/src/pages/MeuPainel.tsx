@@ -355,28 +355,60 @@ export default function MeuPainel() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {/* Indicadores de Progresso */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Meta</p>
-                    <p className="text-xl font-bold text-blue-600">
+                    <p className="text-2xl font-bold text-blue-600">
+                      R$ {minhasMetas[0].meta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Vendido</p>
+                    <p className="text-2xl font-bold text-green-600">
+                      R$ {minhasMetas[0].vendido.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Falta</p>
+                    <p className="text-2xl font-bold text-orange-600">
+                      R$ {minhasMetas[0].falta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Barra de Progresso */}
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <span className="text-sm font-medium">Progresso</span>
+                    <span className="text-sm font-medium">{minhasMetas[0].percentual}%</span>
+                  </div>
+                  <Progress value={parseFloat(minhasMetas[0].percentual)} className="h-3" />
+                </div>
+
+                {/* Valores de Bônus */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Meta</p>
+                    <p className="text-lg font-bold text-blue-600">
                       R$ {minhasMetas[0].meta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Super Meta</p>
-                    <p className="text-xl font-bold text-purple-600">
+                    <p className="text-lg font-bold text-purple-600">
                       R$ {minhasMetas[0].superMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Bônus Meta</p>
-                    <p className="text-xl font-bold text-green-600">
+                    <p className="text-lg font-bold text-green-600">
                       R$ {minhasMetas[0].bonusMeta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Bônus Super Meta</p>
-                    <p className="text-xl font-bold text-orange-600">
+                    <p className="text-lg font-bold text-orange-600">
                       + R$ {(minhasMetas[0].bonusSuperMeta - minhasMetas[0].bonusMeta).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>

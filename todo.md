@@ -290,3 +290,13 @@
 - [ ] Adicionar tabela consolidada com meta, super meta e bônus de cada vendedor
 - [ ] Adicionar dropdown para alternar entre trimestres no dashboard admin
 - [x] Testar filtro de ano no painel individual
+
+### 🐛 Bug Resolvido - Indicadores de Progresso das Metas
+- [x] Investigar o que aconteceu com os indicadores de % da meta
+- [x] Identificar que endpoint minhasMetas não retornava vendido, falta e percentual
+- [x] Modificar endpoint para calcular progresso atual do vendedor
+- [x] Adicionar campos vendido, falta e percentual na resposta
+- [x] Atualizar frontend para exibir indicadores com barras de progresso
+- [x] Inserir metas para Felipe e Andrios (diretores com vendas ocasionais: R$ 200k)
+- [x] Criar testes unitários validando cálculos de progresso
+- [x] Validar que Gabriel (57,15% da meta) vê indicadores corretamente
