@@ -1,0 +1,19 @@
+{
+  "query": "SELECT \n  v.nome,\n  v.metaTrimestral,\n  mt.trimestre,\n  mt.metaTrimestral as meta_tabela_metas,\n  mt.superMeta,\n  mt.bonusMeta,\n  mt.bonusSuperMeta\nFROM vendedores v\nLEFT JOIN metas_trimestrais mt ON v.id = mt.vendedorId AND mt.trimestre = 'Meta Trimestral 1'\nWHERE v.nome = 'Júlia';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT \n  v.nome,\n  v.metaTrimestral,\n  mt.trimestre,\n  mt.metaTrimestral as meta_tabela_metas,\n  mt.superMeta,\n  mt.bonusMeta,\n  mt.bonusSuperMeta\nFROM vendedores v\nLEFT JOIN metas_trimestrais mt ON v.id = mt.vendedorId AND mt.trimestre = 'Meta Trimestral 1'\nWHERE v.nome = 'Júlia';",
+  "rows": [
+    {
+      "nome": "Júlia",
+      "metaTrimestral": "15000000",
+      "trimestre": "NULL",
+      "meta_tabela_metas": "NULL",
+      "superMeta": "NULL",
+      "bonusMeta": "NULL",
+      "bonusSuperMeta": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "nome\tmetaTrimestral\ttrimestre\tmeta_tabela_metas\tsuperMeta\tbonusMeta\tbonusSuperMeta\nJúlia\t15000000\tNULL\tNULL\tNULL\tNULL\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}

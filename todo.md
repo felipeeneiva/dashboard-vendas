@@ -496,3 +496,15 @@
 - [ ] Corrigir lógica para buscar metas reais do banco (metaMensal de cada vendedor)
 - [ ] Atualizar cálculo de Meta da Agência (soma das metas individuais)
 - [ ] Testar que metas exibidas no dashboard admin coincidem com painel individual
+
+
+### 🎯 Atualização de Meta da Júlia
+- [x] Atualizar meta da Júlia para R$ 150.000,00 (Super Meta: R$ 180.000,00, Bônus Meta: R$ 1.500,00, Bônus Super: R$ 1.900,00)
+
+### 📊 Visualização de Metas Trimestrais em Cards
+- [x] Criar componente de card de preview de meta trimestral (mostra: período, total vendido, % atingida, status)
+- [x] Modificar seção de metas no dashboard para exibir cards ao invés de tabela expandida
+- [x] Criar página dedicada /metas-trimestral/:trimestre para visualização detalhada
+- [x] Implementar roteamento e navegação ao clicar no card
+- [x] Adicionar estado "Carregando" para metas futuras sem dados
+- [x] Testar navegação entre cards e página de detalhes

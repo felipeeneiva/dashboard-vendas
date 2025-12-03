@@ -944,8 +944,108 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* Meta Trimestral Atual */}
+        {/* Metas Trimestrais - Cards */}
         {metasTrimestrais && metasTrimestrais.length > 0 && (
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5" />
+                Metas Trimestrais
+              </CardTitle>
+              <CardDescription>
+                Clique em um card para ver detalhes completos do trimestre
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {metasTrimestrais.map((meta: any, idx: number) => {
+                  const percentual = parseFloat(meta.percentualEquipe || 0);
+                  const isAtingida = percentual >= 100;
+                  const isNoCaminho = percentual >= 50 && percentual < 100;
+                  const isEmRisco = percentual < 50;
+
+                  return (
+                    <div
+                      key={idx}
+                      onClick={() => window.location.href = `/metas-trimestral/${encodeURIComponent(meta.trimestre)}`}
+                      className="cursor-pointer group relative overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                    >
+                      {/* Badge de Status */}
+                      <div className="absolute top-4 right-4">
+                        {isAtingida && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                            ✓ Atingida
+                          </span>
+                        )}
+                        {isNoCaminho && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                            ⚠ No caminho
+                          </span>
+                        )}
+                        {isEmRisco && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                            ⚠ Em risco
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Título */}
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 pr-24">
+                        {meta.trimestre}
+                      </h3>
+
+                      {/* Métricas */}
+                      <div className="space-y-3 mb-4">
+                        <div>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Meta da Agência</p>
+                          <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                            R$ {(meta.metaAgencia || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Vendido</p>
+                          <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                            R$ {(meta.vendidoEquipe || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Barra de Progresso */}
+                      <div className="mb-2">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs text-slate-600 dark:text-slate-400">Progresso</span>
+                          <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                            {percentual.toFixed(2)}%
+                          </span>
+                        </div>
+                        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3">
+                          <div
+                            className={`h-3 rounded-full transition-all duration-500 ${
+                              isAtingida
+                                ? 'bg-green-500'
+                                : isNoCaminho
+                                ? 'bg-yellow-500'
+                                : 'bg-red-500'
+                            }`}
+                            style={{ width: `${Math.min(percentual, 100)}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Indicador de clique */}
+                      <div className="mt-4 text-xs text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        Clique para ver detalhes →
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Meta Trimestral Atual - REMOVIDO (substituído pelos cards acima) */}
+        {false && metasTrimestrais && metasTrimestrais.length > 0 && (
           <Card className="mt-8">
             <CardHeader>
               <div className="flex items-center justify-between">

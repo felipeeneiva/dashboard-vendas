@@ -13,6 +13,7 @@ import RelatorioFornecedores from "./pages/RelatorioFornecedores";
 import DashboardFornecedores from "./pages/DashboardFornecedores";
 import MonitoramentoVendas from "./pages/MonitoramentoVendas";
 import MeuPainel from "./pages/MeuPainel";
+import MetaTrimestralDetalhes from "./pages/MetaTrimestralDetalhes";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -24,6 +25,9 @@ function Router() {
       </Route>
       <Route path="/analises" component={Analises} />
       <Route path="/metas-trimestral" component={MetasTrimestral} />
+      <Route path="/metas-trimestral/:trimestre">
+        {(params) => <MetaTrimestralDetalhes params={params} />}
+      </Route>
       <Route path="/progresso-semanal" component={ProgressoSemanal} />
       <Route path="/fornecedores" component={RelatorioFornecedores} />
       <Route path="/fornecedores/dashboard" component={DashboardFornecedores} />

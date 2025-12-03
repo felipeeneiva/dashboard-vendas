@@ -1,0 +1,9 @@
+{
+  "query": "-- Primeiro, pegar o ID da Júlia\nSET @julia_id = (SELECT id FROM vendedores WHERE nome = 'Júlia');\n\n-- Inserir meta da Júlia na tabela metas_trimestrais\nINSERT INTO metas_trimestrais (\n  vendedorId,\n  trimestre,\n  metaTrimestral,\n  superMeta,\n  bonusMeta,\n  bonusSuperMeta,\n  metaAgencia\n) VALUES (\n  @julia_id,\n  'Meta Trimestral 1',\n  15000000,  -- R$ 150.000,00\n  18000000,  -- R$ 180.000,00\n  150000,    -- R$ 1.500,00\n  190000,    -- R$ 1.900,00\n  571200000  -- Meta da agência: R$ 5.712.000,00\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute -- Primeiro, pegar o ID da Júlia\nSET @julia_id = (SELECT id FROM vendedores WHERE nome = 'Júlia');\n\n-- Inserir meta da Júlia na tabela metas_trimestrais\nINSERT INTO metas_trimestrais (\n  vendedorId,\n  trimestre,\n  metaTrimestral,\n  superMeta,\n  bonusMeta,\n  bonusSuperMeta,\n  metaAgencia\n) VALUES (\n  @julia_id,\n  'Meta Trimestral 1',\n  15000000,  -- R$ 150.000,00\n  18000000,  -- R$ 180.000,00\n  150000,    -- R$ 1.500,00\n  190000,    -- R$ 1.900,00\n  571200000  -- Meta da agência: R$ 5.712.000,00\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 78
+}

@@ -1,0 +1,9 @@
+{
+  "query": "-- Atualizar meta na tabela vendedores (150.000,00 em centavos = 15000000)\nUPDATE vendedores \nSET metaTrimestral = 15000000 \nWHERE nome = 'Júlia';\n\n-- Atualizar metas na tabela metas_trimestrais\n-- Meta: 15000000 (R$ 150.000,00)\n-- Super Meta: 18000000 (R$ 180.000,00 = 150k * 1,20)\n-- Bônus Meta: 150000 (R$ 1.500,00 = 150k * 0,01)\n-- Bônus Super: 190000 (R$ 1.900,00 arredondado)\nUPDATE metas_trimestrais \nSET \n  metaTrimestral = 15000000,\n  superMeta = 18000000,\n  bonusMeta = 150000,\n  bonusSuperMeta = 190000\nWHERE vendedorId = (SELECT id FROM vendedores WHERE nome = 'Júlia')\n  AND trimestre = 'Meta Trimestral 1';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute -- Atualizar meta na tabela vendedores (150.000,00 em centavos = 15000000)\nUPDATE vendedores \nSET metaTrimestral = 15000000 \nWHERE nome = 'Júlia';\n\n-- Atualizar metas na tabela metas_trimestrais\n-- Meta: 15000000 (R$ 150.000,00)\n-- Super Meta: 18000000 (R$ 180.000,00 = 150k * 1,20)\n-- Bônus Meta: 150000 (R$ 1.500,00 = 150k * 0,01)\n-- Bônus Super: 190000 (R$ 1.900,00 arredondado)\nUPDATE metas_trimestrais \nSET \n  metaTrimestral = 15000000,\n  superMeta = 18000000,\n  bonusMeta = 150000,\n  bonusSuperMeta = 190000\nWHERE vendedorId = (SELECT id FROM vendedores WHERE nome = 'Júlia')\n  AND trimestre = 'Meta Trimestral 1';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 588
+}
