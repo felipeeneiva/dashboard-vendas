@@ -1,0 +1,100 @@
+{
+  "query": "SELECT vendedorId, trimestre, metaTrimestral, superMeta, bonusMeta, bonusSuperMeta, metaAgencia FROM metas_trimestrais WHERE trimestre = 'Meta Trimestral 1' ORDER BY vendedorId LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT vendedorId, trimestre, metaTrimestral, superMeta, bonusMeta, bonusSuperMeta, metaAgencia FROM metas_trimestrais WHERE trimestre = 'Meta Trimestral 1' ORDER BY vendedorId LIMIT 10",
+  "rows": [
+    {
+      "vendedorId": "1",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "vendedorId": "2",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "48000000",
+      "superMeta": "57600000",
+      "bonusMeta": "480000",
+      "bonusSuperMeta": "640000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "vendedorId": "3",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "vendedorId": "4",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "vendedorId": "5",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "vendedorId": "7",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "48000000",
+      "superMeta": "57600000",
+      "bonusMeta": "480000",
+      "bonusSuperMeta": "640000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "vendedorId": "8",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "42000000",
+      "superMeta": "50400000",
+      "bonusMeta": "420000",
+      "bonusSuperMeta": "560000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "vendedorId": "9",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "43200000",
+      "superMeta": "51840000",
+      "bonusMeta": "432000",
+      "bonusSuperMeta": "570000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "vendedorId": "10",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "42000000",
+      "superMeta": "50400000",
+      "bonusMeta": "420000",
+      "bonusSuperMeta": "560000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "vendedorId": "11",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "24000000",
+      "superMeta": "28800000",
+      "bonusMeta": "240000",
+      "bonusSuperMeta": "320000",
+      "metaAgencia": "1000000000"
+    }
+  ],
+  "messages": [],
+  "stdout": "vendedorId\ttrimestre\tmetaTrimestral\tsuperMeta\tbonusMeta\tbonusSuperMeta\tmetaAgencia\n1\tMeta Trimestral 1\t60000000\t72000000\t600000\t790000\t1000000000\n2\tMeta Trimestral 1\t48000000\t57600000\t480000\t640000\t1000000000\n3\tMeta Trimestral 1\t60000000\t72000000\t600000\t790000\t1000000000\n4\tMeta Trimestral 1\t60000000\t72000000\t600000\t790000\t1000000000\n5\tMeta Trimestral 1\t60000000\t72000000\t600000\t790000\t1000000000\n7\tMeta Trimestral 1\t48000000\t57600000\t480000\t640000\t1000000000\n8\tMeta Trimestral 1\t42000000\t50400000\t420000\t560000\t1000000000\n9\tMeta Trimestral 1\t43200000\t51840000\t432000\t570000\t1000000000\n10\tMeta Trimestral 1\t42000000\t50400000\t420000\t560000\t1000000000\n11\tMeta Trimestral 1\t24000000\t28800000\t240000\t320000\t1000000000\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

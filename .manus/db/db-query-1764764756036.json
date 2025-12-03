@@ -1,0 +1,66 @@
+{
+  "query": "SELECT nome, metaTrimestral FROM vendedores ORDER BY nome",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT nome, metaTrimestral FROM vendedores ORDER BY nome",
+  "rows": [
+    {
+      "nome": "Andrios",
+      "metaTrimestral": "0"
+    },
+    {
+      "nome": "Danilo",
+      "metaTrimestral": "80000000"
+    },
+    {
+      "nome": "Felipe",
+      "metaTrimestral": "0"
+    },
+    {
+      "nome": "Francine",
+      "metaTrimestral": "100000000"
+    },
+    {
+      "nome": "Gabriel",
+      "metaTrimestral": "65000000"
+    },
+    {
+      "nome": "Isabelle",
+      "metaTrimestral": "60000000"
+    },
+    {
+      "nome": "Leonardo",
+      "metaTrimestral": "72000000"
+    },
+    {
+      "nome": "Luana",
+      "metaTrimestral": "100000000"
+    },
+    {
+      "nome": "Lucas",
+      "metaTrimestral": "40000000"
+    },
+    {
+      "nome": "Mauro",
+      "metaTrimestral": "100000000"
+    },
+    {
+      "nome": "Nathaly",
+      "metaTrimestral": "80000000"
+    },
+    {
+      "nome": "Pedro",
+      "metaTrimestral": "60000000"
+    },
+    {
+      "nome": "Rafael",
+      "metaTrimestral": "100000000"
+    },
+    {
+      "nome": "Yasmin",
+      "metaTrimestral": "60000000"
+    }
+  ],
+  "messages": [],
+  "stdout": "nome\tmetaTrimestral\nAndrios\t0\nDanilo\t80000000\nFelipe\t0\nFrancine\t100000000\nGabriel\t65000000\nIsabelle\t60000000\nLeonardo\t72000000\nLuana\t100000000\nLucas\t40000000\nMauro\t100000000\nNathaly\t80000000\nPedro\t60000000\nRafael\t100000000\nYasmin\t60000000\n",
+  "stderr": "",
+  "execution_time_ms": 51
+}

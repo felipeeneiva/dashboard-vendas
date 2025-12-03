@@ -488,3 +488,11 @@
 - [x] Verificar que procedimento existe no backend no router vendedores (linha 579 routers.ts)
 - [x] Corrigir chamada de `trpc.metricas.atualizarTodos` para `trpc.vendedores.atualizarTodos`
 - [x] Testar que dashboard funciona corretamente sem erros em runtime
+
+
+### 🐛 Correção: Valores de Metas Incorretos no Dashboard Admin
+- [ ] Investigar endpoint metasTrimestraisAdmin (valores hardcoded vs banco de dados)
+- [ ] Comparar com endpoint do painel individual que funciona corretamente
+- [ ] Corrigir lógica para buscar metas reais do banco (metaMensal de cada vendedor)
+- [ ] Atualizar cálculo de Meta da Agência (soma das metas individuais)
+- [ ] Testar que metas exibidas no dashboard admin coincidem com painel individual

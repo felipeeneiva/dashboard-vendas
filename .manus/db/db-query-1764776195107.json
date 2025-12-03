@@ -1,0 +1,50 @@
+{
+  "query": "SELECT v.nome, mt.metaTrimestral, mt.superMeta, mt.bonusMeta, mt.bonusSuperMeta, mt.metaAgencia \nFROM metas_trimestrais mt \nJOIN vendedores v ON mt.vendedorId = v.id \nWHERE mt.trimestre = 'Meta Trimestral 1' \nORDER BY v.nome \nLIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT v.nome, mt.metaTrimestral, mt.superMeta, mt.bonusMeta, mt.bonusSuperMeta, mt.metaAgencia \nFROM metas_trimestrais mt \nJOIN vendedores v ON mt.vendedorId = v.id \nWHERE mt.trimestre = 'Meta Trimestral 1' \nORDER BY v.nome \nLIMIT 5",
+  "rows": [
+    {
+      "nome": "Andrios",
+      "metaTrimestral": "20000000",
+      "superMeta": "24000000",
+      "bonusMeta": "200000",
+      "bonusSuperMeta": "220000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "nome": "Danilo",
+      "metaTrimestral": "48000000",
+      "superMeta": "57600000",
+      "bonusMeta": "480000",
+      "bonusSuperMeta": "630000",
+      "metaAgencia": "571200000"
+    },
+    {
+      "nome": "Felipe",
+      "metaTrimestral": "20000000",
+      "superMeta": "24000000",
+      "bonusMeta": "200000",
+      "bonusSuperMeta": "220000",
+      "metaAgencia": "1000000000"
+    },
+    {
+      "nome": "Francine",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "571200000"
+    },
+    {
+      "nome": "Gabriel",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "571200000"
+    }
+  ],
+  "messages": [],
+  "stdout": "nome\tmetaTrimestral\tsuperMeta\tbonusMeta\tbonusSuperMeta\tmetaAgencia\nAndrios\t20000000\t24000000\t200000\t220000\t1000000000\nDanilo\t48000000\t57600000\t480000\t630000\t571200000\nFelipe\t20000000\t24000000\t200000\t220000\t1000000000\nFrancine\t60000000\t72000000\t600000\t790000\t571200000\nGabriel\t60000000\t72000000\t600000\t790000\t571200000\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

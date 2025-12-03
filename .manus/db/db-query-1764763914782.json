@@ -1,0 +1,70 @@
+{
+  "query": "SELECT id, nome, metaTrimestral, metaMensal FROM vendedores ORDER BY id LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, nome, metaTrimestral, metaMensal FROM vendedores ORDER BY id LIMIT 10",
+  "rows": [
+    {
+      "id": "1",
+      "nome": "Rafael",
+      "metaTrimestral": "100000000",
+      "metaMensal": "0"
+    },
+    {
+      "id": "2",
+      "nome": "Nathaly",
+      "metaTrimestral": "80000000",
+      "metaMensal": "0"
+    },
+    {
+      "id": "3",
+      "nome": "Francine",
+      "metaTrimestral": "100000000",
+      "metaMensal": "0"
+    },
+    {
+      "id": "4",
+      "nome": "Mauro",
+      "metaTrimestral": "100000000",
+      "metaMensal": "0"
+    },
+    {
+      "id": "5",
+      "nome": "Luana",
+      "metaTrimestral": "100000000",
+      "metaMensal": "0"
+    },
+    {
+      "id": "7",
+      "nome": "Danilo",
+      "metaTrimestral": "80000000",
+      "metaMensal": "0"
+    },
+    {
+      "id": "8",
+      "nome": "Pedro",
+      "metaTrimestral": "60000000",
+      "metaMensal": "0"
+    },
+    {
+      "id": "9",
+      "nome": "Leonardo",
+      "metaTrimestral": "72000000",
+      "metaMensal": "0"
+    },
+    {
+      "id": "10",
+      "nome": "Yasmin",
+      "metaTrimestral": "60000000",
+      "metaMensal": "0"
+    },
+    {
+      "id": "11",
+      "nome": "Lucas",
+      "metaTrimestral": "40000000",
+      "metaMensal": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tmetaTrimestral\tmetaMensal\n1\tRafael\t100000000\t0\n2\tNathaly\t80000000\t0\n3\tFrancine\t100000000\t0\n4\tMauro\t100000000\t0\n5\tLuana\t100000000\t0\n7\tDanilo\t80000000\t0\n8\tPedro\t60000000\t0\n9\tLeonardo\t72000000\t0\n10\tYasmin\t60000000\t0\n11\tLucas\t40000000\t0\n",
+  "stderr": "",
+  "execution_time_ms": 51
+}

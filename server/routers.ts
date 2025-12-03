@@ -278,8 +278,9 @@ export const appRouter = router({
           bonusMeta: db.centavosParaReais(meta.bonusMeta),
           bonusSuperMeta: db.centavosParaReais(meta.bonusSuperMeta),
           vendido: db.centavosParaReais(totalVendido),
-          falta: db.centavosParaReais(falta),
-          percentual
+          falta: db.centavosParaReais(Math.max(0, falta)),
+          percentual,
+          totalVendidoCentavos: totalVendido // Mantém valor em centavos para cálculo da equipe
         });
       }
       
@@ -287,7 +288,7 @@ export const appRouter = router({
       const resultado = [];
       for (const [trimestre, dados] of Array.from(metasPorTrimestre.entries())) {
         const totalVendidoEquipe = dados.vendedores.reduce((sum: number, v: any) => {
-          return sum + (v.vendido * 100); // Converte de volta para centavos
+          return sum + v.totalVendidoCentavos; // Usa valor em centavos
         }, 0);
         
         const faltaEquipe = dados.metaAgencia - totalVendidoEquipe;

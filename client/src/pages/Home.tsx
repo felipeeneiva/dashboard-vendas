@@ -978,32 +978,32 @@ export default function Home() {
                                 <div>
                                   <p className="text-xs text-slate-600 dark:text-slate-400">Meta</p>
                                   <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                                    R$ {((meta.metaAgencia || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                    R$ {(meta.metaAgencia || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                   </p>
                                 </div>
                                 <div>
                                   <p className="text-xs text-slate-600 dark:text-slate-400">Vendido</p>
                                   <p className="text-lg font-bold text-green-600 dark:text-green-400">
-                                    R$ {((meta.progressoEquipe?.totalVendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                    R$ {(meta.vendidoEquipe || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                   </p>
                                 </div>
                                 <div>
                                   <p className="text-xs text-slate-600 dark:text-slate-400">Falta</p>
                                   <p className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                                    R$ {((meta.progressoEquipe?.totalFalta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                    R$ {(meta.faltaEquipe || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                   </p>
                                 </div>
                                 <div>
                                   <p className="text-xs text-slate-600 dark:text-slate-400">Progresso</p>
                                   <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
-                                    {(meta.progressoEquipe?.percentual || 0).toFixed(2)}%
+                                    {(meta.percentualEquipe || 0)}%
                                   </p>
                                 </div>
                               </div>
                               <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3">
                                 <div
                                   className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500"
-                                  style={{ width: `${Math.min(meta.progressoEquipe?.percentual || 0, 100)}%` }}
+                                  style={{ width: `${Math.min(parseFloat(meta.percentualEquipe) || 0, 100)}%` }}
                                 />
                               </div>
                             </div>
@@ -1028,15 +1028,15 @@ export default function Home() {
                                     .map((vendedor: any, index: number) => (
                                       <tr key={vendedor.vendedorId} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                                         <td className="py-2 px-4 text-sm font-medium">{vendedor.nome}</td>
-                                        <td className="py-2 px-4 text-right font-mono text-sm">
-                                          R$ {((vendedor.meta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                        </td>
-                                        <td className="py-2 px-4 text-right font-mono text-sm text-purple-600 dark:text-purple-400">
-                                          R$ {((vendedor.superMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                        </td>
-                                        <td className="py-2 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
-                                          R$ {((vendedor.vendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                        </td>
+                                         <td className="py-2 px-4 text-right font-mono text-sm">
+                                           R$ {(vendedor.meta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                         </td>
+                                         <td className="py-2 px-4 text-right font-mono text-sm text-purple-600 dark:text-purple-400">
+                                           R$ {(vendedor.superMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                         </td>
+                                         <td className="py-2 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
+                                           R$ {(vendedor.vendido || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                         </td>
                                         <td className="py-2 px-4 text-center">
                                           <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                                             vendedor.percentual >= 80
@@ -1048,12 +1048,12 @@ export default function Home() {
                                             {(Number(vendedor.percentual) || 0).toFixed(2)}%
                                           </span>
                                         </td>
-                                        <td className="py-2 px-4 text-right font-mono text-sm text-blue-600 dark:text-blue-400">
-                                          R$ {((vendedor.bonusMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                        </td>
-                                        <td className="py-2 px-4 text-right font-mono text-sm text-indigo-600 dark:text-indigo-400">
-                                          R$ {((vendedor.bonusSuperMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                        </td>
+                                         <td className="py-2 px-4 text-right font-mono text-sm text-blue-600 dark:text-blue-400">
+                                           R$ {(vendedor.bonusMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                         </td>
+                                         <td className="py-2 px-4 text-right font-mono text-sm text-indigo-600 dark:text-indigo-400">
+                                           R$ {(vendedor.bonusSuperMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                         </td>
                                       </tr>
                                     ))}
                                 </tbody>
@@ -1075,25 +1075,25 @@ export default function Home() {
                   <div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">Meta</p>
                     <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                      R$ {((metasTrimestrais[0].metaAgencia || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      R$ {(metasTrimestrais[0].metaAgencia || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">Vendido</p>
                     <p className="text-lg font-bold text-green-600 dark:text-green-400">
-                      R$ {((metasTrimestrais[0].progressoEquipe?.totalVendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      R$ {(metasTrimestrais[0].vendidoEquipe || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">Falta</p>
                     <p className="text-lg font-bold text-orange-600 dark:text-orange-400">
-                      R$ {((metasTrimestrais[0].progressoEquipe?.totalFalta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      R$ {(metasTrimestrais[0].faltaEquipe || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">Progresso</p>
                     <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
-                      {(metasTrimestrais[0].progressoEquipe?.percentual || 0).toFixed(2)}%
+                      {(metasTrimestrais[0].percentualEquipe || 0)}%
                     </p>
                   </div>
                 </div>
@@ -1137,16 +1137,16 @@ export default function Home() {
                             </div>
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-sm">
-                            R$ {((vendedor.meta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            R$ {(vendedor.meta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-sm text-purple-600 dark:text-purple-400">
-                            R$ {((vendedor.superMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            R$ {(vendedor.superMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
-                            R$ {((vendedor.vendido || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            R$ {(vendedor.vendido || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-sm text-orange-600 dark:text-orange-400">
-                            R$ {((vendedor.falta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            R$ {(vendedor.falta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3 px-4">
                             <div className="flex flex-col items-center gap-1">
@@ -1166,10 +1166,10 @@ export default function Home() {
                             </div>
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-sm text-blue-600 dark:text-blue-400">
-                            R$ {((vendedor.bonusMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            R$ {(vendedor.bonusMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-sm text-indigo-600 dark:text-indigo-400">
-                            R$ {((vendedor.bonusSuperMeta || 0) / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            R$ {(vendedor.bonusSuperMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3 px-4 text-center">
                             {vendedor.percentual >= 80 && (

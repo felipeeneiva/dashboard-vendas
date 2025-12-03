@@ -1,0 +1,70 @@
+{
+  "query": "SELECT * FROM metas_trimestrais WHERE trimestre = 'Meta Trimestral 1' LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT * FROM metas_trimestrais WHERE trimestre = 'Meta Trimestral 1' LIMIT 5",
+  "rows": [
+    {
+      "id": "1",
+      "vendedorId": "1",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "1000000000",
+      "createdAt": "2025-12-01 21:03:41",
+      "updatedAt": "2025-12-02 13:33:18"
+    },
+    {
+      "id": "2",
+      "vendedorId": "30001",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "1000000000",
+      "createdAt": "2025-12-01 21:03:41",
+      "updatedAt": "2025-12-02 13:33:18"
+    },
+    {
+      "id": "3",
+      "vendedorId": "3",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "1000000000",
+      "createdAt": "2025-12-01 21:03:41",
+      "updatedAt": "2025-12-02 13:33:18"
+    },
+    {
+      "id": "4",
+      "vendedorId": "4",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "1000000000",
+      "createdAt": "2025-12-01 21:03:41",
+      "updatedAt": "2025-12-02 13:33:18"
+    },
+    {
+      "id": "5",
+      "vendedorId": "5",
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000",
+      "metaAgencia": "1000000000",
+      "createdAt": "2025-12-01 21:03:41",
+      "updatedAt": "2025-12-02 13:33:18"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tvendedorId\ttrimestre\tmetaTrimestral\tsuperMeta\tbonusMeta\tbonusSuperMeta\tmetaAgencia\tcreatedAt\tupdatedAt\n1\t1\tMeta Trimestral 1\t60000000\t72000000\t600000\t790000\t1000000000\t2025-12-01 21:03:41\t2025-12-02 13:33:18\n2\t30001\tMeta Trimestral 1\t60000000\t72000000\t600000\t790000\t1000000000\t2025-12-01 21:03:41\t2025-12-02 13:33:18\n3\t3\tMeta Trimestral 1\t60000000\t72000000\t600000\t790000\t1000000000\t2025-12-01 21:03:41\t2025-12-02 13:33:18\n4\t4\tMeta Trimestral 1\t60000000\t72000000\t600000\t790000\t1000000000\t2025-12-01 21:03:41\t2025-12-02 13:33:18\n5\t5\tMeta Trimestral 1\t60000000\t72000000\t600000\t790000\t1000000000\t2025-12-01 21:03:41\t2025-12-02 13:33:18\n",
+  "stderr": "",
+  "execution_time_ms": 367
+}

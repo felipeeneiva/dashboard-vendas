@@ -1,0 +1,85 @@
+{
+  "query": "SELECT nome, email, metaTrimestral FROM vendedores ORDER BY nome",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT nome, email, metaTrimestral FROM vendedores ORDER BY nome",
+  "rows": [
+    {
+      "nome": "Andrios",
+      "email": "vendas@mundoproviagens.com.br",
+      "metaTrimestral": "0"
+    },
+    {
+      "nome": "Danilo",
+      "email": "vendas7@mundoproviagens.com.br",
+      "metaTrimestral": "48000000"
+    },
+    {
+      "nome": "Felipe",
+      "email": "felipe@mundoproviagens.com.br",
+      "metaTrimestral": "0"
+    },
+    {
+      "nome": "Francine",
+      "email": "vendas3@mundoproviagens.com.br",
+      "metaTrimestral": "60000000"
+    },
+    {
+      "nome": "Gabriel",
+      "email": "gabriel@mundoproviagens.com.br",
+      "metaTrimestral": "60000000"
+    },
+    {
+      "nome": "Isabelle",
+      "email": "vendas8@mundoproviagens.com.br",
+      "metaTrimestral": "24000000"
+    },
+    {
+      "nome": "Júlia",
+      "email": "vendas11@mundoproviagens.com.br",
+      "metaTrimestral": "0"
+    },
+    {
+      "nome": "Leonardo",
+      "email": "vendas4@mundoproviagens.com.br",
+      "metaTrimestral": "43200000"
+    },
+    {
+      "nome": "Luana",
+      "email": "vendas2@mundoproviagens.com.br",
+      "metaTrimestral": "60000000"
+    },
+    {
+      "nome": "Lucas",
+      "email": "vendas9@mundoproviagens.com.br",
+      "metaTrimestral": "24000000"
+    },
+    {
+      "nome": "Mauro",
+      "email": "vendas6@mundoproviagens.com.br",
+      "metaTrimestral": "60000000"
+    },
+    {
+      "nome": "Nathaly",
+      "email": "atendimento@mundoproviagens.com.br",
+      "metaTrimestral": "48000000"
+    },
+    {
+      "nome": "Pedro",
+      "email": "vendas12@mundoproviagens.com.br",
+      "metaTrimestral": "42000000"
+    },
+    {
+      "nome": "Rafael",
+      "email": "vendas5@mundoproviagens.com.br",
+      "metaTrimestral": "60000000"
+    },
+    {
+      "nome": "Yasmin",
+      "email": "vendas10@mundoproviagens.com.br",
+      "metaTrimestral": "42000000"
+    }
+  ],
+  "messages": [],
+  "stdout": "nome\temail\tmetaTrimestral\nAndrios\tvendas@mundoproviagens.com.br\t0\nDanilo\tvendas7@mundoproviagens.com.br\t48000000\nFelipe\tfelipe@mundoproviagens.com.br\t0\nFrancine\tvendas3@mundoproviagens.com.br\t60000000\nGabriel\tgabriel@mundoproviagens.com.br\t60000000\nIsabelle\tvendas8@mundoproviagens.com.br\t24000000\nJúlia\tvendas11@mundoproviagens.com.br\t0\nLeonardo\tvendas4@mundoproviagens.com.br\t43200000\nLuana\tvendas2@mundoproviagens.com.br\t60000000\nLucas\tvendas9@mundoproviagens.com.br\t24000000\nMauro\tvendas6@mundoproviagens.com.br\t60000000\nNathaly\tatendimento@mundoproviagens.com.br\t48000000\nPedro\tvendas12@mundoproviagens.com.br\t42000000\nRafael\tvendas5@mundoproviagens.com.br\t60000000\nYasmin\tvendas10@mundoproviagens.com.br\t42000000\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}
