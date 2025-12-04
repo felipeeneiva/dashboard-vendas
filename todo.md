@@ -508,3 +508,17 @@
 - [x] Implementar roteamento e navegação ao clicar no card
 - [x] Adicionar estado "Carregando" para metas futuras sem dados
 - [x] Testar navegação entre cards e página de detalhes
+
+
+### 🔧 Correção de Metas Trimestrais (Estrutura e Valores)
+- [x] Corrigir valores da Meta Trimestral 4 (Set-Out-Nov/2025) no banco de dados conforme planilha
+- [x] Ajustar estrutura da Meta 4: remover super meta, adicionar bônus agência (R$ 1.500,00 para todos)
+- [x] Corrigir página /metas-trimestral para mostrar cards de TODAS as metas (não apenas uma)
+- [x] Verificar que Meta 1 (Nov/2025-Dez/2025-Jan/2026) mantém estrutura com super meta
+- [x] Testar navegação do menu "Metas Trimestral" → deve mostrar todos os cards
+- [x] Testar clique nos cards → deve abrir página de detalhes correta
+
+
+### 📝 Correção de Textos dos Períodos das Metas
+- [x] Corrigir texto da Meta 4: "Setembro - Outubro - Novembro/2025"
+- [x] Corrigir texto da Meta 1: "Dezembro/2025 - Janeiro - Fevereiro/2026"

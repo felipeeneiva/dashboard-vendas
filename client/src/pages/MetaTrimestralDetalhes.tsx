@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useLocation } from "wouter";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ export default function MetaTrimestralDetalhes() {
   const [loading, setLoading] = useState(true);
 
   const trimestre = params.trimestre;
+  const isMeta4 = trimestre === 'Meta Trimestral 4';
 
   useEffect(() => {
     // Buscar dados da meta específica
@@ -71,7 +72,10 @@ export default function MetaTrimestralDetalhes() {
             {metaData.trimestre}
           </h1>
           <p className="text-slate-600 dark:text-slate-400 mt-2">
-            Detalhes completos do progresso de metas
+            {isMeta4 
+              ? 'Setembro - Outubro - Novembro/2025 • Bônus: 1% da meta + R$ 1.500 (agência)'
+              : 'Dezembro/2025 - Janeiro - Fevereiro/2026 • Bônus: 1% da meta + 1,1% da super meta'
+            }
           </p>
         </div>
 
@@ -132,12 +136,18 @@ export default function MetaTrimestralDetalhes() {
                   <tr className="border-b border-slate-200 dark:border-slate-700">
                     <th className="py-3 px-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Vendedor</th>
                     <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Meta</th>
-                    <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Super Meta</th>
+                    {!isMeta4 && (
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Super Meta</th>
+                    )}
                     <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Vendido</th>
                     <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Falta</th>
                     <th className="py-3 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Progresso</th>
                     <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Bônus Meta</th>
-                    <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Bônus Super</th>
+                    {isMeta4 ? (
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Bônus Agência</th>
+                    ) : (
+                      <th className="py-3 px-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Bônus Super</th>
+                    )}
                     <th className="py-3 px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase">Status</th>
                   </tr>
                 </thead>
@@ -172,9 +182,11 @@ export default function MetaTrimestralDetalhes() {
                           <td className="py-3 px-4 text-right font-mono text-sm">
                             R$ {(vendedor.meta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
-                          <td className="py-3 px-4 text-right font-mono text-sm text-purple-600 dark:text-purple-400">
-                            R$ {(vendedor.superMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                          </td>
+                          {!isMeta4 && (
+                            <td className="py-3 px-4 text-right font-mono text-sm text-purple-600 dark:text-purple-400">
+                              R$ {(vendedor.superMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            </td>
+                          )}
                           <td className="py-3 px-4 text-right font-mono text-sm text-green-600 dark:text-green-400">
                             R$ {(vendedor.vendido || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
@@ -202,7 +214,10 @@ export default function MetaTrimestralDetalhes() {
                             R$ {(vendedor.bonusMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-sm text-indigo-600 dark:text-indigo-400">
-                            R$ {(vendedor.bonusSuperMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                            {isMeta4 
+                              ? 'R$ 1.500,00'
+                              : `R$ ${(vendedor.bonusSuperMeta || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+                            }
                           </td>
                           <td className="py-3 px-4 text-center">
                             <span className={`text-xs font-semibold ${statusColor}`}>

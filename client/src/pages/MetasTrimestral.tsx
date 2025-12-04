@@ -1,14 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Loader2, Target, TrendingUp, AlertCircle, CheckCircle2, PieChart as PieChartIcon, BarChart3 } from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { Badge } from "@/components/ui/badge";
+import { Loader2, Target, AlertCircle, ArrowLeft, ArrowRight } from "lucide-react";
 import { useLocation } from "wouter";
+import { useState, useEffect } from "react";
 
 export default function MetasTrimestral() {
   const [, setLocation] = useLocation();
+  const [metasTrimestrais, setMetasTrimestrais] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { data, isLoading } = trpc.metas.trimestral.useQuery();
+  useEffect(() => {
+    fetch('/api/trpc/vendedores.metasTrimestraisAdmin')
+      .then(res => res.json())
+      .then(data => {
+        setMetasTrimestrais(data.result?.data?.json || []);
+        setIsLoading(false);
+      })
+      .catch(() => setIsLoading(false));
+  }, []);
 
   if (isLoading) {
     return (
@@ -18,19 +28,35 @@ export default function MetasTrimestral() {
     );
   }
 
-  if (!data) {
+  if (!metasTrimestrais || metasTrimestrais.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-slate-600">Erro ao carregar dados</p>
+        <p className="text-slate-600">Nenhuma meta trimestral encontrada</p>
       </div>
     );
   }
 
-  const formatarMoeda = (centavos: number) => {
-    return (centavos / 100).toLocaleString('pt-BR', {
+  const formatarMoeda = (valor: number) => {
+    return valor.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     });
+  };
+
+  const getStatusBadge = (progresso: number) => {
+    if (progresso >= 100) {
+      return { label: "Atingida", variant: "default" as const, color: "bg-green-500" };
+    } else if (progresso >= 70) {
+      return { label: "No caminho", variant: "secondary" as const, color: "bg-yellow-500" };
+    } else {
+      return { label: "Em risco", variant: "destructive" as const, color: "bg-red-500" };
+    }
+  };
+
+  const getProgressColor = (progresso: number) => {
+    if (progresso >= 100) return "bg-green-500";
+    if (progresso >= 70) return "bg-yellow-500";
+    return "bg-red-500";
   };
 
   return (
@@ -44,258 +70,109 @@ export default function MetasTrimestral() {
               onClick={() => setLocation('/')}
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar
-            </Button>
-            
-            <Button
-              variant="default"
-              onClick={() => setLocation('/progresso-semanal')}
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              <BarChart3 className="h-4 w-4 mr-2" />
-              Ver Funil Semanal
+              Voltar ao Dashboard
             </Button>
           </div>
           
           <div>
             <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-              Metas Trimestral
+              Metas Trimestrais
             </h1>
             <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-              {data.periodo}
+              Clique em um card para ver detalhes completos do trimestre
             </p>
           </div>
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        {/* Meta Geral */}
-        <Card className="mb-8 border-2 border-blue-200 dark:border-blue-800">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Target className="h-6 w-6 text-blue-600" />
-              <CardTitle className="text-2xl">Meta Geral do Trimestre</CardTitle>
-            </div>
-            <CardDescription>Objetivo: {formatarMoeda(data.metaGeral)}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {/* Barra de Progresso */}
-              <div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Progresso Geral
-                  </span>
-                  <span className="text-sm font-bold text-blue-600">
-                    {data.percentualGeralAtingido.toFixed(2)}%
-                  </span>
-                </div>
-                <div className="relative h-8 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                  <div
-                    className="absolute h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500"
-                    style={{ width: `${Math.min(data.percentualGeralAtingido, 100)}%` }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-xs font-bold text-white mix-blend-difference">
-                      {formatarMoeda(data.totalVendido)} de {formatarMoeda(data.metaGeral)}
-                    </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {metasTrimestrais.map((meta: any) => {
+            const progresso = (meta.vendidoEquipe / meta.metaAgencia) * 100;
+            const status = getStatusBadge(progresso);
+            const progressColor = getProgressColor(progresso);
+
+            return (
+              <Card
+                key={meta.trimestre}
+                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 hover:border-blue-400"
+                onClick={() => setLocation(`/metas-trimestral/${encodeURIComponent(meta.trimestre)}`)}
+              >
+                <CardHeader>
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Target className="h-5 w-5 text-blue-600" />
+                      <Badge variant={status.variant} className="gap-1">
+                        <AlertCircle className="h-3 w-3" />
+                        {status.label}
+                      </Badge>
+                    </div>
                   </div>
-                </div>
-              </div>
+                  <CardTitle className="text-xl">{meta.trimestre}</CardTitle>
+                  <CardDescription className="text-xs">
+                    {meta.vendedores.length} vendedores
+                  </CardDescription>
+                </CardHeader>
 
-              {/* Cards de Resumo */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                <div className="p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Total Vendido</p>
-                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">
-                    {formatarMoeda(data.totalVendido)}
-                  </p>
-                </div>
+                <CardContent className="space-y-4">
+                  {/* Meta da Agência */}
+                  <div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+                      Meta da Agência
+                    </p>
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      {formatarMoeda(meta.metaAgencia)}
+                    </p>
+                  </div>
 
-                <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">% Atingido</p>
-                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    {data.percentualGeralAtingido.toFixed(2)}%
-                  </p>
-                </div>
+                  {/* Total Vendido */}
+                  <div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+                      Total Vendido
+                    </p>
+                    <p className="text-xl font-semibold text-green-600 dark:text-green-400">
+                      {formatarMoeda(meta.vendidoEquipe)}
+                    </p>
+                  </div>
 
-                <div className="p-4 rounded-lg bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800">
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Falta Atingir</p>
-                  <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                    {data.percentualGeralFaltante.toFixed(2)}%
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    {formatarMoeda(data.metaGeral - data.totalVendido)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                  {/* Progresso */}
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Progresso
+                      </p>
+                      <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                        {progresso.toFixed(2)}%
+                      </p>
+                    </div>
+                    <div className="relative h-3 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                      <div
+                        className={`absolute h-full ${progressColor} transition-all duration-500`}
+                        style={{ width: `${Math.min(progresso, 100)}%` }}
+                      />
+                    </div>
+                  </div>
 
-        {/* Gráfico de Pizza */}
-        <Card className="mb-8">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <PieChartIcon className="h-5 w-5 text-purple-600" />
-              <CardTitle>Contribuição para Meta Geral</CardTitle>
-            </div>
-            <CardDescription>
-              Participação de cada vendedor no total de vendas do trimestre
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {data.totalVendido > 0 ? (
-              <div className="h-96">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={data.vendedores
-                        .filter(item => item.totalVendido > 0)
-                        .map(item => ({
-                          name: item.vendedor.nome,
-                          value: item.totalVendido,
-                          percentual: ((item.totalVendido / data.totalVendido) * 100).toFixed(2)
-                        }))}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={(entry) => `${entry.name}: ${entry.percentual}%`}
-                    outerRadius={120}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {data.vendedores.map((_, index) => {
-                      const colors = [
-                        '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981',
-                        '#6366f1', '#f97316', '#14b8a6', '#a855f7', '#ef4444',
-                        '#06b6d4', '#84cc16', '#f43f5e', '#8b5cf6'
-                      ];
-                      return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
-                    })}
-                  </Pie>
-                  <Tooltip 
-                    formatter={(value: number) => formatarMoeda(value)}
-                  />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-              </div>
-            ) : (
-              <div className="h-96 flex items-center justify-center text-slate-500">
-                <p>Nenhum dado de vendas disponível para o período</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                  {/* Call to Action */}
+                  <div className="pt-2 flex items-center justify-between text-sm text-blue-600 dark:text-blue-400 font-medium">
+                    <span>Clique para ver detalhes</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
 
-        {/* Tabela de Vendedores */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Desempenho por Vendedor</CardTitle>
-            <CardDescription>
-              Acompanhamento individual das metas do trimestre
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                      Vendedor
-                    </th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                      Meta
-                    </th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                      Vendido
-                    </th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                      % Atingido
-                    </th>
-                    <th className="text-right py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                      % Falta
-                    </th>
-                    <th className="text-center py-3 px-4 font-semibold text-slate-700 dark:text-slate-300">
-                      Status
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.vendedores
-                    .sort((a, b) => b.percentualAtingido - a.percentualAtingido)
-                    .map((item, index) => (
-                      <tr 
-                        key={item.vendedor.id}
-                        className="border-b hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-                      >
-                        <td className="py-4 px-4">
-                          <div className="flex items-center gap-3">
-                            <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
-                              index === 0 ? 'bg-yellow-500 text-white' :
-                              index === 1 ? 'bg-gray-400 text-white' :
-                              index === 2 ? 'bg-orange-600 text-white' :
-                              'bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
-                            }`}>
-                              {index + 1}
-                            </div>
-                            <span className="font-medium text-slate-900 dark:text-slate-100">
-                              {item.vendedor.nome}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="py-4 px-4 text-right font-mono text-sm text-slate-700 dark:text-slate-300">
-                          {formatarMoeda(item.metaVendedor)}
-                        </td>
-                        <td className="py-4 px-4 text-right font-mono text-sm font-semibold text-green-600 dark:text-green-400">
-                          {formatarMoeda(item.totalVendido)}
-                        </td>
-                        <td className="py-4 px-4 text-right">
-                          <div className="flex flex-col items-end">
-                            <span className="font-bold text-blue-600 dark:text-blue-400">
-                              {item.percentualAtingido.toFixed(2)}%
-                            </span>
-                            <div className="w-24 h-2 bg-slate-200 dark:bg-slate-700 rounded-full mt-1 overflow-hidden">
-                              <div
-                                className={`h-full transition-all duration-500 ${
-                                  item.status === 'atingida' ? 'bg-green-500' :
-                                  item.status === 'proximo' ? 'bg-yellow-500' :
-                                  'bg-red-500'
-                                }`}
-                                style={{ width: `${Math.min(item.percentualAtingido, 100)}%` }}
-                              />
-                            </div>
-                          </div>
-                        </td>
-                        <td className="py-4 px-4 text-right font-bold text-orange-600 dark:text-orange-400">
-                          {item.percentualFaltante.toFixed(2)}%
-                        </td>
-                        <td className="py-4 px-4 text-center">
-                          {item.status === 'atingida' ? (
-                            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-semibold">
-                              <CheckCircle2 className="h-3 w-3" />
-                              Meta Atingida
-                            </div>
-                          ) : item.status === 'proximo' ? (
-                            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-xs font-semibold">
-                              <TrendingUp className="h-3 w-3" />
-                              Próximo
-                            </div>
-                          ) : (
-                            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-semibold">
-                              <AlertCircle className="h-3 w-3" />
-                              Distante
-                            </div>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Mensagem se não houver metas */}
+        {metasTrimestrais.length === 0 && (
+          <div className="text-center py-12">
+            <Target className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+            <p className="text-slate-600 dark:text-slate-400">
+              Nenhuma meta trimestral configurada ainda
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );
