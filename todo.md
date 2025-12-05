@@ -534,3 +534,13 @@
 - [x] Adicionar seção: Critérios de Bonificação (faixas ≥80%, 60-79%, <60%)
 - [x] Adicionar seção: % Média de Receita (eficiência vs volume)
 - [x] Adicionar rota e testar apresentação
+
+
+### 🔧 Ajustes na Página de Apresentação (05/12/2025 - 10h)
+- [x] Remover "Ticket Médio" da seção Black Friday
+- [x] Remover "Total de Vendas" da seção Black Friday
+- [x] Adicionar "% Média de Receita" (receita/valor total) na Black Friday
+- [x] Trocar todas as ocorrências de "Expectativa" por "Meta"
+- [x] Remover seção "Percentual Médio de Atingimento"
+- [x] Remover "Total Investido em Bônus"
+- [x] Ajustar critérios de bonificação: "Acima de 80%", "Entre 60% e 79%", "Abaixo de 60%"

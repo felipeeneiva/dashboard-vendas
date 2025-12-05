@@ -1629,7 +1629,7 @@ export const appRouter = router({
       
       // === BLACK FRIDAY (Novembro/2025) ===
       let totalVendidoNovembro = 0;
-      let totalVendasNovembro = 0;
+      let totalReceitaNovembro = 0;
       
       for (const vendedor of vendedores) {
         const metricas = await db.getMetricasByVendedor(vendedor.id);
@@ -1637,11 +1637,11 @@ export const appRouter = router({
         
         if (metricaNovembro) {
           totalVendidoNovembro += metricaNovembro.totalVendas;
-          totalVendasNovembro += 1;
+          totalReceitaNovembro += metricaNovembro.totalReceita;
         }
       }
       
-      const ticketMedioNovembro = totalVendasNovembro > 0 ? totalVendidoNovembro / totalVendasNovembro : 0;
+      const percentualReceitaNovembro = totalVendidoNovembro > 0 ? (totalReceitaNovembro / totalVendidoNovembro) * 100 : 0;
       
       // === META TRIMESTRAL 4 (Set-Out-Nov/2025) ===
       const mesesTrimestre = ['Setembro/2025', 'Outubro/2025', 'Novembro/2025'];
@@ -1692,8 +1692,8 @@ export const appRouter = router({
       return {
         blackFriday: {
           totalVendido: db.centavosParaReais(totalVendidoNovembro),
-          ticketMedio: db.centavosParaReais(ticketMedioNovembro),
-          totalVendas: totalVendasNovembro,
+          totalReceita: db.centavosParaReais(totalReceitaNovembro),
+          percentualReceita: parseFloat(percentualReceitaNovembro.toFixed(2)),
         },
         metaTrimestral: {
           metaTotal: db.centavosParaReais(metaTotal),

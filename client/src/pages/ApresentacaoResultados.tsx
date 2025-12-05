@@ -6,8 +6,8 @@ import { TrendingUp, TrendingDown, Award, DollarSign, Target, Percent } from "lu
 interface DadosApresentacao {
   blackFriday: {
     totalVendido: number;
-    ticketMedio: number;
-    totalVendas: number;
+    totalReceita: number;
+    percentualReceita: number;
   };
   metaTrimestral: {
     metaTotal: number;
@@ -114,21 +114,21 @@ export default function ApresentacaoResultados() {
 
               <div className="bg-gradient-to-br from-blue-50 to-cyan-100 p-6 rounded-lg">
                 <div className="flex items-center gap-3 mb-2">
-                  <Target className="h-6 w-6 text-blue-600" />
-                  <p className="text-sm font-medium text-gray-600">Ticket Médio</p>
+                  <DollarSign className="h-6 w-6 text-blue-600" />
+                  <p className="text-sm font-medium text-gray-600">Total Receita</p>
                 </div>
                 <p className="text-3xl font-bold text-gray-900">
-                  R$ {(dados?.blackFriday?.ticketMedio || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                  R$ {(dados?.blackFriday?.totalReceita || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                 </p>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-50 to-amber-100 p-6 rounded-lg">
+              <div className="bg-gradient-to-br from-purple-50 to-pink-100 p-6 rounded-lg">
                 <div className="flex items-center gap-3 mb-2">
-                  <Award className="h-6 w-6 text-orange-600" />
-                  <p className="text-sm font-medium text-gray-600">Total de Vendas</p>
+                  <Percent className="h-6 w-6 text-purple-600" />
+                  <p className="text-sm font-medium text-gray-600">% Média de Receita</p>
                 </div>
                 <p className="text-3xl font-bold text-gray-900">
-                  {dados?.blackFriday?.totalVendas || 0}
+                  {(dados?.blackFriday?.percentualReceita || 0).toFixed(2)}%
                 </p>
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function ApresentacaoResultados() {
               <div className="bg-gradient-to-br from-green-50 to-emerald-100 p-6 rounded-lg">
                 <div className="flex items-center gap-3 mb-4">
                   <TrendingUp className="h-6 w-6 text-green-600" />
-                  <p className="text-lg font-semibold text-gray-700">Acima da Expectativa</p>
+                  <p className="text-lg font-semibold text-gray-700">Acima da Meta</p>
                 </div>
                 <p className="text-4xl font-bold text-green-600 mb-2">{acimaDaMeta}</p>
                 <p className="text-sm text-gray-600">
@@ -185,7 +185,7 @@ export default function ApresentacaoResultados() {
               <div className="bg-gradient-to-br from-orange-50 to-amber-100 p-6 rounded-lg">
                 <div className="flex items-center gap-3 mb-4">
                   <TrendingDown className="h-6 w-6 text-orange-600" />
-                  <p className="text-lg font-semibold text-gray-700">Abaixo da Expectativa</p>
+                  <p className="text-lg font-semibold text-gray-700">Abaixo da Meta</p>
                 </div>
                 <p className="text-4xl font-bold text-orange-600 mb-2">{abaixoDaMeta}</p>
                 <p className="text-sm text-gray-600">
@@ -194,17 +194,7 @@ export default function ApresentacaoResultados() {
               </div>
             </div>
 
-            {/* Average Performance */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-100 p-6 rounded-lg">
-              <div className="flex items-center gap-3 mb-2">
-                <Percent className="h-6 w-6 text-purple-600" />
-                <p className="text-lg font-semibold text-gray-700">Percentual Médio de Atingimento</p>
-              </div>
-              <p className="text-4xl font-bold text-purple-600 mb-2">{(dados?.metaTrimestral?.percentualMedio || 0).toFixed(2)}%</p>
-              <p className="text-sm text-gray-600">
-                Média de performance da equipe • Quanto maior, melhor a eficiência
-              </p>
-            </div>
+
           </CardContent>
         </Card>
 
@@ -231,7 +221,7 @@ export default function ApresentacaoResultados() {
 
               <div className="bg-gradient-to-r from-blue-50 to-cyan-100 p-6 rounded-lg border-2 border-blue-300">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-lg font-bold text-gray-900">📊 Houve Esforço (≥80%)</p>
+                  <p className="text-lg font-bold text-gray-900">📊 Acima de 80%</p>
                   <Badge className="bg-blue-600 text-white text-lg px-4 py-1">50% do Bônus</Badge>
                 </div>
                 <p className="text-sm text-gray-600">Quase chegou lá, reconhecimento pelo esforço</p>
@@ -239,7 +229,7 @@ export default function ApresentacaoResultados() {
 
               <div className="bg-gradient-to-r from-orange-50 to-amber-100 p-6 rounded-lg border-2 border-orange-300">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-lg font-bold text-gray-900">💡 Valor Simbólico (60-79%)</p>
+                  <p className="text-lg font-bold text-gray-900">💡 Entre 60% e 79%</p>
                   <Badge className="bg-orange-600 text-white text-lg px-4 py-1">20% do Bônus</Badge>
                 </div>
                 <p className="text-sm text-gray-600">Reconhecimento simbólico pelo trabalho</p>
@@ -247,25 +237,14 @@ export default function ApresentacaoResultados() {
 
               <div className="bg-gradient-to-r from-red-50 to-rose-100 p-6 rounded-lg border-2 border-red-300">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-lg font-bold text-gray-900">❌ Abaixo da Expectativa (&lt;60%)</p>
+                  <p className="text-lg font-bold text-gray-900">❌ Abaixo de 60%</p>
                   <Badge variant="destructive" className="text-lg px-4 py-1">Sem Bônus</Badge>
                 </div>
                 <p className="text-sm text-gray-600">Precisa melhorar para próxima meta</p>
               </div>
             </div>
 
-            <div className="mt-6 bg-gradient-to-br from-indigo-50 to-purple-100 p-6 rounded-lg">
-              <div className="flex items-center gap-3 mb-2">
-                <DollarSign className="h-6 w-6 text-indigo-600" />
-                <p className="text-lg font-semibold text-gray-700">Total Investido em Bônus</p>
-              </div>
-              <p className="text-4xl font-bold text-indigo-600 mb-2">
-                R$ {(dados?.bonificacao?.total || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
-              </p>
-              <p className="text-sm text-gray-600">
-                {dados?.bonificacao?.vendedoresBonificados || 0} vendedores serão bonificados
-              </p>
-            </div>
+
           </CardContent>
         </Card>
 
