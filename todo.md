@@ -522,3 +522,15 @@
 ### 📝 Correção de Textos dos Períodos das Metas
 - [x] Corrigir texto da Meta 4: "Setembro - Outubro - Novembro/2025"
 - [x] Corrigir texto da Meta 1: "Dezembro/2025 - Janeiro - Fevereiro/2026"
+
+
+### 📊 Página de Apresentação - Resultados Black Friday e Meta Trimestral 4
+- [x] Coletar dados de vendas de Novembro/2025 (Black Friday)
+- [x] Coletar dados da Meta Trimestral 4 (Set-Out-Nov/2025)
+- [x] Criar página /apresentacao-resultados com estatísticas agregadas (sem nomes)
+- [x] Adicionar seção: Resultados da Black Friday
+- [x] Adicionar seção: Resultados da Meta Trimestral 4
+- [x] Adicionar seção: Distribuição de Performance (quantos acima/abaixo)
+- [x] Adicionar seção: Critérios de Bonificação (faixas ≥80%, 60-79%, <60%)
+- [x] Adicionar seção: % Média de Receita (eficiência vs volume)
+- [x] Adicionar rota e testar apresentação

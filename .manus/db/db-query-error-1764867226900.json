@@ -1,0 +1,8 @@
+{
+  "query": "\nSELECT \n  v.nome,\n  mt.metaTrimestral / 100 as meta_reais,\n  mt.bonusMeta / 100 as bonus_meta,\n  COALESCE(SUM(vd.vendas), 0) / 100 as vendido_reais,\n  CASE \n    WHEN mt.metaTrimestral > 0 THEN ROUND((COALESCE(SUM(vd.vendas), 0) / mt.metaTrimestral) * 100, 2)\n    ELSE 0 \n  END as percentual_atingido\nFROM vendedores v\nLEFT JOIN metas_trimestrais mt ON v.id = mt.vendedorId AND mt.trimestre = 'Meta Trimestral 4'\nLEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId \n  AND vd.data >= '2025-09-01' \n  AND vd.data <= '2025-11-30'\nWHERE v.role = 'user'\nGROUP BY v.id, v.nome, mt.metaTrimestral, mt.bonusMeta\nORDER BY percentual_atingido DESC;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute \nSELECT \n  v.nome,\n  mt.metaTrimestral / 100 as meta_reais,\n  mt.bonusMeta / 100 as bonus_meta,\n  COALESCE(SUM(vd.vendas), 0) / 100 as vendido_reais,\n  CASE \n    WHEN mt.metaTrimestral > 0 THEN ROUND((COALESCE(SUM(vd.vendas), 0) / mt.metaTrimestral) * 100, 2)\n    ELSE 0 \n  END as percentual_atingido\nFROM vendedores v\nLEFT JOIN metas_trimestrais mt ON v.id = mt.vendedorId AND mt.trimestre = 'Meta Trimestral 4'\nLEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId \n  AND vd.data >= '2025-09-01' \n  AND vd.data <= '2025-11-30'\nWHERE v.role = 'user'\nGROUP BY v.id, v.nome, mt.metaTrimestral, mt.bonusMeta\nORDER BY percentual_atingido DESC;\n",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 2: Unknown column 'vd.data' in 'on clause'"
+  ]
+}

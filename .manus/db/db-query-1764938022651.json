@@ -1,0 +1,15 @@
+{
+  "query": "\nSELECT \n  AVG(percentual_receita) as percentual_receita_medio,\n  MAX(percentual_receita) as percentual_receita_maximo,\n  MIN(percentual_receita) as percentual_receita_minimo\nFROM (\n  SELECT \n    v.nome,\n    CASE \n      WHEN SUM(vd.valorTotal) > 0 THEN \n        ROUND((SUM(CASE WHEN vd.mes = 'Novembro/2025' THEN vd.valorTotal ELSE 0 END) / SUM(vd.valorTotal)) * 100, 2)\n      ELSE 0 \n    END as percentual_receita\n  FROM vendedores v\n  LEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId\n  WHERE v.metaTrimestral > 0\n  GROUP BY v.id, v.nome\n  HAVING SUM(vd.valorTotal) > 0\n) as stats;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute \nSELECT \n  AVG(percentual_receita) as percentual_receita_medio,\n  MAX(percentual_receita) as percentual_receita_maximo,\n  MIN(percentual_receita) as percentual_receita_minimo\nFROM (\n  SELECT \n    v.nome,\n    CASE \n      WHEN SUM(vd.valorTotal) > 0 THEN \n        ROUND((SUM(CASE WHEN vd.mes = 'Novembro/2025' THEN vd.valorTotal ELSE 0 END) / SUM(vd.valorTotal)) * 100, 2)\n      ELSE 0 \n    END as percentual_receita\n  FROM vendedores v\n  LEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId\n  WHERE v.metaTrimestral > 0\n  GROUP BY v.id, v.nome\n  HAVING SUM(vd.valorTotal) > 0\n) as stats;\n",
+  "rows": [
+    {
+      "percentual_receita_medio": "NULL",
+      "percentual_receita_maximo": "NULL",
+      "percentual_receita_minimo": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "percentual_receita_medio\tpercentual_receita_maximo\tpercentual_receita_minimo\nNULL\tNULL\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 51
+}

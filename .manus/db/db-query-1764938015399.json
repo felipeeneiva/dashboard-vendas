@@ -1,0 +1,20 @@
+{
+  "query": "\nSELECT \n  COUNT(*) as total_vendedores,\n  SUM(CASE WHEN percentual >= 100 THEN 1 ELSE 0 END) as bateram_meta,\n  SUM(CASE WHEN percentual >= 80 AND percentual < 100 THEN 1 ELSE 0 END) as faixa_80_99,\n  SUM(CASE WHEN percentual >= 60 AND percentual < 80 THEN 1 ELSE 0 END) as faixa_60_79,\n  SUM(CASE WHEN percentual < 60 THEN 1 ELSE 0 END) as abaixo_60,\n  AVG(percentual) as percentual_medio,\n  SUM(meta_reais) as meta_total,\n  SUM(vendido_reais) as vendido_total\nFROM (\n  SELECT \n    v.nome,\n    mt.metaTrimestral / 100 as meta_reais,\n    COALESCE(SUM(vd.valorTotal), 0) / 100 as vendido_reais,\n    CASE \n      WHEN mt.metaTrimestral > 0 THEN ROUND((COALESCE(SUM(vd.valorTotal), 0) / mt.metaTrimestral) * 100, 2)\n      ELSE 0 \n    END as percentual\n  FROM vendedores v\n  LEFT JOIN metas_trimestrais mt ON v.id = mt.vendedorId AND mt.trimestre = 'Meta Trimestral 4'\n  LEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId \n    AND vd.dataVenda >= '2025-09-01' \n    AND vd.dataVenda <= '2025-11-30'\n  WHERE mt.metaTrimestral > 0\n  GROUP BY v.id, v.nome, mt.metaTrimestral\n) as stats;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute \nSELECT \n  COUNT(*) as total_vendedores,\n  SUM(CASE WHEN percentual >= 100 THEN 1 ELSE 0 END) as bateram_meta,\n  SUM(CASE WHEN percentual >= 80 AND percentual < 100 THEN 1 ELSE 0 END) as faixa_80_99,\n  SUM(CASE WHEN percentual >= 60 AND percentual < 80 THEN 1 ELSE 0 END) as faixa_60_79,\n  SUM(CASE WHEN percentual < 60 THEN 1 ELSE 0 END) as abaixo_60,\n  AVG(percentual) as percentual_medio,\n  SUM(meta_reais) as meta_total,\n  SUM(vendido_reais) as vendido_total\nFROM (\n  SELECT \n    v.nome,\n    mt.metaTrimestral / 100 as meta_reais,\n    COALESCE(SUM(vd.valorTotal), 0) / 100 as vendido_reais,\n    CASE \n      WHEN mt.metaTrimestral > 0 THEN ROUND((COALESCE(SUM(vd.valorTotal), 0) / mt.metaTrimestral) * 100, 2)\n      ELSE 0 \n    END as percentual\n  FROM vendedores v\n  LEFT JOIN metas_trimestrais mt ON v.id = mt.vendedorId AND mt.trimestre = 'Meta Trimestral 4'\n  LEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId \n    AND vd.dataVenda >= '2025-09-01' \n    AND vd.dataVenda <= '2025-11-30'\n  WHERE mt.metaTrimestral > 0\n  GROUP BY v.id, v.nome, mt.metaTrimestral\n) as stats;\n",
+  "rows": [
+    {
+      "total_vendedores": "14",
+      "bateram_meta": "0",
+      "faixa_80_99": "0",
+      "faixa_60_79": "0",
+      "abaixo_60": "14",
+      "percentual_medio": "0.000000",
+      "meta_total": "9570000.0000",
+      "vendido_total": "0.0000"
+    }
+  ],
+  "messages": [],
+  "stdout": "total_vendedores\tbateram_meta\tfaixa_80_99\tfaixa_60_79\tabaixo_60\tpercentual_medio\tmeta_total\tvendido_total\n14\t0\t0\t0\t14\t0.000000\t9570000.0000\t0.0000\n",
+  "stderr": "",
+  "execution_time_ms": 68
+}

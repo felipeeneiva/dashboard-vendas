@@ -1,0 +1,108 @@
+{
+  "query": "\nSELECT \n  v.nome,\n  mt.metaTrimestral / 100 as meta_reais,\n  mt.bonusMeta / 100 as bonus_meta,\n  COALESCE(SUM(vd.valorTotal), 0) / 100 as vendido_reais,\n  CASE \n    WHEN mt.metaTrimestral > 0 THEN ROUND((COALESCE(SUM(vd.valorTotal), 0) / mt.metaTrimestral) * 100, 2)\n    ELSE 0 \n  END as percentual_atingido\nFROM vendedores v\nLEFT JOIN metas_trimestrais mt ON v.id = mt.vendedorId AND mt.trimestre = 'Meta Trimestral 4'\nLEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId \n  AND vd.dataVenda >= '2025-09-01' \n  AND vd.dataVenda <= '2025-11-30'\nWHERE mt.metaTrimestral > 0\nGROUP BY v.id, v.nome, mt.metaTrimestral, mt.bonusMeta\nORDER BY percentual_atingido DESC;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute \nSELECT \n  v.nome,\n  mt.metaTrimestral / 100 as meta_reais,\n  mt.bonusMeta / 100 as bonus_meta,\n  COALESCE(SUM(vd.valorTotal), 0) / 100 as vendido_reais,\n  CASE \n    WHEN mt.metaTrimestral > 0 THEN ROUND((COALESCE(SUM(vd.valorTotal), 0) / mt.metaTrimestral) * 100, 2)\n    ELSE 0 \n  END as percentual_atingido\nFROM vendedores v\nLEFT JOIN metas_trimestrais mt ON v.id = mt.vendedorId AND mt.trimestre = 'Meta Trimestral 4'\nLEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId \n  AND vd.dataVenda >= '2025-09-01' \n  AND vd.dataVenda <= '2025-11-30'\nWHERE mt.metaTrimestral > 0\nGROUP BY v.id, v.nome, mt.metaTrimestral, mt.bonusMeta\nORDER BY percentual_atingido DESC;\n",
+  "rows": [
+    {
+      "nome": "Francine",
+      "meta_reais": "1000000.0000",
+      "bonus_meta": "10000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Luana",
+      "meta_reais": "1000000.0000",
+      "bonus_meta": "10000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Leonardo",
+      "meta_reais": "720000.0000",
+      "bonus_meta": "7200.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Felipe",
+      "meta_reais": "200000.0000",
+      "bonus_meta": "2000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Danilo",
+      "meta_reais": "800000.0000",
+      "bonus_meta": "8000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Pedro",
+      "meta_reais": "600000.0000",
+      "bonus_meta": "6000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Lucas",
+      "meta_reais": "400000.0000",
+      "bonus_meta": "4000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Mauro",
+      "meta_reais": "1000000.0000",
+      "bonus_meta": "10000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Rafael",
+      "meta_reais": "1000000.0000",
+      "bonus_meta": "10000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Yasmin",
+      "meta_reais": "600000.0000",
+      "bonus_meta": "6000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Isabelle",
+      "meta_reais": "600000.0000",
+      "bonus_meta": "6000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Andrios",
+      "meta_reais": "200000.0000",
+      "bonus_meta": "2000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Nathaly",
+      "meta_reais": "800000.0000",
+      "bonus_meta": "8000.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    },
+    {
+      "nome": "Gabriel",
+      "meta_reais": "650000.0000",
+      "bonus_meta": "6500.0000",
+      "vendido_reais": "0.0000",
+      "percentual_atingido": "0.00"
+    }
+  ],
+  "messages": [],
+  "stdout": "nome\tmeta_reais\tbonus_meta\tvendido_reais\tpercentual_atingido\nFrancine\t1000000.0000\t10000.0000\t0.0000\t0.00\nLuana\t1000000.0000\t10000.0000\t0.0000\t0.00\nLeonardo\t720000.0000\t7200.0000\t0.0000\t0.00\nFelipe\t200000.0000\t2000.0000\t0.0000\t0.00\nDanilo\t800000.0000\t8000.0000\t0.0000\t0.00\nPedro\t600000.0000\t6000.0000\t0.0000\t0.00\nLucas\t400000.0000\t4000.0000\t0.0000\t0.00\nMauro\t1000000.0000\t10000.0000\t0.0000\t0.00\nRafael\t1000000.0000\t10000.0000\t0.0000\t0.00\nYasmin\t600000.0000\t6000.0000\t0.0000\t0.00\nIsabelle\t600000.0000\t6000.0000\t0.0000\t0.00\nAndrios\t200000.0000\t2000.0000\t0.0000\t0.00\nNathaly\t800000.0000\t8000.0000\t0.0000\t0.00\nGabriel\t650000.0000\t6500.0000\t0.0000\t0.00\n",
+  "stderr": "",
+  "execution_time_ms": 96
+}

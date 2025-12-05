@@ -14,6 +14,7 @@ import DashboardFornecedores from "./pages/DashboardFornecedores";
 import MonitoramentoVendas from "./pages/MonitoramentoVendas";
 import MeuPainel from "./pages/MeuPainel";
 import MetaTrimestralDetalhes from "./pages/MetaTrimestralDetalhes";
+import ApresentacaoResultados from "./pages/ApresentacaoResultados";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -33,6 +34,7 @@ function Router() {
       <Route path="/fornecedores/dashboard" component={DashboardFornecedores} />
       <Route path="/monitoramento" component={MonitoramentoVendas} />
       <Route path="/meu-painel" component={MeuPainel} />
+      <Route path="/apresentacao-resultados" component={ApresentacaoResultados} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

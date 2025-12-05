@@ -1,0 +1,16 @@
+{
+  "query": "\nSELECT \n  COUNT(DISTINCT v.id) as total_vendedores,\n  SUM(vd.valorTotal) / 100 as total_vendido,\n  AVG(vd.valorTotal) / 100 as ticket_medio,\n  COUNT(vd.id) as total_vendas\nFROM vendedores v\nLEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId \n  AND vd.mes = 'Novembro/2025'\nWHERE v.metaTrimestral > 0;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute \nSELECT \n  COUNT(DISTINCT v.id) as total_vendedores,\n  SUM(vd.valorTotal) / 100 as total_vendido,\n  AVG(vd.valorTotal) / 100 as ticket_medio,\n  COUNT(vd.id) as total_vendas\nFROM vendedores v\nLEFT JOIN vendas_diarias vd ON v.id = vd.vendedorId \n  AND vd.mes = 'Novembro/2025'\nWHERE v.metaTrimestral > 0;\n",
+  "rows": [
+    {
+      "total_vendedores": "13",
+      "total_vendido": "NULL",
+      "ticket_medio": "NULL",
+      "total_vendas": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "total_vendedores\ttotal_vendido\tticket_medio\ttotal_vendas\n13\tNULL\tNULL\t0\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}
