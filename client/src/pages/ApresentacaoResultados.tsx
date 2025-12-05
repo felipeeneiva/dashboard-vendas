@@ -101,7 +101,7 @@ export default function ApresentacaoResultados() {
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gradient-to-br from-green-50 to-emerald-100 p-6 rounded-lg">
                 <div className="flex items-center gap-3 mb-2">
                   <DollarSign className="h-6 w-6 text-green-600" />
@@ -109,16 +109,6 @@ export default function ApresentacaoResultados() {
                 </div>
                 <p className="text-3xl font-bold text-gray-900">
                   R$ {(dados?.blackFriday?.totalVendido || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-100 p-6 rounded-lg">
-                <div className="flex items-center gap-3 mb-2">
-                  <DollarSign className="h-6 w-6 text-blue-600" />
-                  <p className="text-sm font-medium text-gray-600">Total Receita</p>
-                </div>
-                <p className="text-3xl font-bold text-gray-900">
-                  R$ {(dados?.blackFriday?.totalReceita || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                 </p>
               </div>
 
