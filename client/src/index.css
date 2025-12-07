@@ -43,17 +43,25 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
+  /* Mundo Pró Viagens Brand Colors */
+  --brand-orange: #fd4f0d;
+  --brand-blue: #a0d3f0;
+  --brand-red: #ac0039;
+  --brand-yellow: #f2ea86;
+  --brand-dark: #222223;
+  --brand-light: #f9f2e1;
+  
+  --primary: var(--brand-orange);
+  --primary-foreground: oklch(1 0 0);
+  --sidebar-primary: var(--brand-orange);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --chart-1: var(--brand-blue);
+  --chart-2: var(--brand-orange);
+  --chart-3: var(--brand-red);
+  --chart-4: var(--brand-yellow);
+  --chart-5: var(--brand-dark);
   --radius: 0.65rem;
-  --background: oklch(1 0 0);
+  --background: var(--brand-light);
   --foreground: oklch(0.235 0.015 65);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.235 0.015 65);
@@ -63,8 +71,8 @@
   --secondary-foreground: oklch(0.4 0.015 65);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
+  --accent: var(--brand-blue);
+  --accent-foreground: var(--brand-dark);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
@@ -79,10 +87,10 @@
 }
 
 .dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
+  --primary: var(--brand-orange);
+  --primary-foreground: oklch(1 0 0);
+  --sidebar-primary: var(--brand-orange);
+  --sidebar-primary-foreground: oklch(1 0 0);
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.85 0.005 65);
   --card: oklch(0.21 0.006 285.885);
@@ -100,11 +108,11 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
+  --chart-1: var(--brand-blue);
+  --chart-2: var(--brand-orange);
+  --chart-3: var(--brand-red);
+  --chart-4: var(--brand-yellow);
+  --chart-5: var(--brand-dark);
   --sidebar: oklch(0.21 0.006 285.885);
   --sidebar-foreground: oklch(0.85 0.005 65);
   --sidebar-accent: oklch(0.274 0.006 286.033);
@@ -119,6 +127,17 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Roboto Mono', monospace;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+  }
+  .font-signature {
+    font-family: 'Dancing Script', cursive;
+  }
+  .font-mono {
+    font-family: 'Roboto Mono', monospace;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),

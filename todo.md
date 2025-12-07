@@ -544,3 +544,13 @@
 - [x] Remover seção "Percentual Médio de Atingimento"
 - [x] Remover "Total Investido em Bônus"
 - [x] Ajustar critérios de bonificação: "Acima de 80%", "Entre 60% e 79%", "Abaixo de 60%"
+
+
+### 🎨 Aplicar Identidade Visual Mundo Pró Viagens (05/12/2025)
+- [x] Configurar paleta de cores da marca no index.css (#fd4f0d, #a0d3f0, #ac0039, #f2ea86, #222223, #f9f2e1)
+- [x] Adicionar fontes Roboto Mono e Montserrat via Google Fonts (Cy Grotesk e Brittany substituídas por alternativas disponíveis)
+- [x] Adicionar logos (laranja e azul) ao projeto
+- [x] Atualizar header com logo da marca
+- [x] Aplicar cores da marca nas páginas principais
+- [x] Aplicar fontes da marca nos títulos e dados
+- [x] Testar identidade visual em todas as páginas

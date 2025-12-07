@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, Award, DollarSign, Target, Percent } from "lucide-react";
+import { APP_LOGO } from "@/const";
 
 interface DadosApresentacao {
   blackFriday: {
@@ -74,24 +75,25 @@ export default function ApresentacaoResultados() {
   const abaixoDaMeta = (dados?.metaTrimestral?.faixa60_79 || 0) + (dados?.metaTrimestral?.abaixo60 || 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+    <div className="min-h-screen p-8" style={{ backgroundColor: 'var(--brand-light)' }}>
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">
-          <h1 className="text-5xl font-bold text-gray-900">
+          <img src={APP_LOGO} alt="Mundo Pró Viagens" className="h-20 mx-auto mb-6" />
+          <h1 className="text-5xl font-bold" style={{ color: 'var(--brand-dark)' }}>
             Apresentação de Resultados
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl" style={{ color: 'var(--brand-dark)' }}>
             Black Friday & Meta Trimestral 4 (Set-Out-Nov/2025)
           </p>
-          <Badge variant="outline" className="text-lg px-4 py-2">
+          <Badge variant="outline" className="text-lg px-4 py-2" style={{ borderColor: 'var(--brand-orange)', color: 'var(--brand-orange)' }}>
             Reunião - {new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}
           </Badge>
         </div>
 
         {/* Black Friday Results */}
-        <Card className="border-2 border-purple-200 shadow-xl">
-          <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+        <Card className="border-2 shadow-xl" style={{ borderColor: 'var(--brand-orange)' }}>
+          <CardHeader className="text-white" style={{ background: 'linear-gradient(to right, var(--brand-orange), var(--brand-red))' }}>
             <CardTitle className="text-3xl flex items-center gap-3">
               <Award className="h-8 w-8" />
               Resultados da Black Friday (Novembro/2025)
@@ -126,13 +128,13 @@ export default function ApresentacaoResultados() {
         </Card>
 
         {/* Meta Trimestral Results */}
-        <Card className="border-2 border-indigo-200 shadow-xl">
-          <CardHeader className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
+        <Card className="border-2 shadow-xl" style={{ borderColor: 'var(--brand-blue)' }}>
+          <CardHeader className="text-white" style={{ background: 'linear-gradient(to right, var(--brand-blue), var(--brand-orange))' }}>
             <CardTitle className="text-3xl flex items-center gap-3">
               <Target className="h-8 w-8" />
               Meta Trimestral 4 (Set-Out-Nov/2025)
             </CardTitle>
-            <CardDescription className="text-indigo-100 text-lg">
+            <CardDescription className="text-white text-lg" style={{ opacity: 0.9 }}>
               Desempenho consolidado do trimestre
             </CardDescription>
           </CardHeader>
@@ -141,12 +143,12 @@ export default function ApresentacaoResultados() {
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-gray-600">Progresso da Meta</span>
-                <span className="text-2xl font-bold text-indigo-600">{percentualAtingimento.toFixed(2)}%</span>
+                <span className="text-2xl font-bold font-mono" style={{ color: 'var(--brand-orange)' }}>{percentualAtingimento.toFixed(2)}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-6">
                 <div
-                  className="bg-gradient-to-r from-indigo-500 to-blue-500 h-6 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
-                  style={{ width: `${Math.min(percentualAtingimento, 100)}%` }}
+                  className="h-6 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
+                  style={{ width: `${Math.min(percentualAtingimento, 100)}%`, background: 'linear-gradient(to right, var(--brand-orange), var(--brand-red))' }}
                 >
                   {percentualAtingimento >= 10 && (
                     <span className="text-xs font-bold text-white">{percentualAtingimento.toFixed(1)}%</span>
@@ -189,46 +191,46 @@ export default function ApresentacaoResultados() {
         </Card>
 
         {/* Bonification Criteria */}
-        <Card className="border-2 border-green-200 shadow-xl">
-          <CardHeader className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+        <Card className="border-2 shadow-xl" style={{ borderColor: 'var(--brand-yellow)' }}>
+          <CardHeader className="text-white" style={{ background: 'linear-gradient(to right, var(--brand-yellow), var(--brand-orange))' }}>
             <CardTitle className="text-3xl flex items-center gap-3">
               <Award className="h-8 w-8" />
               Critérios de Bonificação
             </CardTitle>
-            <CardDescription className="text-green-100 text-lg">
+            <CardDescription className="text-white text-lg" style={{ opacity: 0.95 }}>
               Como será calculado o bônus de cada vendedor
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="space-y-4">
-              <div className="bg-gradient-to-r from-green-50 to-emerald-100 p-6 rounded-lg border-2 border-green-300">
+              <div className="p-6 rounded-lg border-2" style={{ background: 'linear-gradient(to right, #e8f5e9, #c8e6c9)', borderColor: 'var(--brand-orange)' }}>
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-lg font-bold text-gray-900">✅ Bateu ou Considerado (≥96%)</p>
-                  <Badge className="bg-green-600 text-white text-lg px-4 py-1">100% do Bônus</Badge>
+                  <Badge className="text-white text-lg px-4 py-1" style={{ backgroundColor: 'var(--brand-orange)' }}>100% do Bônus</Badge>
                 </div>
                 <p className="text-sm text-gray-600">Atingiu a meta ou ficou muito próximo</p>
               </div>
 
-              <div className="bg-gradient-to-r from-blue-50 to-cyan-100 p-6 rounded-lg border-2 border-blue-300">
+              <div className="p-6 rounded-lg border-2" style={{ background: 'linear-gradient(to right, #e1f5fe, #b3e5fc)', borderColor: 'var(--brand-blue)' }}>
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-lg font-bold text-gray-900">📊 Acima de 80%</p>
-                  <Badge className="bg-blue-600 text-white text-lg px-4 py-1">50% do Bônus</Badge>
+                  <Badge className="text-white text-lg px-4 py-1" style={{ backgroundColor: 'var(--brand-blue)', color: 'var(--brand-dark)' }}>50% do Bônus</Badge>
                 </div>
                 <p className="text-sm text-gray-600">Quase chegou lá, reconhecimento pelo esforço</p>
               </div>
 
-              <div className="bg-gradient-to-r from-orange-50 to-amber-100 p-6 rounded-lg border-2 border-orange-300">
+              <div className="p-6 rounded-lg border-2" style={{ background: 'linear-gradient(to right, #fff8e1, #ffecb3)', borderColor: 'var(--brand-yellow)' }}>
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-lg font-bold text-gray-900">💡 Entre 60% e 79%</p>
-                  <Badge className="bg-orange-600 text-white text-lg px-4 py-1">20% do Bônus</Badge>
+                  <Badge className="text-lg px-4 py-1" style={{ backgroundColor: 'var(--brand-yellow)', color: 'var(--brand-dark)' }}>20% do Bônus</Badge>
                 </div>
                 <p className="text-sm text-gray-600">Reconhecimento simbólico pelo trabalho</p>
               </div>
 
-              <div className="bg-gradient-to-r from-red-50 to-rose-100 p-6 rounded-lg border-2 border-red-300">
+              <div className="p-6 rounded-lg border-2" style={{ background: 'linear-gradient(to right, #ffebee, #ffcdd2)', borderColor: 'var(--brand-red)' }}>
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-lg font-bold text-gray-900">❌ Abaixo de 60%</p>
-                  <Badge variant="destructive" className="text-lg px-4 py-1">Sem Bônus</Badge>
+                  <Badge className="text-white text-lg px-4 py-1" style={{ backgroundColor: 'var(--brand-red)' }}>Sem Bônus</Badge>
                 </div>
                 <p className="text-sm text-gray-600">Precisa melhorar para próxima meta</p>
               </div>
