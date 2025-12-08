@@ -585,3 +585,17 @@
 - [x] Adicionar logo em páginas de detalhes de vendedores
 - [x] Logo no dashboard principal (Home.tsx) - já tinha
 - [x] Testar logo em todas as páginas (Dashboard, Meu Painel, Análises, Apresentação - todos OK!)
+
+
+### 🐛 Correção: Logo não está carregando (07/12/2025 - 21h44)
+- [x] Verificar por que logo azul não está aparecendo (mostrando ícone "M" genérico)
+- [x] Verificar se arquivo logo-azul.png existe e está no caminho correto (existe!)
+- [x] Mover logo para src/assets e importar como módulo
+- [x] Atualizar const.ts para usar import do logo
+- [x] Testar logo em todas as páginas após correção
+
+
+### 🎨 Configurar Favicon da Mundo Pró (07/12/2025 - 22h00)
+- [x] Copiar ícone "M" para pasta public como favicon.png
+- [x] Atualizar index.html com referência ao favicon
+- [x] Testar favicon no navegador
