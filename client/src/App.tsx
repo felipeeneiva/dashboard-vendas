@@ -15,26 +15,63 @@ import MonitoramentoVendas from "./pages/MonitoramentoVendas";
 import MeuPainel from "./pages/MeuPainel";
 import MetaTrimestralDetalhes from "./pages/MetaTrimestralDetalhes";
 import ApresentacaoResultados from "./pages/ApresentacaoResultados";
+import Portal from "./pages/Portal";
+import Suporte from "./pages/Suporte";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
+      <Route path={"/portal"} component={Portal} />
       <Route path={"/"} component={Home} />
       <Route path="/vendedor/:id">
         {(params) => <VendedorDetalhes params={params} />}
       </Route>
-      <Route path="/analises" component={Analises} />
-      <Route path="/metas-trimestral" component={MetasTrimestral} />
-      <Route path="/metas-trimestral/:trimestre">
-        {(params) => <MetaTrimestralDetalhes params={params} />}
+      <Route path="/analises">
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <Analises />
+        </ProtectedRoute>
       </Route>
-      <Route path="/progresso-semanal" component={ProgressoSemanal} />
-      <Route path="/fornecedores" component={RelatorioFornecedores} />
-      <Route path="/fornecedores/dashboard" component={DashboardFornecedores} />
-      <Route path="/monitoramento" component={MonitoramentoVendas} />
+      <Route path="/metas-trimestral">
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <MetasTrimestral />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/metas-trimestral/:trimestre">
+        {(params) => (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <MetaTrimestralDetalhes params={params} />
+          </ProtectedRoute>
+        )}
+      </Route>
+      <Route path="/progresso-semanal">
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <ProgressoSemanal />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/fornecedores">
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <RelatorioFornecedores />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/fornecedores/dashboard">
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <DashboardFornecedores />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/monitoramento">
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <MonitoramentoVendas />
+        </ProtectedRoute>
+      </Route>
       <Route path="/meu-painel" component={MeuPainel} />
       <Route path="/apresentacao-resultados" component={ApresentacaoResultados} />
+      <Route path="/suporte">
+        <ProtectedRoute allowedRoles={["admin", "suporte"]}>
+          <Suporte />
+        </ProtectedRoute>
+      </Route>
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

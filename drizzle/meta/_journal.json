@@ -78,6 +78,13 @@
       "when": 1764622959354,
       "tag": "0010_magenta_rumiko_fujikawa",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1765156498530,
+      "tag": "0011_bizarre_ego",
+      "breakpoints": true
     }
   ]
 }

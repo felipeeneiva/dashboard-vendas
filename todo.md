@@ -599,3 +599,21 @@
 - [x] Copiar ícone "M" para pasta public como favicon.png
 - [x] Atualizar index.html com referência ao favicon
 - [x] Testar favicon no navegador
+
+
+### 🏢 Portal Mundo Pró - Sistema de Controle de Acesso (07/12/2025 - 22h15)
+- [x] Adicionar role "suporte" ao schema do banco de dados (drizzle/schema.ts)
+- [x] Executar migração do banco (pnpm db:push)
+- [x] Criar página inicial do Portal (/portal)
+- [x] Adicionar cards dinâmicos baseados em role do usuário
+- [x] Implementar menu dinâmico no DashboardLayout
+- [x] Criar componente de proteção de rotas (ProtectedRoute)
+- [x] Proteger rotas administrativas (apenas admin)
+- [x] Proteger rotas de vendedor (vendedor + admin)
+- [x] Criar área inicial do Suporte (/suporte)
+- [x] Adicionar rota /suporte no App.tsx
+- [x] Adicionar item de menu "Central de Suporte" no DashboardLayout
+- [x] Testar acesso como vendedor
+- [x] Testar acesso como admin
+- [x] Testar acesso como suporte
+- [x] Documentar sistema de permissões (SISTEMA_PERMISSOES.md)

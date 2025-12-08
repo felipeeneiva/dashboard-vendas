@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users, BarChart3, Target, TrendingUp, Package, PieChart, Activity } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, BarChart3, Target, TrendingUp, Package, PieChart, Activity, HeadphonesIcon } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -31,31 +31,47 @@ const menuCategories = [
   {
     title: "Visão Geral",
     items: [
-      { icon: LayoutDashboard, label: "Dashboard", path: "/" },
+      { icon: LayoutDashboard, label: "Dashboard", path: "/", roles: ["admin"] },
     ]
   },
   {
     title: "Metas e Performance",
     items: [
-      { icon: BarChart3, label: "Análises", path: "/analises" },
-      { icon: Target, label: "Metas Trimestral", path: "/metas-trimestral" },
-      { icon: TrendingUp, label: "Progresso Semanal", path: "/progresso-semanal" },
+      { icon: BarChart3, label: "Análises", path: "/analises", roles: ["admin"] },
+      { icon: Target, label: "Metas Trimestral", path: "/metas-trimestral", roles: ["admin", "user"] },
+      { icon: TrendingUp, label: "Progresso Semanal", path: "/progresso-semanal", roles: ["admin"] },
     ]
   },
   {
     title: "Fornecedores",
     items: [
-      { icon: Package, label: "Relatório", path: "/fornecedores" },
-      { icon: PieChart, label: "Dashboard", path: "/fornecedores/dashboard" },
+      { icon: Package, label: "Relatório", path: "/fornecedores", roles: ["admin"] },
+      { icon: PieChart, label: "Dashboard", path: "/fornecedores/dashboard", roles: ["admin"] },
     ]
   },
   {
     title: "Monitoramento",
     items: [
-      { icon: Activity, label: "Vendas em Tempo Real", path: "/monitoramento" },
+      { icon: Activity, label: "Vendas em Tempo Real", path: "/monitoramento", roles: ["admin"] },
+    ]
+  },
+  {
+    title: "Suporte",
+    items: [
+      { icon: HeadphonesIcon, label: "Central de Suporte", path: "/suporte", roles: ["admin", "suporte"] },
     ]
   },
 ];
+
+// Função para filtrar menu baseado no role do usuário
+function filterMenuByRole(categories: typeof menuCategories, userRole: string) {
+  return categories
+    .map(category => ({
+      ...category,
+      items: category.items.filter(item => item.roles.includes(userRole))
+    }))
+    .filter(category => category.items.length > 0);
+}
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
 const DEFAULT_WIDTH = 280;
@@ -146,7 +162,10 @@ function DashboardLayoutContent({
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const allMenuItems = menuCategories.flatMap(cat => cat.items);
+  
+  // Filtrar menu baseado no role do usuário
+  const filteredMenuCategories = user ? filterMenuByRole(menuCategories, user.role) : [];
+  const allMenuItems = filteredMenuCategories.flatMap(cat => cat.items);
   const activeMenuItem = allMenuItems.find(item => item.path === location);
   const isMobile = useIsMobile();
 
@@ -233,7 +252,7 @@ function DashboardLayoutContent({
           </SidebarHeader>
 
           <SidebarContent className="gap-0">
-            {menuCategories.map((category, catIndex) => (
+            {filteredMenuCategories.map((category, catIndex) => (
               <div key={category.title}>
                 {catIndex > 0 && <div className="h-px bg-border mx-2 my-2" />}
                 <div className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
