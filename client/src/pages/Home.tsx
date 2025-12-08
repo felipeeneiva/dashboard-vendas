@@ -6,7 +6,7 @@ import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { LineChart, Line, BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ComposedChart, Bar } from 'recharts';
-import { APP_TITLE } from "@/const";
+import { APP_TITLE, APP_LOGO } from "@/const";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
@@ -160,14 +160,22 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
       {/* Header */}
       <header className="border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-              {APP_TITLE}
-            </h1>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
-              Monitoramento de Vendas e Metas
-            </p>
+        <div className="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <img 
+              src={APP_LOGO} 
+              alt="Mundo Pró Viagens" 
+              className="h-10 w-auto object-contain"
+              style={{ filter: 'brightness(1.05) saturate(1.15)' }}
+            />
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                {APP_TITLE}
+              </h1>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Monitoramento de Vendas e Metas
+              </p>
+            </div>
           </div>
           
           <div className="flex items-center gap-3">
@@ -182,7 +190,7 @@ export default function Home() {
                 }
               }
             }}>
-              <SelectTrigger className="w-32">
+              <SelectTrigger className="w-24 sm:w-32">
                 <SelectValue placeholder="Ano" />
               </SelectTrigger>
               <SelectContent>
@@ -193,7 +201,7 @@ export default function Home() {
             </Select>
             
             <Select value={mesFiltro || 'todos'} onValueChange={(v) => setMesFiltro(v === 'todos' ? undefined : v)}>
-              <SelectTrigger className="w-44">
+              <SelectTrigger className="w-32 sm:w-44">
                 <SelectValue placeholder="Mês" />
               </SelectTrigger>
               <SelectContent>
@@ -212,7 +220,7 @@ export default function Home() {
             </Select>
             
             <Select value={ordenacao} onValueChange={(v: any) => setOrdenacao(v)}>
-              <SelectTrigger className="w-44">
+              <SelectTrigger className="w-32 sm:w-44">
                 <SelectValue placeholder="Ordenar por" />
               </SelectTrigger>
               <SelectContent>
@@ -227,36 +235,40 @@ export default function Home() {
               onClick={() => setLocation('/analises')}
               variant="outline"
               className="gap-2"
+              size="sm"
             >
               <BarChart3 className="h-4 w-4" />
-              Análises
+              <span className="hidden sm:inline">Análises</span>
             </Button>
             
             <Button
               onClick={() => setLocation('/metas-trimestral')}
               variant="outline"
               className="gap-2 border-blue-300 hover:bg-blue-50 dark:border-blue-700 dark:hover:bg-blue-900/20"
+              size="sm"
             >
               <Target className="h-4 w-4" />
-              Metas Trimestral
+              <span className="hidden md:inline">Metas Trimestral</span>
             </Button>
             
             <Button
               onClick={() => setLocation('/fornecedores')}
               variant="outline"
               className="gap-2 border-green-300 hover:bg-green-50 dark:border-green-700 dark:hover:bg-green-900/20"
+              size="sm"
             >
               <TrendingUp className="h-4 w-4" />
-              Fornecedores
+              <span className="hidden md:inline">Fornecedores</span>
             </Button>
             
             <Button
               onClick={() => setLocation('/monitoramento')}
               variant="outline"
               className="gap-2 border-purple-300 hover:bg-purple-50 dark:border-purple-700 dark:hover:bg-purple-900/20"
+              size="sm"
             >
               <Eye className="h-4 w-4" />
-              Monitoramento
+              <span className="hidden md:inline">Monitoramento</span>
             </Button>
             
             {isAuthenticated && (

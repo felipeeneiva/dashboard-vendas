@@ -564,3 +564,11 @@
 - [x] Logo maior e mais visível em todas as páginas
 - [x] Títulos em azul claro vibrante
 - [x] Testar em todas as páginas (dashboard, painel individual, apresentação)
+
+
+### 🐛 Correção de Overflow no Dashboard (07/12/2025 - 21h33)
+- [x] Corrigir botões sendo cortados no header (Análises, Atualizar 2023)
+- [x] Ajustar responsividade do header para telas menores (flex-wrap, tamanhos sm/md)
+- [x] Garantir que todos os elementos fiquem visíveis sem scroll horizontal
+- [x] Adicionar logo da Mundo Pró no header do dashboard
+- [x] Testar em diferentes resoluções
