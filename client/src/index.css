@@ -44,12 +44,12 @@
 
 :root {
   /* Mundo Pró Viagens Brand Colors */
-  --brand-orange: #fd4f0d;
-  --brand-blue: #a0d3f0;
+  --brand-orange: #ff5722; /* Laranja vibrante do site */
+  --brand-blue: #5ec4e8; /* Azul claro vibrante do logo */
   --brand-red: #ac0039;
   --brand-yellow: #f2ea86;
-  --brand-dark: #222223;
-  --brand-light: #f9f2e1;
+  --brand-dark: #2d2d2d; /* Cinza escuro do site */
+  --brand-light: #ffffff; /* Branco limpo */
   
   --primary: var(--brand-orange);
   --primary-foreground: oklch(1 0 0);
@@ -61,12 +61,13 @@
   --chart-4: var(--brand-yellow);
   --chart-5: var(--brand-dark);
   --radius: 0.65rem;
-  --background: var(--brand-light);
+  --background: oklch(0.99 0 0); /* Branco quase puro para fundo clean */
   --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
+  --card: oklch(1 0 0); /* Cards brancos puros */
   --card-foreground: oklch(0.235 0.015 65);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.235 0.015 65);
+  --sidebar: oklch(0.99 0 0); /* Sidebar branco limpo */
   --secondary: oklch(0.98 0.001 286.375);
   --secondary-foreground: oklch(0.4 0.015 65);
   --muted: oklch(0.967 0.001 286.375);

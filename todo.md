@@ -554,3 +554,13 @@
 - [x] Aplicar cores da marca nas páginas principais
 - [x] Aplicar fontes da marca nos títulos e dados
 - [x] Testar identidade visual em todas as páginas
+
+
+### 🎨 Revisão de Identidade Visual - Mundo Pró Viagens (07/12/2025)
+- [x] Analisar site oficial www.mundoproviagens.com.br
+- [x] Corrigir logo azul claro para ficar visível no sidebar (h-12, maior e saturado)
+- [x] Ajustar paleta de cores: azul claro vibrante (#5ec4e8) e laranja (#ff5722)
+- [x] Fundo branco limpo (clean) mantido conforme solicitação
+- [x] Logo maior e mais visível em todas as páginas
+- [x] Títulos em azul claro vibrante
+- [x] Testar em todas as páginas (dashboard, painel individual, apresentação)

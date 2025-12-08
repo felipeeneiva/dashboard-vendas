@@ -75,12 +75,12 @@ export default function ApresentacaoResultados() {
   const abaixoDaMeta = (dados?.metaTrimestral?.faixa60_79 || 0) + (dados?.metaTrimestral?.abaixo60 || 0);
 
   return (
-    <div className="min-h-screen p-8" style={{ backgroundColor: 'var(--brand-light)' }}>
+    <div className="min-h-screen p-8 bg-white">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">
-          <img src={APP_LOGO} alt="Mundo Pró Viagens" className="h-20 mx-auto mb-6" />
-          <h1 className="text-5xl font-bold" style={{ color: 'var(--brand-dark)' }}>
+          <img src={APP_LOGO} alt="Mundo Pró Viagens" className="h-24 mx-auto mb-6" style={{ filter: 'brightness(1.05) saturate(1.15)' }} />
+          <h1 className="text-5xl font-bold" style={{ color: 'var(--brand-blue)' }}>
             Apresentação de Resultados
           </h1>
           <p className="text-xl" style={{ color: 'var(--brand-dark)' }}>

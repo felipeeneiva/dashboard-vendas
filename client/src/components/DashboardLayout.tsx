@@ -200,8 +200,9 @@ function DashboardLayoutContent({
                 <div className="relative h-8 w-8 shrink-0 group">
                   <img
                     src={APP_LOGO}
-                    className="h-10 w-10 object-contain"
+                    className="h-12 w-12 object-contain"
                     alt="Mundo Pró Viagens"
+                    style={{ filter: 'brightness(1.1) saturate(1.2)' }}
                   />
                   <button
                     onClick={toggleSidebar}
@@ -215,13 +216,10 @@ function DashboardLayoutContent({
                   <div className="flex items-center gap-3 min-w-0">
                     <img
                       src={APP_LOGO}
-                      className="h-10 w-auto object-contain shrink-0"
+                      className="h-12 w-auto object-contain shrink-0"
                       alt="Mundo Pró Viagens"
-                      style={{ maxWidth: '140px' }}
+                      style={{ maxWidth: '180px', filter: 'brightness(1.1) saturate(1.2)' }}
                     />
-                    <span className="font-semibold tracking-tight truncate">
-                      {APP_TITLE}
-                    </span>
                   </div>
                   <button
                     onClick={toggleSidebar}

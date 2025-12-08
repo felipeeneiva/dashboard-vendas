@@ -4,7 +4,7 @@ export const APP_TITLE = import.meta.env.VITE_APP_TITLE || "App";
 
 export const APP_LOGO =
   import.meta.env.VITE_APP_LOGO ||
-  "/logo-laranja.png";
+  "/logo-azul.png?v=2";
 
 export const APP_LOGO_BLUE = "/logo-azul.png";
 
