@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Loader2, TrendingUp, DollarSign, Award, Percent, Calendar, ArrowUp, ArrowDown, Minus } from "lucide-react";
 import { useLocation } from "wouter";
+import { APP_LOGO } from "@/const";
 import { useMemo, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -130,13 +131,21 @@ export default function VendedorDetalhes({ params }: VendedorDetalhesProps) {
           </Button>
           
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-                {data.vendedor.nome}
-              </h1>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                Detalhamento de vendas e comissões
-              </p>
+            <div className="flex items-center gap-3">
+              <img 
+                src={APP_LOGO} 
+                alt="Mundo Pró Viagens" 
+                className="h-10 w-auto object-contain"
+                style={{ filter: 'brightness(1.05) saturate(1.15)' }}
+              />
+              <div>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+                  {data.vendedor.nome}
+                </h1>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                  Detalhamento de vendas e comissões
+                </p>
+              </div>
             </div>
             
             <div className="flex items-center gap-3">

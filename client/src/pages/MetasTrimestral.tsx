@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Target, AlertCircle, ArrowLeft, ArrowRight } from "lucide-react";
 import { useLocation } from "wouter";
+import { APP_LOGO } from "@/const";
 import { useState, useEffect } from "react";
 
 export default function MetasTrimestral() {
@@ -74,10 +75,18 @@ export default function MetasTrimestral() {
             </Button>
           </div>
           
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-              Metas Trimestrais
-            </h1>
+          <div className="flex items-center gap-3">
+            <img 
+              src={APP_LOGO} 
+              alt="Mundo Pró Viagens" 
+              className="h-10 w-auto object-contain"
+              style={{ filter: 'brightness(1.05) saturate(1.15)' }}
+            />
+            <div>
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+                Metas Trimestrais
+              </h1>
+            </div>
             <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
               Clique em um card para ver detalhes completos do trimestre
             </p>

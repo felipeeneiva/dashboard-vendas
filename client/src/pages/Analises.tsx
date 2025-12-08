@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { Trophy, BarChart3, FileText, Loader2, Download, ArrowLeft } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLocation } from "wouter";
+import { APP_LOGO } from "@/const";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -69,13 +70,21 @@ export default function Analises() {
           </Button>
           
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-                Análises e Relatórios
-              </h1>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                Insights e visualizações dos dados de vendas
-              </p>
+            <div className="flex items-center gap-3">
+              <img 
+                src={APP_LOGO} 
+                alt="Mundo Pró Viagens" 
+                className="h-10 w-auto object-contain"
+                style={{ filter: 'brightness(1.05) saturate(1.15)' }}
+              />
+              <div>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+                  Análises e Relatórios
+                </h1>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                  Insights e visualizações dos dados de vendas
+                </p>
+              </div>
             </div>
             
             <div className="flex items-center gap-3">

@@ -572,3 +572,16 @@
 - [x] Garantir que todos os elementos fiquem visíveis sem scroll horizontal
 - [x] Adicionar logo da Mundo Pró no header do dashboard
 - [x] Testar em diferentes resoluções
+
+
+### 🎨 Aplicar Logo em Todas as Páginas (07/12/2025 - 21h40)
+- [x] Identificar todas as páginas do sistema (13 páginas)
+- [x] Adicionar logo no painel individual (/meu-painel)
+- [x] Adicionar logo na página de apresentação (/apresentacao-resultados) - já tinha
+- [x] Adicionar logo na página de análises (/analises)
+- [x] Adicionar logo na página de metas trimestral (/metas-trimestral)
+- [x] Adicionar logo na página de fornecedores (/fornecedores) - usa DashboardLayout
+- [x] Adicionar logo na página de monitoramento (/monitoramento) - usa DashboardLayout
+- [x] Adicionar logo em páginas de detalhes de vendedores
+- [x] Logo no dashboard principal (Home.tsx) - já tinha
+- [x] Testar logo em todas as páginas (Dashboard, Meu Painel, Análises, Apresentação - todos OK!)

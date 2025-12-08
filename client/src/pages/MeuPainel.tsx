@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Loader2, TrendingUp, DollarSign, Percent, Target, MapPin, Calendar, Award, TrendingDown } from "lucide-react";
 import { trpc } from "@/lib/trpc";
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, APP_LOGO } from "@/const";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
@@ -104,13 +104,21 @@ export default function MeuPainel() {
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Olá, {vendedor.nome}! 👋
-              </h1>
-              <p className="text-gray-600 dark:text-gray-300 mt-2">
-                Aqui está o resumo completo do seu desempenho
-              </p>
+            <div className="flex items-center gap-4">
+              <img 
+                src={APP_LOGO} 
+                alt="Mundo Pró Viagens" 
+                className="h-12 w-auto object-contain"
+                style={{ filter: 'brightness(1.05) saturate(1.15)' }}
+              />
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                  Olá, {vendedor.nome}! 👋
+                </h1>
+                <p className="text-gray-600 dark:text-gray-300 mt-2">
+                  Aqui está o resumo completo do seu desempenho
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-muted-foreground" />
