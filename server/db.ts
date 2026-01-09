@@ -117,6 +117,44 @@ export async function getVendedorById(id: number): Promise<Vendedor | undefined>
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function getVendedorByOpenId(openId: string | null | undefined) {
+  console.log('[DB] getVendedorByOpenId chamado com openId:', openId);
+  const db = await getDb();
+  if (!db) {
+    console.log('[DB] Database não disponível');
+    return undefined;
+  }
+  if (!openId) {
+    console.log('[DB] OpenId é null ou undefined');
+    return undefined;
+  }
+  
+  const result = await db.select().from(vendedores).where(eq(vendedores.openId, openId)).limit(1);
+  console.log('[DB] Resultado da busca por openId:', result.length > 0 ? `Encontrado: ID ${result[0].id} - ${result[0].nome}` : 'Não encontrado');
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function vincularVendedorPorOpenId(email: string, openId: string): Promise<Vendedor | undefined> {
+  console.log('[DB] vincularVendedorPorOpenId chamado - email:', email, 'openId:', openId);
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  // Busca vendedor por email
+  const vendedor = await getVendedorByEmail(email);
+  if (!vendedor) {
+    console.log('[DB] Vendedor não encontrado para vincular');
+    return undefined;
+  }
+  
+  // Atualiza openId do vendedor
+  await db.update(vendedores)
+    .set({ openId: openId })
+    .where(eq(vendedores.id, vendedor.id));
+  
+  console.log('[DB] Vendedor vinculado com sucesso:', vendedor.nome);
+  return { ...vendedor, openId };
+}
+
 export async function getVendedorByEmail(email: string | null | undefined): Promise<Vendedor | undefined> {
   console.log('[DB] getVendedorByEmail chamado com email:', email);
   const db = await getDb();
