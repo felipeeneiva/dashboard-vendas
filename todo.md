@@ -746,8 +746,8 @@
 - [x] Salvar checkpoint e publicar (checkpoint db773634 criado)
 
 
-### 🔍 Debug Visual - Identificar Erro de Acesso Vendedores
-- [ ] Modificar MeuPainel.tsx para mostrar email do usuário logado na tela
-- [ ] Mostrar se vendedor foi encontrado ou não
-- [ ] Mostrar mensagem de erro detalhada se query falhar
-- [ ] Publicar checkpoint e testar com vendas8@
+### ✅ Debug Visual - Identificar Erro de Acesso Vendedores
+- [x] Modificar MeuPainel.tsx para mostrar email do usuário logado na tela
+- [x] Mostrar se vendedor foi encontrado ou não
+- [x] Mostrar mensagem de erro detalhada se query falhar
+- [x] Publicar checkpoint e testar com vendas8@ (checkpoint 135951de criado)

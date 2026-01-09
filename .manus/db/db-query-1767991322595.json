@@ -1,0 +1,28 @@
+{
+  "query": "SELECT id, nome, email, CHAR_LENGTH(email) as email_length FROM vendedores WHERE nome IN ('Isabelle', 'Danilo', 'Felipe') ORDER BY nome;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, nome, email, CHAR_LENGTH(email) as email_length FROM vendedores WHERE nome IN ('Isabelle', 'Danilo', 'Felipe') ORDER BY nome;",
+  "rows": [
+    {
+      "id": "7",
+      "nome": "Danilo",
+      "email": "vendas7@mundoproviagens.com.br",
+      "email_length": "30"
+    },
+    {
+      "id": "14",
+      "nome": "Felipe",
+      "email": "felipe@mundoproviagens.com.br",
+      "email_length": "29"
+    },
+    {
+      "id": "12",
+      "nome": "Isabelle",
+      "email": "vendas8@mundoproviagens.com.br",
+      "email_length": "30"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\temail\temail_length\n7\tDanilo\tvendas7@mundoproviagens.com.br\t30\n14\tFelipe\tfelipe@mundoproviagens.com.br\t29\n12\tIsabelle\tvendas8@mundoproviagens.com.br\t30\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

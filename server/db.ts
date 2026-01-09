@@ -136,6 +136,7 @@ export async function getVendedorByEmail(email: string | null | undefined): Prom
   // Busca todos os vendedores e compara manualmente (case-insensitive)
   const todosVendedores = await db.select().from(vendedores);
   console.log('[DB] Total de vendedores no banco:', todosVendedores.length);
+  console.log('[DB] Emails no banco:', todosVendedores.map(v => `${v.nome}: "${v.email}" (length: ${v.email?.length})`).join(', '));
   
   const vendedorEncontrado = todosVendedores.find(v => 
     v.email && v.email.trim().toLowerCase() === emailNormalizado

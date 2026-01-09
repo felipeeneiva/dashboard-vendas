@@ -1387,9 +1387,19 @@ export const appRouter = router({
       }).optional())
       .query(async ({ ctx, input }) => {
         // Busca vendedor pelo email do usuário logado
-        console.log('[DEBUG] Email do usuário logado:', ctx.user.email);
+               console.log('='.repeat(80));
+        console.log('[DEBUG] Email do usuário:', ctx.user.email);
+        console.log('[DEBUG] Tipo do email:', typeof ctx.user.email);
+        console.log('[DEBUG] Email length:', ctx.user.email?.length);
+        console.log('[DEBUG] Email em HEX:', Buffer.from(ctx.user.email || '', 'utf-8').toString('hex'));
+        console.log('[DEBUG] Email trimmed:', ctx.user.email?.trim());
+        console.log('[DEBUG] Email lowercase:', ctx.user.email?.toLowerCase());
+        console.log('[DEBUG] Email normalizado:', ctx.user.email?.trim().toLowerCase());
+        console.log('='.repeat(80));
+        
         const vendedor = await db.getVendedorByEmail(ctx.user.email);
         console.log('[DEBUG] Vendedor encontrado:', vendedor ? `ID ${vendedor.id} - ${vendedor.nome}` : 'NULL');
+        console.log('='.repeat(80));
         
         if (!vendedor) {
           console.error('[ERROR] Vendedor não encontrado para email:', ctx.user.email);
