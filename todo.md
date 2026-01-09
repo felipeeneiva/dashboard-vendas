@@ -653,3 +653,13 @@
 - [x] Identificar onde valores individuais (meta, vendido, falta) são mapeados - linhas 45-47
 - [x] Remover divisão por 100 dos valores individuais no map de vendedoresAnonimos
 - [x] Testar que valores individuais agora batem com página administrativa - todos os valores corretos!
+
+### Feature: Modo Apresentação
+- [x] Adicionar estado React para controlar modo apresentação (useState)
+- [x] Implementar função para ativar/desativar fullscreen (document.documentElement.requestFullscreen)
+- [x] Criar botão "Iniciar Apresentação" no header da página
+- [x] Ocultar header/logo quando em modo apresentação (condicional !modoApresentacao)
+- [x] Adicionar listener para detectar ESC (fullscreenchange event)
+- [x] Adicionar botão flutuante "Sair da Apresentação" (canto superior direito)
+- [x] Testar ativação de fullscreen - funcionando perfeitamente
+- [x] Testar saída de fullscreen (ESC) - botão flutuante e ESC funcionam

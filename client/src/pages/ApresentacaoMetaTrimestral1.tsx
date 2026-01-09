@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { Loader2, Trophy, TrendingUp, Target, Award } from 'lucide-react';
+import { Loader2, Trophy, TrendingUp, Target, Award, Maximize, Minimize } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { APP_LOGO } from "@/const";
 import { Badge } from "@/components/ui/badge";
@@ -11,8 +12,40 @@ import { Badge } from "@/components/ui/badge";
  * Vendedores identificados como AAAAA, BBBBB, CCCCC... ordenados por progresso
  */
 export default function ApresentacaoMetaTrimestral1() {
+  // Estado para controlar modo apresentação
+  const [modoApresentacao, setModoApresentacao] = useState(false);
+
   // Buscar dados da meta trimestral (endpoint já existente)
   const { data: metasData, isLoading } = trpc.vendedores.metasTrimestraisAdmin.useQuery({ ano: 2025 });
+
+  // Função para ativar/desativar fullscreen
+  const toggleFullscreen = async () => {
+    if (!document.fullscreenElement) {
+      try {
+        await document.documentElement.requestFullscreen();
+        setModoApresentacao(true);
+      } catch (err) {
+        console.error('Erro ao ativar fullscreen:', err);
+      }
+    } else {
+      if (document.exitFullscreen) {
+        await document.exitFullscreen();
+        setModoApresentacao(false);
+      }
+    }
+  };
+
+  // Listener para detectar saída de fullscreen (ESC)
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setModoApresentacao(false);
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
 
   if (isLoading) {
     return (
@@ -81,17 +114,39 @@ export default function ApresentacaoMetaTrimestral1() {
   return (
     <div className="min-h-screen bg-[#f9f2e1] p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <img src={APP_LOGO} alt="Mundo Pró Viagens" className="h-12 saturate-150" />
-            <div>
-              <h1 className="text-3xl font-bold text-[#5ec4e8]">Meta Trimestral 1</h1>
-              <p className="text-[#222223]">Dezembro/2025 - Janeiro/2026 - Fevereiro/2026</p>
+        {/* Header - Oculto em modo apresentação */}
+        {!modoApresentacao && (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <img src={APP_LOGO} alt="Mundo Pró Viagens" className="h-12 saturate-150" />
+              <div>
+                <h1 className="text-3xl font-bold text-[#5ec4e8]">Meta Trimestral 1</h1>
+                <p className="text-[#222223]">Dezembro/2025 - Janeiro/2026 - Fevereiro/2026</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={toggleFullscreen}
+                className="flex items-center gap-2 px-4 py-2 bg-[#5ec4e8] text-white rounded-lg hover:bg-[#4ab3d7] transition-colors"
+              >
+                <Maximize className="w-5 h-5" />
+                Iniciar Apresentação
+              </button>
+              <Trophy className="w-12 h-12 text-[#ff5722]" />
             </div>
           </div>
-          <Trophy className="w-12 h-12 text-[#ff5722]" />
-        </div>
+        )}
+
+        {/* Botão flutuante para sair da apresentação */}
+        {modoApresentacao && (
+          <button
+            onClick={toggleFullscreen}
+            className="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-[#ff5722] text-white rounded-lg hover:bg-[#e64a19] transition-colors shadow-lg"
+          >
+            <Minimize className="w-5 h-5" />
+            Sair da Apresentação
+          </button>
+        )}
 
         {/* Cards de Resumo */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
