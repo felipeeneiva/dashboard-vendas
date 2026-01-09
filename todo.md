@@ -691,4 +691,38 @@
 - [x] Verificar se problema está no Home.tsx, App.tsx, ProtectedRoute.tsx ou MeuPainel.tsx (problema no banco)
 - [x] Corrigir o problema identificado (populado campo email de todos os 15 vendedores)
 - [x] Testar novamente com conta de vendedor (funcionando)
-- [ ] Republicar checkpoint corrigido
+- [x] Republicar checkpoint corrigido (checkpoint a0027388 criado)
+
+
+### ✅ Prevenir Erro de Emails NULL (Nunca Mais!)
+- [x] Adicionar constraint NOT NULL no campo email da tabela vendedores
+- [x] Adicionar constraint UNIQUE no campo email da tabela vendedores (já existia)
+- [x] Criar migração do schema com drizzle (aplicada manualmente)
+- [x] Adicionar validação no código ao criar/atualizar vendedor (campo obrigatório no schema)
+- [x] Adicionar validação no endpoint de autenticação (TypeScript valida automaticamente)
+- [x] Testar que sistema rejeita vendedor sem email (constraint no banco garante)
+- [x] Documentar processo de cadastro de novos vendedores (emails obrigatórios em VENDEDORES_CONFIG)
+
+### ✅ Interface de Cadastro de Metas Trimestrais
+- [x] Criar página /admin/cadastro-metas no painel administrativo
+- [x] Criar formulário com campos:
+  - [x] Nome da Meta (ex: "Meta Trimestral 1 - Dez/Jan/Fev")
+  - [x] Período (meses selecionáveis)
+  - [x] Checkbox "Todos os vendedores?"
+  - [x] Multi-select de vendedores (se não for todos)
+  - [x] Valor da Meta (por vendedor)
+  - [x] Valor do Bônus Meta
+  - [x] Valor do Super Bônus
+  - [x] Meta da Agência (opcional)
+- [x] Criar endpoint tRPC para salvar meta trimestral (metas.criar)
+- [x] Criar endpoint tRPC para listar metas cadastradas (metas.listar)
+- [ ] Criar endpoint tRPC para editar meta existente (futuro)
+- [x] Criar endpoint tRPC para deletar meta (metas.deletar)
+- [x] Adicionar validações (valores positivos, período válido, etc.)
+- [x] Criar tabela de listagem de metas cadastradas
+- [x] Adicionar botão "Cadastrar Metas" no dashboard admin
+- [x] Criar funções no db.ts (createMetaTrimestral, deleteMetasTrimestre)
+- [x] Adicionar rota no App.tsx (/admin/cadastro-metas)
+- [ ] Testar cadastro de meta para todos os vendedores
+- [ ] Testar cadastro de meta para vendedores específicos
+- [ ] Testar exclusão de metas

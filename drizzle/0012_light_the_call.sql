@@ -1,0 +1,1 @@
+ALTER TABLE `vendedores` MODIFY COLUMN `email` varchar(320) NOT NULL;

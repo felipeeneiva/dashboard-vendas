@@ -509,3 +509,50 @@ export async function getAllMetasTrimestrais(): Promise<MetaTrimestral[]> {
   const result = await db.select().from(metasTrimestrais);
   return result;
 }
+
+export async function createMetaTrimestral(meta: {
+  vendedorId: number;
+  trimestre: string;
+  metaTrimestral: number;
+  superMeta: number;
+  bonusMeta: number;
+  bonusSuperMeta: number;
+  metaAgencia: number;
+}): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create meta trimestral: database not available");
+    return;
+  }
+
+  try {
+    await db.insert(metasTrimestrais).values(meta).onDuplicateKeyUpdate({
+      set: {
+        metaTrimestral: meta.metaTrimestral,
+        superMeta: meta.superMeta,
+        bonusMeta: meta.bonusMeta,
+        bonusSuperMeta: meta.bonusSuperMeta,
+        metaAgencia: meta.metaAgencia,
+        updatedAt: new Date(),
+      },
+    });
+  } catch (error) {
+    console.error("[Database] Failed to create meta trimestral:", error);
+    throw error;
+  }
+}
+
+export async function deleteMetasTrimestre(trimestre: string): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete metas: database not available");
+    return;
+  }
+
+  try {
+    await db.delete(metasTrimestrais).where(eq(metasTrimestrais.trimestre, trimestre));
+  } catch (error) {
+    console.error("[Database] Failed to delete metas:", error);
+    throw error;
+  }
+}

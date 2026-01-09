@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar, ArrowUp, ArrowDown, Trophy } from 'lucide-react';
+import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar, ArrowUp, ArrowDown, Trophy, Settings } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { LineChart, Line, BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ComposedChart, Bar } from 'recharts';
@@ -249,6 +249,16 @@ export default function Home() {
             >
               <Target className="h-4 w-4" />
               <span className="hidden md:inline">Metas Trimestral</span>
+            </Button>
+            
+            <Button
+              onClick={() => setLocation('/admin/cadastro-metas')}
+              variant="outline"
+              className="gap-2 border-orange-300 hover:bg-orange-50 dark:border-orange-700 dark:hover:bg-orange-900/20"
+              size="sm"
+            >
+              <Settings className="h-4 w-4" />
+              <span className="hidden md:inline">Cadastrar Metas</span>
             </Button>
             
             <Button

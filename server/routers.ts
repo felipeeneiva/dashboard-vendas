@@ -8,20 +8,21 @@ import { extrairMetricasAba, extrairDadosVendedor, gerarListaMeses } from "./she
 
 // Configuração dos vendedores
 const VENDEDORES_CONFIG = [
-  { nome: 'Rafael', sheetId: '1ZJz0MgOHLkYYNW5eWZmOAU797KXQPbwGmp8YnWl4NPo', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Gabriel', sheetId: '1Fp7Y6ytwk7SLZAEZkSw-gAU2nCWVK9M1SyK0enbjQfY', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Francine', sheetId: '1PpzDxn6eM3LKwtJTchD6qVbbyUkAeDnA6hNy0gmrx10', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Mauro', sheetId: '19CNbM8qmkDFi-TxPDH8xaKeK0xOngcnDR2zOYH-LFSk', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Luana', sheetId: '1tvfL-1S1kiAAyvFoKJzznW_RWYpLb6PAt-KiIF6vLjA', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Nathaly', sheetId: '1jVIANOJ01UCat7Y8thFXkWZyhiv5Jzty-_9yK-xeKms', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Danilo', sheetId: '1Yu3qKph4F59HnzMnIVFkTlB_Qf-LHTa2eU8ny-erN28', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Pedro', sheetId: '1BAVNbSUX9WUEAwnQ1zPaiBMXupBnrDOEdjYVjeMy8tE', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Leonardo', sheetId: '1xLkrLj7SEUa9gexhf-XgCBjZCI7XifchCek3ZBLxMZY', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Yasmin', sheetId: '1UeOUxTlb7IWIhllK87Bb73Wx7F1PfbwPKJSwPCzMu9U', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Lucas', sheetId: '1Bd53lZyS2aOUmIS4gSY_PtfuYFu-G_aUgXeH8HPEVZk', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Isabelle', sheetId: '1xpngLR6KJZSAJTKqmDvev2skDX_SQOX9ScNENk2pZPg', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Andrios', sheetId: '1srU7o9d3HInp0o6oHZhuVOVGZOVHSC14Kp68lFvbJ7s', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Felipe', sheetId: '1lQFpUKdMbYA4l2blzaHQRGUeh1gX9_b6Qsj_hmXA42M', dataEntrada: new Date('2024-01-01') }
+  { nome: 'Rafael', email: 'rafael@mundoproviagens.com.br', sheetId: '1ZJz0MgOHLkYYNW5eWZmOAU797KXQPbwGmp8YnWl4NPo', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Gabriel', email: 'gabriel@mundoproviagens.com.br', sheetId: '1Fp7Y6ytwk7SLZAEZkSw-gAU2nCWVK9M1SyK0enbjQfY', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Francine', email: 'francine@mundoproviagens.com.br', sheetId: '1PpzDxn6eM3LKwtJTchD6qVbbyUkAeDnA6hNy0gmrx10', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Mauro', email: 'mauro@mundoproviagens.com.br', sheetId: '19CNbM8qmkDFi-TxPDH8xaKeK0xOngcnDR2zOYH-LFSk', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Luana', email: 'luana@mundoproviagens.com.br', sheetId: '1tvfL-1S1kiAAyvFoKJzznW_RWYpLb6PAt-KiIF6vLjA', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Nathaly', email: 'nathaly@mundoproviagens.com.br', sheetId: '1jVIANOJ01UCat7Y8thFXkWZyhiv5Jzty-_9yK-xeKms', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Danilo', email: 'danilo@mundoproviagens.com.br', sheetId: '1Yu3qKph4F59HnzMnIVFkTlB_Qf-LHTa2eU8ny-erN28', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Pedro', email: 'pedro@mundoproviagens.com.br', sheetId: '1BAVNbSUX9WUEAwnQ1zPaiBMXupBnrDOEdjYVjeMy8tE', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Leonardo', email: 'leonardo@mundoproviagens.com.br', sheetId: '1xLkrLj7SEUa9gexhf-XgCBjZCI7XifchCek3ZBLxMZY', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Yasmin', email: 'yasmin@mundoproviagens.com.br', sheetId: '1UeOUxTlb7IWIhllK87Bb73Wx7F1PfbwPKJSwPCzMu9U', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Lucas', email: 'lucas@mundoproviagens.com.br', sheetId: '1Bd53lZyS2aOUmIS4gSY_PtfuYFu-G_aUgXeH8HPEVZk', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Isabelle', email: 'isabelle@mundoproviagens.com.br', sheetId: '1xpngLR6KJZSAJTKqmDvev2skDX_SQOX9ScNENk2pZPg', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Andrios', email: 'andrios@mundoproviagens.com.br', sheetId: '1srU7o9d3HInp0o6oHZhuVOVGZOVHSC14Kp68lFvbJ7s', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Felipe', email: 'felipe@mundoproviagens.com.br', sheetId: '1lQFpUKdMbYA4l2blzaHQRGUeh1gX9_b6Qsj_hmXA42M', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Júlia', email: 'julia@mundoproviagens.com.br', sheetId: '1FAKE_JULIA_ID', dataEntrada: new Date('2024-01-01') }
 ];
 
 export const appRouter = router({
@@ -91,6 +92,83 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         await db.updateVendedorMeta(input.vendedorId, input.metaTrimestral);
+        return { success: true };
+      }),
+
+    // Listar todas as metas cadastradas (agrupadas por trimestre)
+    listar: publicProcedure.query(async () => {
+      const metas = await db.getAllMetasTrimestrais();
+      
+      // Agrupa por trimestre
+      const metasPorTrimestre = new Map<string, any>();
+      
+      for (const meta of metas) {
+        if (!metasPorTrimestre.has(meta.trimestre)) {
+          metasPorTrimestre.set(meta.trimestre, {
+            trimestre: meta.trimestre,
+            nomeMeta: meta.trimestre, // Pode ser melhorado adicionando campo nomeMeta na tabela
+            metaTrimestral: meta.metaTrimestral,
+            superMeta: meta.superMeta,
+            bonusMeta: meta.bonusMeta,
+            bonusSuperMeta: meta.bonusSuperMeta,
+            metaAgencia: meta.metaAgencia || 0,
+            totalVendedores: 1
+          });
+        } else {
+          const atual = metasPorTrimestre.get(meta.trimestre);
+          atual.totalVendedores++;
+        }
+      }
+      
+      return Array.from(metasPorTrimestre.values());
+    }),
+
+    // Criar nova meta trimestral
+    criar: protectedProcedure
+      .input(z.object({
+        nomeMeta: z.string(),
+        trimestre: z.string(),
+        meses: z.array(z.string()),
+        vendedorIds: z.array(z.number()),
+        metaTrimestral: z.number(),
+        superMeta: z.number(),
+        bonusMeta: z.number(),
+        bonusSuperMeta: z.number(),
+        metaAgencia: z.number().optional().default(0),
+      }))
+      .mutation(async ({ input }) => {
+        // Validações
+        if (input.vendedorIds.length === 0) {
+          throw new Error("Selecione pelo menos um vendedor");
+        }
+
+        if (input.metaTrimestral <= 0) {
+          throw new Error("Valor da meta deve ser maior que zero");
+        }
+
+        // Criar meta para cada vendedor
+        for (const vendedorId of input.vendedorIds) {
+          await db.createMetaTrimestral({
+            vendedorId,
+            trimestre: input.trimestre,
+            metaTrimestral: input.metaTrimestral,
+            superMeta: input.superMeta,
+            bonusMeta: input.bonusMeta,
+            bonusSuperMeta: input.bonusSuperMeta,
+            metaAgencia: input.metaAgencia,
+          });
+        }
+
+        return { success: true, vendedoresAtualizados: input.vendedorIds.length };
+      }),
+
+    // Deletar meta trimestral
+    deletar: protectedProcedure
+      .input(z.object({
+        trimestre: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.deleteMetasTrimestre(input.trimestre);
         return { success: true };
       }),
 
@@ -197,11 +275,22 @@ export const appRouter = router({
       }));
     }),
 
+    // Lista vendedores para cadastro de metas (retorna id e nome)
+    listar: publicProcedure.query(async () => {
+      const vendedores = await db.getAllVendedores();
+      return vendedores.map(v => ({
+        id: v.id,
+        nome: v.nome,
+        email: v.email,
+      }));
+    }),
+
     // Inicializa vendedores no banco (executar uma vez)
     inicializar: protectedProcedure.mutation(async () => {
       for (const config of VENDEDORES_CONFIG) {
         await db.upsertVendedor({
           nome: config.nome,
+          email: config.email,
           sheetId: config.sheetId,
           ativo: true,
           dataEntrada: config.dataEntrada,
