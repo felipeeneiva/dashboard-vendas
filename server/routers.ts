@@ -1392,7 +1392,9 @@ export const appRouter = router({
         console.log('[DEBUG] Vendedor encontrado:', vendedor ? `ID ${vendedor.id} - ${vendedor.nome}` : 'NULL');
         
         if (!vendedor) {
-          throw new Error('Vendedor não encontrado para este email');
+          console.error('[ERROR] Vendedor não encontrado para email:', ctx.user.email);
+          // Retorna null para o frontend mostrar mensagem de erro
+          return null;
         }
         
         // Busca todas as métricas do vendedor

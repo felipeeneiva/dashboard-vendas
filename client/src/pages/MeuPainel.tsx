@@ -72,14 +72,20 @@ export default function MeuPainel() {
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-4">
         <Card className="max-w-md w-full border-destructive">
           <CardHeader>
-            <CardTitle className="text-destructive">Acesso Negado</CardTitle>
+            <CardTitle className="text-destructive">Erro ao Carregar Dados</CardTitle>
             <CardDescription>
-              Vendedor não encontrado. Verifique se seu email está cadastrado no sistema.
+              Não foi possível carregar seus dados. Entre em contato com o suporte.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-2">
             <p className="text-sm text-muted-foreground">
               Email da conta: <span className="font-mono">{user?.email}</span>
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Status: <span className="font-mono">isLoading={isLoading.toString()}, data=null</span>
+            </p>
+            <p className="text-xs text-muted-foreground mt-4">
+              Se você é um vendedor e deveria ter acesso, verifique se seu email está cadastrado corretamente no sistema.
             </p>
           </CardContent>
         </Card>
