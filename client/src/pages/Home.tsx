@@ -278,7 +278,7 @@ export default function Home() {
               size="sm"
             >
               <Trophy className="h-4 w-4" />
-              <span className="hidden md:inline">Meta T1</span>
+              <span className="hidden md:inline">Sales Meeting</span>
             </Button>
             
             {isAuthenticated && (

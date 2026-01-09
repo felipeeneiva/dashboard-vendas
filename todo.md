@@ -669,3 +669,8 @@
 - [x] Adicionar percentualReceita ao backend (server/routers.ts linha 273-285)
 - [x] Adicionar coluna "% Receita" no ranking de performance (linha 331-336)
 - [x] Testar exibição de % receita na apresentação - funcionando perfeitamente!
+
+### Trocar Texto do Botão Meta T1
+- [x] Localizar botão "Meta T1" no código (Home.tsx linha 281)
+- [x] Trocar texto de "Meta T1" para "Sales Meeting"
+- [x] Testar que botão aparece com novo texto no dashboard - funcionando!
