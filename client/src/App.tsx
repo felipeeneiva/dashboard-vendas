@@ -68,7 +68,11 @@ function Router() {
       </Route>
       <Route path="/meu-painel" component={MeuPainel} />
       <Route path="/apresentacao-resultados" component={ApresentacaoResultados} />
-      <Route path="/apresentacao-meta-trimestral-1" component={ApresentacaoMetaTrimestral1} />
+      <Route path="/apresentacao-meta-trimestral-1">
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <ApresentacaoMetaTrimestral1 />
+        </ProtectedRoute>
+      </Route>
       <Route path="/suporte">
         <ProtectedRoute allowedRoles={["admin", "suporte"]}>
           <Suporte />

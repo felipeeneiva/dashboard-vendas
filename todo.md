@@ -634,3 +634,9 @@
 - [x] Adicionar métricas consolidadas (meta total, vendido, falta, %)
 - [x] Adicionar distribuição de performance (No Caminho, Atenção, Em Risco)
 - [x] Testar apresentação e validar que não expõe nomes
+
+### Restringir Acesso à Apresentação Meta Trimestral 1
+- [x] Adicionar ProtectedRoute com allowedRoles: ["admin"] na rota /apresentacao-meta-trimestral-1
+- [x] Testar que admin acessa normalmente
+- [x] Testar que vendedor é redirecionado para /meu-painel
+- [x] Testar que suporte é redirecionado para /meu-painel
