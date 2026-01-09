@@ -617,3 +617,20 @@
 - [x] Testar acesso como admin
 - [x] Testar acesso como suporte
 - [x] Documentar sistema de permissões (SISTEMA_PERMISSOES.md)
+
+### Bug: Admin vendas@mundoproviagens.com.br sendo redirecionado de /metas-trimestral
+- [x] Verificar identificação de admins no código (server/db.ts)
+- [x] Verificar se vendas@mundoproviagens.com.br está cadastrado no banco com role admin
+- [x] Corrigir role de vendas@mundoproviagens.com.br para admin no banco de dados
+- [ ] Testar que vendas@mundoproviagens.com.br acessa /metas-trimestral sem redirecionamento
+- [ ] Testar que felipe@mundoproviagens.com.br também acessa normalmente
+
+### Página de Apresentação Meta Trimestral 1 (Dez/Jan/Fev)
+- [x] Buscar dados da Meta Trimestral 1 no banco de dados
+- [x] Criar endpoint tRPC para dados anonimizados ordenados por progresso (usa endpoint existente)
+- [x] Criar página /apresentacao-meta-trimestral-1 com identificadores AAAAA, BBBBB, CCCCC
+- [x] Adicionar gráfico de progresso geral da meta
+- [x] Adicionar tabela de ranking anônimo ordenado por % atingido
+- [x] Adicionar métricas consolidadas (meta total, vendido, falta, %)
+- [x] Adicionar distribuição de performance (No Caminho, Atenção, Em Risco)
+- [x] Testar apresentação e validar que não expõe nomes

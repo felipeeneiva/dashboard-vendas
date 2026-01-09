@@ -1,0 +1,145 @@
+{
+  "query": "SELECT mt.trimestre, mt.metaAgencia, v.nome, mt.metaTrimestral, mt.superMeta, mt.bonusMeta, mt.bonusSuperMeta FROM metas_trimestrais mt JOIN vendedores v ON mt.vendedorId = v.id WHERE mt.trimestre = 'Meta Trimestral 1' ORDER BY v.nome;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT mt.trimestre, mt.metaAgencia, v.nome, mt.metaTrimestral, mt.superMeta, mt.bonusMeta, mt.bonusSuperMeta FROM metas_trimestrais mt JOIN vendedores v ON mt.vendedorId = v.id WHERE mt.trimestre = 'Meta Trimestral 1' ORDER BY v.nome;",
+  "rows": [
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "1000000000",
+      "nome": "Andrios",
+      "metaTrimestral": "20000000",
+      "superMeta": "24000000",
+      "bonusMeta": "200000",
+      "bonusSuperMeta": "220000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Danilo",
+      "metaTrimestral": "48000000",
+      "superMeta": "57600000",
+      "bonusMeta": "480000",
+      "bonusSuperMeta": "630000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "1000000000",
+      "nome": "Felipe",
+      "metaTrimestral": "20000000",
+      "superMeta": "24000000",
+      "bonusMeta": "200000",
+      "bonusSuperMeta": "220000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Francine",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Gabriel",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Isabelle",
+      "metaTrimestral": "24000000",
+      "superMeta": "28800000",
+      "bonusMeta": "240000",
+      "bonusSuperMeta": "310000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Júlia",
+      "metaTrimestral": "15000000",
+      "superMeta": "18000000",
+      "bonusMeta": "150000",
+      "bonusSuperMeta": "190000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Leonardo",
+      "metaTrimestral": "43200000",
+      "superMeta": "51840000",
+      "bonusMeta": "432000",
+      "bonusSuperMeta": "570000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Luana",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Lucas",
+      "metaTrimestral": "24000000",
+      "superMeta": "28800000",
+      "bonusMeta": "240000",
+      "bonusSuperMeta": "310000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Mauro",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Nathaly",
+      "metaTrimestral": "48000000",
+      "superMeta": "57600000",
+      "bonusMeta": "480000",
+      "bonusSuperMeta": "630000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Pedro",
+      "metaTrimestral": "42000000",
+      "superMeta": "50400000",
+      "bonusMeta": "420000",
+      "bonusSuperMeta": "550000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Rafael",
+      "metaTrimestral": "60000000",
+      "superMeta": "72000000",
+      "bonusMeta": "600000",
+      "bonusSuperMeta": "790000"
+    },
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaAgencia": "571200000",
+      "nome": "Yasmin",
+      "metaTrimestral": "42000000",
+      "superMeta": "50400000",
+      "bonusMeta": "420000",
+      "bonusSuperMeta": "550000"
+    }
+  ],
+  "messages": [],
+  "stdout": "trimestre\tmetaAgencia\tnome\tmetaTrimestral\tsuperMeta\tbonusMeta\tbonusSuperMeta\nMeta Trimestral 1\t1000000000\tAndrios\t20000000\t24000000\t200000\t220000\nMeta Trimestral 1\t571200000\tDanilo\t48000000\t57600000\t480000\t630000\nMeta Trimestral 1\t1000000000\tFelipe\t20000000\t24000000\t200000\t220000\nMeta Trimestral 1\t571200000\tFrancine\t60000000\t72000000\t600000\t790000\nMeta Trimestral 1\t571200000\tGabriel\t60000000\t72000000\t600000\t790000\nMeta Trimestral 1\t571200000\tIsabelle\t24000000\t28800000\t240000\t310000\nMeta Trimestral 1\t571200000\tJúlia\t15000000\t18000000\t150000\t190000\nMeta Trimestral 1\t571200000\tLeonardo\t43200000\t51840000\t432000\t570000\nMeta Trimestral 1\t571200000\tLuana\t60000000\t72000000\t600000\t790000\nMeta Trimestral 1\t571200000\tLucas\t24000000\t28800000\t240000\t310000\nMeta Trimestral 1\t571200000\tMauro\t60000000\t72000000\t600000\t790000\nMeta Trimestral 1\t571200000\tNathaly\t48000000\t57600000\t480000\t630000\nMeta Trimestral 1\t571200000\tPedro\t42000000\t50400000\t420000\t550000\nMeta Trimestral 1\t571200000\tRafael\t60000000\t72000000\t600000\t790000\nMeta Trimestral 1\t571200000\tYasmin\t42000000\t50400000\t420000\t550000\n",
+  "stderr": "",
+  "execution_time_ms": 56
+}

@@ -1,0 +1,100 @@
+{
+  "query": "SELECT v.id AS vendedorId, v.nome, SUM(m.totalVendas) AS vendasTrimestre, SUM(m.totalReceita) AS receitaTrimestre FROM vendedores v LEFT JOIN metricas m ON v.id = m.vendedorId WHERE m.mes IN ('Dezembro/2025', 'Janeiro/2026', 'Fevereiro/2026') GROUP BY v.id, v.nome ORDER BY vendasTrimestre DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT v.id AS vendedorId, v.nome, SUM(m.totalVendas) AS vendasTrimestre, SUM(m.totalReceita) AS receitaTrimestre FROM vendedores v LEFT JOIN metricas m ON v.id = m.vendedorId WHERE m.mes IN ('Dezembro/2025', 'Janeiro/2026', 'Fevereiro/2026') GROUP BY v.id, v.nome ORDER BY vendasTrimestre DESC;",
+  "rows": [
+    {
+      "vendedorId": "4",
+      "nome": "Mauro",
+      "vendasTrimestre": "15697400",
+      "receitaTrimestre": "2291802"
+    },
+    {
+      "vendedorId": "1",
+      "nome": "Rafael",
+      "vendasTrimestre": "13847449",
+      "receitaTrimestre": "877236"
+    },
+    {
+      "vendedorId": "30001",
+      "nome": "Gabriel",
+      "vendasTrimestre": "11910432",
+      "receitaTrimestre": "2315797"
+    },
+    {
+      "vendedorId": "10",
+      "nome": "Yasmin",
+      "vendasTrimestre": "10782786",
+      "receitaTrimestre": "1452963"
+    },
+    {
+      "vendedorId": "9",
+      "nome": "Leonardo",
+      "vendasTrimestre": "9672000",
+      "receitaTrimestre": "1150274"
+    },
+    {
+      "vendedorId": "5",
+      "nome": "Luana",
+      "vendasTrimestre": "8591735",
+      "receitaTrimestre": "1223476"
+    },
+    {
+      "vendedorId": "3",
+      "nome": "Francine",
+      "vendasTrimestre": "8409741",
+      "receitaTrimestre": "1041226"
+    },
+    {
+      "vendedorId": "11",
+      "nome": "Lucas",
+      "vendasTrimestre": "7613016",
+      "receitaTrimestre": "1179181"
+    },
+    {
+      "vendedorId": "8",
+      "nome": "Pedro",
+      "vendasTrimestre": "4353747",
+      "receitaTrimestre": "529229"
+    },
+    {
+      "vendedorId": "12",
+      "nome": "Isabelle",
+      "vendasTrimestre": "1550296",
+      "receitaTrimestre": "203987"
+    },
+    {
+      "vendedorId": "7",
+      "nome": "Danilo",
+      "vendasTrimestre": "1231107",
+      "receitaTrimestre": "111485"
+    },
+    {
+      "vendedorId": "2",
+      "nome": "Nathaly",
+      "vendasTrimestre": "70000",
+      "receitaTrimestre": "0"
+    },
+    {
+      "vendedorId": "60001",
+      "nome": "Júlia",
+      "vendasTrimestre": "0",
+      "receitaTrimestre": "0"
+    },
+    {
+      "vendedorId": "14",
+      "nome": "Felipe",
+      "vendasTrimestre": "0",
+      "receitaTrimestre": "0"
+    },
+    {
+      "vendedorId": "13",
+      "nome": "Andrios",
+      "vendasTrimestre": "0",
+      "receitaTrimestre": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "vendedorId\tnome\tvendasTrimestre\treceitaTrimestre\n4\tMauro\t15697400\t2291802\n1\tRafael\t13847449\t877236\n30001\tGabriel\t11910432\t2315797\n10\tYasmin\t10782786\t1452963\n9\tLeonardo\t9672000\t1150274\n5\tLuana\t8591735\t1223476\n3\tFrancine\t8409741\t1041226\n11\tLucas\t7613016\t1179181\n8\tPedro\t4353747\t529229\n12\tIsabelle\t1550296\t203987\n7\tDanilo\t1231107\t111485\n2\tNathaly\t70000\t0\n60001\tJúlia\t0\t0\n14\tFelipe\t0\t0\n13\tAndrios\t0\t0\n",
+  "stderr": "",
+  "execution_time_ms": 56
+}

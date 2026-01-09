@@ -17,6 +17,7 @@ import MetaTrimestralDetalhes from "./pages/MetaTrimestralDetalhes";
 import ApresentacaoResultados from "./pages/ApresentacaoResultados";
 import Portal from "./pages/Portal";
 import Suporte from "./pages/Suporte";
+import ApresentacaoMetaTrimestral1 from "./pages/ApresentacaoMetaTrimestral1";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function Router() {
@@ -67,6 +68,7 @@ function Router() {
       </Route>
       <Route path="/meu-painel" component={MeuPainel} />
       <Route path="/apresentacao-resultados" component={ApresentacaoResultados} />
+      <Route path="/apresentacao-meta-trimestral-1" component={ApresentacaoMetaTrimestral1} />
       <Route path="/suporte">
         <ProtectedRoute allowedRoles={["admin", "suporte"]}>
           <Suporte />

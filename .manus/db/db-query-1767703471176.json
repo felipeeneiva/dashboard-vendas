@@ -1,0 +1,20 @@
+{
+  "query": "SELECT email, role, name FROM users WHERE email IN ('vendas@mundoproviagens.com.br', 'felipe@mundoproviagens.com.br');",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT email, role, name FROM users WHERE email IN ('vendas@mundoproviagens.com.br', 'felipe@mundoproviagens.com.br');",
+  "rows": [
+    {
+      "email": "felipe@mundoproviagens.com.br",
+      "role": "admin",
+      "name": "Felipe Neiva"
+    },
+    {
+      "email": "vendas@mundoproviagens.com.br",
+      "role": "admin",
+      "name": "vendas"
+    }
+  ],
+  "messages": [],
+  "stdout": "email\trole\tname\nfelipe@mundoproviagens.com.br\tadmin\tFelipe Neiva\nvendas@mundoproviagens.com.br\tadmin\tvendas\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

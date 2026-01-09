@@ -1,0 +1,8 @@
+{
+  "query": "SELECT mt.nome AS trimestre, mt.meses, mt.metaAgencia, v.nome, mt.meta, mt.superMeta, mt.bonusMeta, mt.bonusSuperMeta FROM metas_trimestrais mt JOIN vendedores v ON mt.vendedorId = v.id WHERE mt.nome = 'Meta Trimestral 1' ORDER BY v.nome;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT mt.nome AS trimestre, mt.meses, mt.metaAgencia, v.nome, mt.meta, mt.superMeta, mt.bonusMeta, mt.bonusSuperMeta FROM metas_trimestrais mt JOIN vendedores v ON mt.vendedorId = v.id WHERE mt.nome = 'Meta Trimestral 1' ORDER BY v.nome;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'mt.nome' in 'where clause'"
+  ]
+}

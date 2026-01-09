@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar, ArrowUp, ArrowDown } from 'lucide-react';
+import { Loader2, RefreshCw, TrendingUp, DollarSign, Award, Percent, BarChart3, Trash2, Eye, Target, Calendar, ArrowUp, ArrowDown, Trophy } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { LineChart, Line, BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ComposedChart, Bar } from 'recharts';
@@ -269,6 +269,16 @@ export default function Home() {
             >
               <Eye className="h-4 w-4" />
               <span className="hidden md:inline">Monitoramento</span>
+            </Button>
+            
+            <Button
+              onClick={() => setLocation('/apresentacao-meta-trimestral-1')}
+              variant="outline"
+              className="gap-2 border-indigo-300 hover:bg-indigo-50 dark:border-indigo-700 dark:hover:bg-indigo-900/20"
+              size="sm"
+            >
+              <Trophy className="h-4 w-4" />
+              <span className="hidden md:inline">Meta T1</span>
             </Button>
             
             {isAuthenticated && (

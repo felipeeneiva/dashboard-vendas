@@ -1,0 +1,75 @@
+{
+  "query": "SELECT email, role, lastSignedIn FROM users WHERE email LIKE '%vendas%' OR email LIKE '%felipe%' ORDER BY lastSignedIn DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT email, role, lastSignedIn FROM users WHERE email LIKE '%vendas%' OR email LIKE '%felipe%' ORDER BY lastSignedIn DESC;",
+  "rows": [
+    {
+      "email": "vendas@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2026-01-06 12:43:56"
+    },
+    {
+      "email": "felipe@mundoproviagens.com.br",
+      "role": "admin",
+      "lastSignedIn": "2026-01-06 12:43:45"
+    },
+    {
+      "email": "vendas7@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-08 00:56:59"
+    },
+    {
+      "email": "vendas4@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 17:22:08"
+    },
+    {
+      "email": "vendas9@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 17:03:08"
+    },
+    {
+      "email": "vendas10@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 17:02:42"
+    },
+    {
+      "email": "vendas11@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 14:33:33"
+    },
+    {
+      "email": "vendas12@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 14:24:51"
+    },
+    {
+      "email": "vendas8@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 14:22:11"
+    },
+    {
+      "email": "vendas2@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 13:58:25"
+    },
+    {
+      "email": "vendas3@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 12:33:07"
+    },
+    {
+      "email": "vendas5@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-02 19:11:59"
+    },
+    {
+      "email": "vendas6@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-02 18:19:50"
+    }
+  ],
+  "messages": [],
+  "stdout": "email\trole\tlastSignedIn\nvendas@mundoproviagens.com.br\tuser\t2026-01-06 12:43:56\nfelipe@mundoproviagens.com.br\tadmin\t2026-01-06 12:43:45\nvendas7@mundoproviagens.com.br\tuser\t2025-12-08 00:56:59\nvendas4@mundoproviagens.com.br\tuser\t2025-12-05 17:22:08\nvendas9@mundoproviagens.com.br\tuser\t2025-12-05 17:03:08\nvendas10@mundoproviagens.com.br\tuser\t2025-12-05 17:02:42\nvendas11@mundoproviagens.com.br\tuser\t2025-12-05 14:33:33\nvendas12@mundoproviagens.com.br\tuser\t2025-12-05 14:24:51\nvendas8@mundoproviagens.com.br\tuser\t2025-12-05 14:22:11\nvendas2@mundoproviagens.com.br\tuser\t2025-12-05 13:58:25\nvendas3@mundoproviagens.com.br\tuser\t2025-12-05 12:33:07\nvendas5@mundoproviagens.com.br\tuser\t2025-12-02 19:11:59\nvendas6@mundoproviagens.com.br\tuser\t2025-12-02 18:19:50\n",
+  "stderr": "",
+  "execution_time_ms": 378
+}

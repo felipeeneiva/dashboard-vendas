@@ -18,7 +18,7 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ 
   allowedRoles, 
-  redirectTo = "/", 
+  redirectTo, 
   children 
 }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
@@ -30,13 +30,18 @@ export function ProtectedRoute({
 
     // Se não está autenticado, redirecionar para home
     if (!user) {
-      setLocation(redirectTo);
+      setLocation(redirectTo || "/");
       return;
     }
 
-    // Se não tem permissão, redirecionar
+    // Se não tem permissão, redirecionar baseado no role
     if (!allowedRoles.includes(user.role)) {
-      setLocation(redirectTo);
+      // Vendedores (user) e suporte vão para /meu-painel
+      // Outros vão para a rota especificada ou /
+      const defaultRedirect = (user.role === "user" || user.role === "suporte") 
+        ? "/meu-painel" 
+        : "/";
+      setLocation(redirectTo || defaultRedirect);
       return;
     }
   }, [user, loading, allowedRoles, redirectTo, setLocation]);
