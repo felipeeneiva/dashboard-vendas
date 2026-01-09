@@ -42,9 +42,9 @@ export default function ApresentacaoMetaTrimestral1() {
     const letra = letras[index % letras.length];
     return {
       identificador: letra.repeat(5), // AAAAA, BBBBB, CCCCC...
-      meta: v.meta / 100, // Converter de centavos para reais
-      vendido: v.vendido / 100,
-      falta: v.falta / 100,
+      meta: v.meta,
+      vendido: v.vendido,
+      falta: v.falta,
       percentual: v.percentual,
       status: v.percentual >= 80 ? 'sucesso' : v.percentual >= 60 ? 'atencao' : 'risco'
     };

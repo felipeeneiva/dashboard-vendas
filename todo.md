@@ -648,3 +648,8 @@
 - [x] Garantir que apresentação mostra identificadores anônimos (AAAAA, BBBBB) e não nomes reais - já implementado
 - [x] Garantir que apresentação NÃO mostra colunas de bônus - já implementado (apenas Meta, Vendido, Falta, %)
 - [x] Testar apresentação com dados corretos - valores agora batem com a página administrativa
+
+### Bug: Valores Individuais Ainda Divididos por 100
+- [x] Identificar onde valores individuais (meta, vendido, falta) são mapeados - linhas 45-47
+- [x] Remover divisão por 100 dos valores individuais no map de vendedoresAnonimos
+- [x] Testar que valores individuais agora batem com página administrativa - todos os valores corretos!
