@@ -1,0 +1,15 @@
+{
+  "query": "SELECT id, nome, email FROM vendedores WHERE email = 'vendas7@mundoproviagens.com.br';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, nome, email FROM vendedores WHERE email = 'vendas7@mundoproviagens.com.br';",
+  "rows": [
+    {
+      "id": "7",
+      "nome": "Danilo",
+      "email": "vendas7@mundoproviagens.com.br"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\temail\n7\tDanilo\tvendas7@mundoproviagens.com.br\n",
+  "stderr": "",
+  "execution_time_ms": 46
+}

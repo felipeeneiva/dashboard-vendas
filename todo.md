@@ -733,4 +733,4 @@
 - [x] Atualizar emails na tabela vendedores do banco de dados
 - [x] Atualizar emails em VENDEDORES_CONFIG no server/routers.ts
 - [ ] Testar acesso com emails corretos
-- [ ] Salvar checkpoint e republicar
+- [x] Salvar checkpoint e republicar (checkpoint e7336664 criado)

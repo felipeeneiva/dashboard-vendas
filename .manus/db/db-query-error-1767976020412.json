@@ -1,0 +1,8 @@
+{
+  "query": "SELECT COUNT(*) as total, SUM(totalVendas) as vendas_total FROM metricas_mensais WHERE vendedorId = 7;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT COUNT(*) as total, SUM(totalVendas) as vendas_total FROM metricas_mensais WHERE vendedorId = 7;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1146 (42S02) at line 1: Table 'jutehpsjgshqbzjcfarkwy.metricas_mensais' doesn't exist"
+  ]
+}

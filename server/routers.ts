@@ -1387,7 +1387,9 @@ export const appRouter = router({
       }).optional())
       .query(async ({ ctx, input }) => {
         // Busca vendedor pelo email do usuário logado
+        console.log('[DEBUG] Email do usuário logado:', ctx.user.email);
         const vendedor = await db.getVendedorByEmail(ctx.user.email);
+        console.log('[DEBUG] Vendedor encontrado:', vendedor ? `ID ${vendedor.id} - ${vendedor.nome}` : 'NULL');
         
         if (!vendedor) {
           throw new Error('Vendedor não encontrado para este email');
