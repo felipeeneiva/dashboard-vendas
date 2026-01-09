@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { trpc } from "@/lib/trpc";
 import { Loader2, Trophy, TrendingUp, Target, Award, Maximize, Minimize } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
 import { APP_LOGO } from "@/const";
 import { Badge } from "@/components/ui/badge";
 
@@ -266,77 +266,135 @@ export default function ApresentacaoMetaTrimestral1() {
                 />
                 <Legend />
                 <Bar dataKey="Meta" fill="#5ec4e8" />
-                <Bar dataKey="Vendido" fill="#10b981">
-                  {dadosGrafico.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={getCor(entry.Percentual)} />
-                  ))}
-                </Bar>
+                <Bar dataKey="Vendido" fill="#10b981" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        {/* Tabela de Ranking Anônimo */}
+        {/* Gráfico de Pizza: Distribuição de Vendas */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-[#222223]">Distribuição de Vendas por Vendedor</CardTitle>
+            <CardDescription>Participação de cada vendedor no total vendido</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={400}>
+              <PieChart>
+                <Pie
+                  data={vendedoresAnonimos.map((v) => ({
+                    name: v.identificador,
+                    value: v.vendido,
+                    percentual: v.percentual,
+                  }))}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={120}
+                  label={(entry) => `${entry.name}: ${((entry.value / vendidoTotal) * 100).toFixed(1)}%`}
+                  labelLine
+                >
+                  {vendedoresAnonimos.map((v, index) => {
+                    const cores = [
+                      '#5ec4e8', '#ff5722', '#10b981', '#fbbf24', '#8b5cf6',
+                      '#ec4899', '#14b8a6', '#f97316', '#06b6d4', '#84cc16',
+                      '#6366f1', '#f43f5e', '#22d3ee', '#a3e635', '#c026d3'
+                    ];
+                    return <Cell key={`cell-${index}`} fill={cores[index % cores.length]} />;
+                  })}
+                </Pie>
+                <Tooltip
+                  formatter={(value: number) => [
+                    `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+                    'Vendido'
+                  ]}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Ranking de Performance */}
         <Card>
           <CardHeader>
             <CardTitle className="text-[#222223]">Ranking de Performance</CardTitle>
             <CardDescription>Classificação por % de atingimento (sem identificação)</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              {vendedoresAnonimos.map((v, index) => (
-                <div
-                  key={v.identificador}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      {index === 0 && <Trophy className="w-5 h-5 text-yellow-500" />}
-                      {index === 1 && <Trophy className="w-5 h-5 text-gray-400" />}
-                      {index === 2 && <Trophy className="w-5 h-5 text-amber-600" />}
-                      <span className="font-mono font-bold text-lg text-[#222223]">{v.identificador}</span>
+            <div className="space-y-3">
+              {vendedoresAnonimos.map((v, index) => {
+                const corBorda = v.status === 'sucesso' ? 'border-green-500' : v.status === 'atencao' ? 'border-yellow-500' : 'border-red-500';
+                const corBg = v.status === 'sucesso' ? 'bg-green-50' : v.status === 'atencao' ? 'bg-yellow-50' : 'bg-red-50';
+                const corBarra = v.status === 'sucesso' ? 'bg-green-500' : v.status === 'atencao' ? 'bg-yellow-500' : 'bg-red-500';
+                const corTexto = v.status === 'sucesso' ? 'text-green-700' : v.status === 'atencao' ? 'text-yellow-700' : 'text-red-700';
+                
+                return (
+                  <div
+                    key={v.identificador}
+                    className={`p-4 border-2 rounded-lg ${corBorda} ${corBg} transition-all hover:shadow-md`}
+                  >
+                    {/* Header: Identificador + Badge */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        {index === 0 && <Trophy className="w-6 h-6 text-yellow-500" />}
+                        {index === 1 && <Trophy className="w-6 h-6 text-gray-400" />}
+                        {index === 2 && <Trophy className="w-6 h-6 text-amber-600" />}
+                        <span className="font-mono font-bold text-xl text-[#222223]">{v.identificador}</span>
+                      </div>
+                      <Badge
+                        className={`text-white text-lg px-3 py-1 ${corBarra}`}
+                      >
+                        {Number(v.percentual).toFixed(2)}%
+                      </Badge>
                     </div>
-                    <Badge
-                      variant={v.status === 'sucesso' ? 'default' : v.status === 'atencao' ? 'secondary' : 'destructive'}
-                      className={
-                        v.status === 'sucesso'
-                          ? 'bg-green-500'
-                          : v.status === 'atencao'
-                          ? 'bg-yellow-500'
-                          : 'bg-red-500'
-                      }
-                    >
-                      {Number(v.percentual).toFixed(2)}%
-                    </Badge>
+
+                    {/* Barra de Progresso Visual */}
+                    <div className="mb-3">
+                      <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                        <div
+                          className={`h-4 rounded-full transition-all ${corBarra} flex items-center justify-end pr-2`}
+                          style={{ width: `${Math.min(Number(v.percentual), 100)}%` }}
+                        >
+                          {Number(v.percentual) > 10 && (
+                            <span className="text-xs font-bold text-white">
+                              {Number(v.percentual).toFixed(1)}%
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Métricas em Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                      <div className="bg-white p-2 rounded border">
+                        <span className="text-gray-600 block text-xs">Meta</span>
+                        <span className="font-semibold text-[#222223] block">
+                          R$ {(v.meta / 1000).toFixed(0)}k
+                        </span>
+                      </div>
+                      <div className="bg-white p-2 rounded border">
+                        <span className="text-gray-600 block text-xs">Vendido</span>
+                        <span className="font-semibold text-green-600 block">
+                          R$ {(v.vendido / 1000).toFixed(0)}k
+                        </span>
+                      </div>
+                      <div className="bg-white p-2 rounded border">
+                        <span className="text-gray-600 block text-xs">Falta</span>
+                        <span className="font-semibold text-[#ff5722] block">
+                          R$ {(v.falta / 1000).toFixed(0)}k
+                        </span>
+                      </div>
+                      <div className="bg-white p-2 rounded border">
+                        <span className="text-gray-600 block text-xs">% Receita</span>
+                        <span className="font-semibold text-[#5ec4e8] block">
+                          {Number(v.percentualReceita).toFixed(1)}%
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-6 text-sm">
-                    <div>
-                      <span className="text-gray-600">Meta: </span>
-                      <span className="font-semibold text-[#222223]">
-                        R$ {v.meta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">Vendido: </span>
-                      <span className="font-semibold text-green-600">
-                        R$ {v.vendido.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">Falta: </span>
-                      <span className="font-semibold text-[#ff5722]">
-                        R$ {v.falta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-gray-600">% Receita: </span>
-                      <span className="font-semibold text-[#5ec4e8]">
-                        {Number(v.percentualReceita).toFixed(2)}%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>

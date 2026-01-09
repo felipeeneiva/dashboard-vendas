@@ -674,3 +674,12 @@
 - [x] Localizar botão "Meta T1" no código (Home.tsx linha 281)
 - [x] Trocar texto de "Meta T1" para "Sales Meeting"
 - [x] Testar que botão aparece com novo texto no dashboard - funcionando!
+
+
+### Corrigir Gráfico e Melhorar Visualização do Ranking
+- [x] Corrigir cores das barras no gráfico (vendido deve ser verde, não vermelho) - removida função getCor()
+- [x] Adicionar barra de progresso visual para cada vendedor no ranking
+- [x] Adicionar gráfico de pizza mostrando distribuição de vendas entre vendedores
+- [x] Melhorar cards do ranking com cores por performance (verde/amarelo/vermelho)
+- [x] Adicionar mini gráficos de barras horizontais para comparação (barras de progresso)
+- [x] Testar visualizações em modo apresentação - tudo funcionando perfeitamente!
