@@ -726,3 +726,11 @@
 - [ ] Testar cadastro de meta para todos os vendedores
 - [ ] Testar cadastro de meta para vendedores específicos
 - [ ] Testar exclusão de metas
+
+
+### ✅ URGENTE: Emails dos Vendedores Corrigidos
+- [x] Obter lista completa dos 15 vendedores com emails corretos (vendas2@, vendas3@, gabriel@, vendas4@, etc.)
+- [x] Atualizar emails na tabela vendedores do banco de dados
+- [x] Atualizar emails em VENDEDORES_CONFIG no server/routers.ts
+- [ ] Testar acesso com emails corretos
+- [ ] Salvar checkpoint e republicar

@@ -1,0 +1,26 @@
+{
+  "query": "SELECT trimestre, metaTrimestral, superMeta, bonusMeta, bonusSuperMeta, metaAgencia FROM metas_trimestrais WHERE vendedorId = 2;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT trimestre, metaTrimestral, superMeta, bonusMeta, bonusSuperMeta, metaAgencia FROM metas_trimestrais WHERE vendedorId = 2;",
+  "rows": [
+    {
+      "trimestre": "Meta Trimestral 1",
+      "metaTrimestral": "48000000",
+      "superMeta": "57600000",
+      "bonusMeta": "480000",
+      "bonusSuperMeta": "630000",
+      "metaAgencia": "571200000"
+    },
+    {
+      "trimestre": "Meta Trimestral 4",
+      "metaTrimestral": "80000000",
+      "superMeta": "0",
+      "bonusMeta": "800000",
+      "bonusSuperMeta": "150000",
+      "metaAgencia": "1000000000"
+    }
+  ],
+  "messages": [],
+  "stdout": "trimestre\tmetaTrimestral\tsuperMeta\tbonusMeta\tbonusSuperMeta\tmetaAgencia\nMeta Trimestral 1\t48000000\t57600000\t480000\t630000\t571200000\nMeta Trimestral 4\t80000000\t0\t800000\t150000\t1000000000\n",
+  "stderr": "",
+  "execution_time_ms": 49
+}

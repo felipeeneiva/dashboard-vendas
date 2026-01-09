@@ -8,21 +8,21 @@ import { extrairMetricasAba, extrairDadosVendedor, gerarListaMeses } from "./she
 
 // Configuração dos vendedores
 const VENDEDORES_CONFIG = [
-  { nome: 'Rafael', email: 'rafael@mundoproviagens.com.br', sheetId: '1ZJz0MgOHLkYYNW5eWZmOAU797KXQPbwGmp8YnWl4NPo', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Rafael', email: 'vendas5@mundoproviagens.com.br', sheetId: '1ZJz0MgOHLkYYNW5eWZmOAU797KXQPbwGmp8YnWl4NPo', dataEntrada: new Date('2023-01-01') },
   { nome: 'Gabriel', email: 'gabriel@mundoproviagens.com.br', sheetId: '1Fp7Y6ytwk7SLZAEZkSw-gAU2nCWVK9M1SyK0enbjQfY', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Francine', email: 'francine@mundoproviagens.com.br', sheetId: '1PpzDxn6eM3LKwtJTchD6qVbbyUkAeDnA6hNy0gmrx10', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Mauro', email: 'mauro@mundoproviagens.com.br', sheetId: '19CNbM8qmkDFi-TxPDH8xaKeK0xOngcnDR2zOYH-LFSk', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Luana', email: 'luana@mundoproviagens.com.br', sheetId: '1tvfL-1S1kiAAyvFoKJzznW_RWYpLb6PAt-KiIF6vLjA', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Nathaly', email: 'nathaly@mundoproviagens.com.br', sheetId: '1jVIANOJ01UCat7Y8thFXkWZyhiv5Jzty-_9yK-xeKms', dataEntrada: new Date('2023-01-01') },
-  { nome: 'Danilo', email: 'danilo@mundoproviagens.com.br', sheetId: '1Yu3qKph4F59HnzMnIVFkTlB_Qf-LHTa2eU8ny-erN28', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Pedro', email: 'pedro@mundoproviagens.com.br', sheetId: '1BAVNbSUX9WUEAwnQ1zPaiBMXupBnrDOEdjYVjeMy8tE', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Leonardo', email: 'leonardo@mundoproviagens.com.br', sheetId: '1xLkrLj7SEUa9gexhf-XgCBjZCI7XifchCek3ZBLxMZY', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Yasmin', email: 'yasmin@mundoproviagens.com.br', sheetId: '1UeOUxTlb7IWIhllK87Bb73Wx7F1PfbwPKJSwPCzMu9U', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Lucas', email: 'lucas@mundoproviagens.com.br', sheetId: '1Bd53lZyS2aOUmIS4gSY_PtfuYFu-G_aUgXeH8HPEVZk', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Isabelle', email: 'isabelle@mundoproviagens.com.br', sheetId: '1xpngLR6KJZSAJTKqmDvev2skDX_SQOX9ScNENk2pZPg', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Andrios', email: 'andrios@mundoproviagens.com.br', sheetId: '1srU7o9d3HInp0o6oHZhuVOVGZOVHSC14Kp68lFvbJ7s', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Francine', email: 'vendas3@mundoproviagens.com.br', sheetId: '1PpzDxn6eM3LKwtJTchD6qVbbyUkAeDnA6hNy0gmrx10', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Mauro', email: 'vendas6@mundoproviagens.com.br', sheetId: '19CNbM8qmkDFi-TxPDH8xaKeK0xOngcnDR2zOYH-LFSk', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Luana', email: 'vendas2@mundoproviagens.com.br', sheetId: '1tvfL-1S1kiAAyvFoKJzznW_RWYpLb6PAt-KiIF6vLjA', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Nathaly', email: 'atendimento@mundoproviagens.com.br', sheetId: '1jVIANOJ01UCat7Y8thFXkWZyhiv5Jzty-_9yK-xeKms', dataEntrada: new Date('2023-01-01') },
+  { nome: 'Danilo', email: 'vendas7@mundoproviagens.com.br', sheetId: '1Yu3qKph4F59HnzMnIVFkTlB_Qf-LHTa2eU8ny-erN28', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Pedro', email: 'vendas12@mundoproviagens.com.br', sheetId: '1BAVNbSUX9WUEAwnQ1zPaiBMXupBnrDOEdjYVjeMy8tE', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Leonardo', email: 'vendas4@mundoproviagens.com.br', sheetId: '1xLkrLj7SEUa9gexhf-XgCBjZCI7XifchCek3ZBLxMZY', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Yasmin', email: 'vendas10@mundoproviagens.com.br', sheetId: '1UeOUxTlb7IWIhllK87Bb73Wx7F1PfbwPKJSwPCzMu9U', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Lucas', email: 'vendas9@mundoproviagens.com.br', sheetId: '1Bd53lZyS2aOUmIS4gSY_PtfuYFu-G_aUgXeH8HPEVZk', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Isabelle', email: 'vendas8@mundoproviagens.com.br', sheetId: '1xpngLR6KJZSAJTKqmDvev2skDX_SQOX9ScNENk2pZPg', dataEntrada: new Date('2024-01-01') },
+  { nome: 'Andrios', email: 'vendas@mundoproviagens.com.br', sheetId: '1srU7o9d3HInp0o6oHZhuVOVGZOVHSC14Kp68lFvbJ7s', dataEntrada: new Date('2024-01-01') },
   { nome: 'Felipe', email: 'felipe@mundoproviagens.com.br', sheetId: '1lQFpUKdMbYA4l2blzaHQRGUeh1gX9_b6Qsj_hmXA42M', dataEntrada: new Date('2024-01-01') },
-  { nome: 'Júlia', email: 'julia@mundoproviagens.com.br', sheetId: '1FAKE_JULIA_ID', dataEntrada: new Date('2024-01-01') }
+  { nome: 'Júlia', email: 'vendas11@mundoproviagens.com.br', sheetId: '1FAKE_JULIA_ID', dataEntrada: new Date('2024-01-01') }
 ];
 
 export const appRouter = router({

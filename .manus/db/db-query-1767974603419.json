@@ -1,0 +1,15 @@
+{
+  "query": "SELECT id, nome, email FROM vendedores WHERE email = 'gabriel@mundoproviagens.com.br' LIMIT 1;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, nome, email FROM vendedores WHERE email = 'gabriel@mundoproviagens.com.br' LIMIT 1;",
+  "rows": [
+    {
+      "id": "30001",
+      "nome": "Gabriel",
+      "email": "gabriel@mundoproviagens.com.br"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\temail\n30001\tGabriel\tgabriel@mundoproviagens.com.br\n",
+  "stderr": "",
+  "execution_time_ms": 63
+}

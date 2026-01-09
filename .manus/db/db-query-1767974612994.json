@@ -1,0 +1,15 @@
+{
+  "query": "SELECT COUNT(*) as total_metricas, SUM(totalVendas) as total_vendas, SUM(totalReceita) as total_receita FROM metricas WHERE vendedorId = 2;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT COUNT(*) as total_metricas, SUM(totalVendas) as total_vendas, SUM(totalReceita) as total_receita FROM metricas WHERE vendedorId = 2;",
+  "rows": [
+    {
+      "total_metricas": "25",
+      "total_vendas": "187217969",
+      "total_receita": "31375962"
+    }
+  ],
+  "messages": [],
+  "stdout": "total_metricas\ttotal_vendas\ttotal_receita\n25\t187217969\t31375962\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}

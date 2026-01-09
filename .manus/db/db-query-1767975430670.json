@@ -1,0 +1,80 @@
+{
+  "query": "SELECT id, name, email, role, lastSignedIn FROM users ORDER BY lastSignedIn DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, name, email, role, lastSignedIn FROM users ORDER BY lastSignedIn DESC LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Felipe Neiva",
+      "email": "felipe@mundoproviagens.com.br",
+      "role": "admin",
+      "lastSignedIn": "2026-01-09 16:17:05"
+    },
+    {
+      "id": "510036",
+      "name": "vendas",
+      "email": "vendas@mundoproviagens.com.br",
+      "role": "admin",
+      "lastSignedIn": "2026-01-09 15:35:34"
+    },
+    {
+      "id": "5160025",
+      "name": "Danilo Neiva",
+      "email": "vendas7@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-08 00:56:59"
+    },
+    {
+      "id": "8430001",
+      "name": "Leonardo Pastorio Moreira",
+      "email": "vendas4@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 17:22:08"
+    },
+    {
+      "id": "11130007",
+      "name": "Lucas Cardoso",
+      "email": "vendas9@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 17:03:08"
+    },
+    {
+      "id": "5160036",
+      "name": "Yasmin Thalji Cusin",
+      "email": "vendas10@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 17:02:42"
+    },
+    {
+      "id": "5160037",
+      "name": "Náthaly Antunes",
+      "email": "atendimento@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 16:59:19"
+    },
+    {
+      "id": "10800009",
+      "name": "Gabriel Neiva",
+      "email": "gabriel@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 16:50:11"
+    },
+    {
+      "id": "11160003",
+      "name": "vendas11",
+      "email": "vendas11@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 14:33:33"
+    },
+    {
+      "id": "5160052",
+      "name": "Pedro Biasi Tieppo",
+      "email": "vendas12@mundoproviagens.com.br",
+      "role": "user",
+      "lastSignedIn": "2025-12-05 14:24:51"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\temail\trole\tlastSignedIn\n1\tFelipe Neiva\tfelipe@mundoproviagens.com.br\tadmin\t2026-01-09 16:17:05\n510036\tvendas\tvendas@mundoproviagens.com.br\tadmin\t2026-01-09 15:35:34\n5160025\tDanilo Neiva\tvendas7@mundoproviagens.com.br\tuser\t2025-12-08 00:56:59\n8430001\tLeonardo Pastorio Moreira\tvendas4@mundoproviagens.com.br\tuser\t2025-12-05 17:22:08\n11130007\tLucas Cardoso\tvendas9@mundoproviagens.com.br\tuser\t2025-12-05 17:03:08\n5160036\tYasmin Thalji Cusin\tvendas10@mundoproviagens.com.br\tuser\t2025-12-05 17:02:42\n5160037\tNáthaly Antunes\tatendimento@mundoproviagens.com.br\tuser\t2025-12-05 16:59:19\n10800009\tGabriel Neiva\tgabriel@mundoproviagens.com.br\tuser\t2025-12-05 16:50:11\n11160003\tvendas11\tvendas11@mundoproviagens.com.br\tuser\t2025-12-05 14:33:33\n5160052\tPedro Biasi Tieppo\tvendas12@mundoproviagens.com.br\tuser\t2025-12-05 14:24:51\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}
