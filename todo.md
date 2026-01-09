@@ -744,3 +744,10 @@
 - [ ] Testar acesso admin em https://vendashboard-jutehpsj.manus.space/
 - [ ] Testar acesso vendedor em https://vendasmundopro.manus.space/vendedor
 - [x] Salvar checkpoint e publicar (checkpoint db773634 criado)
+
+
+### 🔍 Debug Visual - Identificar Erro de Acesso Vendedores
+- [ ] Modificar MeuPainel.tsx para mostrar email do usuário logado na tela
+- [ ] Mostrar se vendedor foi encontrado ou não
+- [ ] Mostrar mensagem de erro detalhada se query falhar
+- [ ] Publicar checkpoint e testar com vendas8@

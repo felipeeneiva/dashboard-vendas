@@ -129,9 +129,20 @@ export async function getVendedorByEmail(email: string | null | undefined): Prom
     return undefined;
   }
   
-  const result = await db.select().from(vendedores).where(eq(vendedores.email, email)).limit(1);
-  console.log('[DB] Resultado da busca:', result.length > 0 ? `Encontrado: ID ${result[0].id} - ${result[0].nome}` : 'Não encontrado');
-  return result.length > 0 ? result[0] : undefined;
+  // Normaliza email: trim e lowercase
+  const emailNormalizado = email.trim().toLowerCase();
+  console.log('[DB] Email normalizado:', emailNormalizado);
+  
+  // Busca todos os vendedores e compara manualmente (case-insensitive)
+  const todosVendedores = await db.select().from(vendedores);
+  console.log('[DB] Total de vendedores no banco:', todosVendedores.length);
+  
+  const vendedorEncontrado = todosVendedores.find(v => 
+    v.email && v.email.trim().toLowerCase() === emailNormalizado
+  );
+  
+  console.log('[DB] Resultado da busca:', vendedorEncontrado ? `Encontrado: ID ${vendedorEncontrado.id} - ${vendedorEncontrado.nome}` : 'Não encontrado');
+  return vendedorEncontrado;
 }
 
 export async function upsertVendedor(vendedor: InsertVendedor): Promise<void> {

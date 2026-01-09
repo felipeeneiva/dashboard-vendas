@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, name, email, LENGTH(email) as email_length FROM users WHERE email LIKE '%vendas8%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, name, email, LENGTH(email) as email_length FROM users WHERE email LIKE '%vendas8%';",
+  "rows": [
+    {
+      "id": "11130025",
+      "name": "vendas8",
+      "email": "vendas8@mundoproviagens.com.br",
+      "email_length": "30"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\temail\temail_length\n11130025\tvendas8\tvendas8@mundoproviagens.com.br\t30\n",
+  "stderr": "",
+  "execution_time_ms": 50
+}

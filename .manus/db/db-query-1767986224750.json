@@ -1,0 +1,22 @@
+{
+  "query": "\nSELECT \n  'users' as tabela,\n  email,\n  HEX(email) as email_hex,\n  LENGTH(email) as tamanho\nFROM users \nWHERE email LIKE '%vendas8%'\nUNION ALL\nSELECT \n  'vendedores' as tabela,\n  email,\n  HEX(email) as email_hex,\n  LENGTH(email) as tamanho\nFROM vendedores \nWHERE email LIKE '%vendas8%';\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute \nSELECT \n  'users' as tabela,\n  email,\n  HEX(email) as email_hex,\n  LENGTH(email) as tamanho\nFROM users \nWHERE email LIKE '%vendas8%'\nUNION ALL\nSELECT \n  'vendedores' as tabela,\n  email,\n  HEX(email) as email_hex,\n  LENGTH(email) as tamanho\nFROM vendedores \nWHERE email LIKE '%vendas8%';\n",
+  "rows": [
+    {
+      "tabela": "vendedores",
+      "email": "vendas8@mundoproviagens.com.br",
+      "email_hex": "76656E64617338406D756E646F70726F76696167656E732E636F6D2E6272",
+      "tamanho": "30"
+    },
+    {
+      "tabela": "users",
+      "email": "vendas8@mundoproviagens.com.br",
+      "email_hex": "76656E64617338406D756E646F70726F76696167656E732E636F6D2E6272",
+      "tamanho": "30"
+    }
+  ],
+  "messages": [],
+  "stdout": "tabela\temail\temail_hex\ttamanho\nvendedores\tvendas8@mundoproviagens.com.br\t76656E64617338406D756E646F70726F76696167656E732E636F6D2E6272\t30\nusers\tvendas8@mundoproviagens.com.br\t76656E64617338406D756E646F70726F76696167656E732E636F6D2E6272\t30\n",
+  "stderr": "",
+  "execution_time_ms": 104
+}
