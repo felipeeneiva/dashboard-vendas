@@ -5,6 +5,7 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { extrairMetricasAba, extrairDadosVendedor, gerarListaMeses } from "./sheetsExtractor";
+import * as authVendedor from "./auth-vendedor";
 
 // Configuração dos vendedores
 const VENDEDORES_CONFIG = [
@@ -1821,6 +1822,50 @@ export const appRouter = router({
         },
       };
     }),
+  }),
+  
+  // Router de autenticação de vendedores
+  authVendedor: router({
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        senha: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const resultado = await authVendedor.loginVendedor(input.email, input.senha);
+        
+        if (!resultado) {
+          throw new Error('Email ou senha incorretos');
+        }
+        
+        return resultado;
+      }),
+    
+    trocarSenha: publicProcedure
+      .input(z.object({
+        token: z.string(),
+        senhaAtual: z.string(),
+        senhaNova: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const vendedorData = authVendedor.verificarToken(input.token);
+        
+        if (!vendedorData) {
+          throw new Error('Token inválido ou expirado');
+        }
+        
+        const sucesso = await authVendedor.trocarSenha(
+          vendedorData.vendedorId,
+          input.senhaAtual,
+          input.senhaNova
+        );
+        
+        if (!sucesso) {
+          throw new Error('Senha atual incorreta');
+        }
+        
+        return { sucesso: true };
+      }),
   }),
 });
 

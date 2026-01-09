@@ -26,6 +26,8 @@ export const vendedores = mysqlTable("vendedores", {
   nome: varchar("nome", { length: 100 }).notNull(),
   email: varchar("email", { length: 320 }).notNull().unique(), // Email do vendedor para login (obrigatório)
   openId: varchar("openId", { length: 64 }).unique(), // OpenId do OAuth para autenticação (opcional)
+  passwordHash: varchar("passwordHash", { length: 255 }), // Hash da senha para login tradicional
+  primeiroAcesso: boolean("primeiroAcesso").default(true).notNull(), // Se é o primeiro acesso (precisa trocar senha)
   sheetId: varchar("sheetId", { length: 100 }).notNull().unique(),
   ativo: boolean("ativo").default(true).notNull(),
   dataEntrada: timestamp("dataEntrada").notNull(), // Data de entrada do vendedor

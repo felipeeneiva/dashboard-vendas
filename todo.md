@@ -751,3 +751,13 @@
 - [x] Mostrar se vendedor foi encontrado ou não
 - [x] Mostrar mensagem de erro detalhada se query falhar
 - [x] Publicar checkpoint e testar com vendas8@ (checkpoint 135951de criado)
+
+### 🚨 URGENTE: Sistema de Login com Email e Senha (Sem Google OAuth)
+- [x] Adicionar campos password_hash e primeiro_acesso na tabela vendedores
+- [x] Criar endpoint de login com email e senha
+- [x] Criar endpoint de troca de senha
+- [x] Criar página de login customizada (/login-vendedor)
+- [x] Criar página de troca de senha obrigatória
+- [x] Popular senha padrão "Teste123*" para todos os 15 vendedores
+- [ ] Testar login com vendas8@mundoproviagens.com.br
+- [ ] Publicar checkpoint e validar funcionamento

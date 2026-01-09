@@ -19,6 +19,8 @@ import Portal from "./pages/Portal";
 import Suporte from "./pages/Suporte";
 import ApresentacaoMetaTrimestral1 from "./pages/ApresentacaoMetaTrimestral1";
 import CadastroMetas from "./pages/CadastroMetas";
+import LoginVendedor from "./pages/LoginVendedor";
+import TrocarSenhaVendedor from "./pages/TrocarSenhaVendedor";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function Router() {
@@ -26,6 +28,8 @@ function Router() {
   return (
     <Switch>
        <Route path={"/"} component={Home} />
+      <Route path={"/login-vendedor"} component={LoginVendedor} />
+      <Route path={"/vendedor/trocar-senha"} component={TrocarSenhaVendedor} />
       <Route path={"/vendedor"} component={MeuPainel} />
       <Route path={"/404"} component={NotFound} />
       <Route path="/vendedor/:id">

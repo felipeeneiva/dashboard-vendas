@@ -615,3 +615,16 @@ export async function deleteMetasTrimestre(trimestre: string): Promise<void> {
     throw error;
   }
 }
+
+
+export async function atualizarSenhaVendedor(vendedorId: number, passwordHash: string): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(vendedores)
+    .set({ 
+      passwordHash,
+      primeiroAcesso: false // Marca que não é mais o primeiro acesso
+    })
+    .where(eq(vendedores.id, vendedorId));
+}
