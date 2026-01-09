@@ -51,9 +51,9 @@ export default function ApresentacaoMetaTrimestral1() {
   });
 
   // Dados consolidados
-  const metaTotal = (metaTrimestral1.metaAgencia || 0) / 100;
-  const vendidoTotal = (metaTrimestral1.vendidoEquipe || 0) / 100;
-  const faltaTotal = (metaTrimestral1.faltaEquipe || 0) / 100;
+  const metaTotal = metaTrimestral1.metaAgencia || 0;
+  const vendidoTotal = metaTrimestral1.vendidoEquipe || 0;
+  const faltaTotal = metaTrimestral1.faltaEquipe || 0;
   const percentualTotal = metaTrimestral1.percentualEquipe || 0;
 
   // Dados para gráfico de barras

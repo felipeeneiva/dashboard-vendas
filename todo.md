@@ -640,3 +640,11 @@
 - [x] Testar que admin acessa normalmente
 - [x] Testar que vendedor é redirecionado para /meu-painel
 - [x] Testar que suporte é redirecionado para /meu-painel
+
+### Bug: Valores Incorretos na Apresentação Meta Trimestral 1
+- [x] Investigar se usuário está acessando página correta (/apresentacao-meta-trimestral-1 vs /metas-trimestral)
+- [x] Verificar por que valores estão divididos por 100 (R$ 57.120 ao invés de R$ 5.712.000) - problema na linha de cálculo
+- [x] Corrigir cálculo de metaTotal, vendidoTotal, faltaTotal (removida divisão por 100)
+- [x] Garantir que apresentação mostra identificadores anônimos (AAAAA, BBBBB) e não nomes reais - já implementado
+- [x] Garantir que apresentação NÃO mostra colunas de bônus - já implementado (apenas Meta, Vendido, Falta, %)
+- [x] Testar apresentação com dados corretos - valores agora batem com a página administrativa
