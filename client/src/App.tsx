@@ -25,8 +25,9 @@ function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      <Route path={"/portal"} component={Portal} />
-      <Route path={"/"} component={Home} />
+       <Route path={"/"} component={Home} />
+      <Route path={"/vendedor"} component={MeuPainel} />
+      <Route path={"/404"} component={NotFound} />
       <Route path="/vendedor/:id">
         {(params) => <VendedorDetalhes params={params} />}
       </Route>

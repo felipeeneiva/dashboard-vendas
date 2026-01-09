@@ -19,12 +19,14 @@ export default function Home() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [, setLocation] = useLocation();
 
-  // Redireciona vendedores comuns para /meu-painel
+  // Bloqueia acesso de não-admins à página admin
   useEffect(() => {
     if (!loading && isAuthenticated && user?.email) {
       const isAdmin = ADMIN_EMAILS.includes(user.email);
       if (!isAdmin) {
-        setLocation('/meu-painel');
+        // Não-admins não podem acessar esta página
+        // Devem usar o link /vendedor
+        setLocation('/vendedor');
       }
     }
   }, [loading, isAuthenticated, user, setLocation]);

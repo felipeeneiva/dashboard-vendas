@@ -734,3 +734,13 @@
 - [x] Atualizar emails em VENDEDORES_CONFIG no server/routers.ts
 - [ ] Testar acesso com emails corretos
 - [x] Salvar checkpoint e republicar (checkpoint e7336664 criado)
+
+
+### ✅ URGENTE: Separar Acessos Admin e Vendedores
+- [x] Remover redirecionamento automático do Home.tsx
+- [x] Adicionar proteção admin na página / (apenas Felipe e Andrios)
+- [x] Criar rota /vendedor no App.tsx
+- [x] Mover MeuPainel.tsx para rota /vendedor
+- [ ] Testar acesso admin em https://vendashboard-jutehpsj.manus.space/
+- [ ] Testar acesso vendedor em https://vendasmundopro.manus.space/vendedor
+- [ ] Salvar checkpoint e publicar

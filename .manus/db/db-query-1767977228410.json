@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, name, email, role FROM users WHERE email = 'vendas7@mundoproviagens.com.br';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, name, email, role FROM users WHERE email = 'vendas7@mundoproviagens.com.br';",
+  "rows": [
+    {
+      "id": "5160025",
+      "name": "Danilo Neiva",
+      "email": "vendas7@mundoproviagens.com.br",
+      "role": "user"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\temail\trole\n5160025\tDanilo Neiva\tvendas7@mundoproviagens.com.br\tuser\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}
