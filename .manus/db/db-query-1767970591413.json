@@ -1,0 +1,60 @@
+{
+  "query": "SELECT id, email, role FROM users WHERE email LIKE '%mundoproviagens%' LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, email, role FROM users WHERE email LIKE '%mundoproviagens%' LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "email": "felipe@mundoproviagens.com.br",
+      "role": "admin"
+    },
+    {
+      "id": "510036",
+      "email": "vendas@mundoproviagens.com.br",
+      "role": "admin"
+    },
+    {
+      "id": "5160004",
+      "email": "vendas6@mundoproviagens.com.br",
+      "role": "user"
+    },
+    {
+      "id": "5160016",
+      "email": "financeiro@mundoproviagens.com.br",
+      "role": "user"
+    },
+    {
+      "id": "5160025",
+      "email": "vendas7@mundoproviagens.com.br",
+      "role": "user"
+    },
+    {
+      "id": "5160036",
+      "email": "vendas10@mundoproviagens.com.br",
+      "role": "user"
+    },
+    {
+      "id": "5160037",
+      "email": "atendimento@mundoproviagens.com.br",
+      "role": "user"
+    },
+    {
+      "id": "5160042",
+      "email": "vendas2@mundoproviagens.com.br",
+      "role": "user"
+    },
+    {
+      "id": "5160052",
+      "email": "vendas12@mundoproviagens.com.br",
+      "role": "user"
+    },
+    {
+      "id": "8130003",
+      "email": "vendas3@mundoproviagens.com.br",
+      "role": "user"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\trole\n1\tfelipe@mundoproviagens.com.br\tadmin\n510036\tvendas@mundoproviagens.com.br\tadmin\n5160004\tvendas6@mundoproviagens.com.br\tuser\n5160016\tfinanceiro@mundoproviagens.com.br\tuser\n5160025\tvendas7@mundoproviagens.com.br\tuser\n5160036\tvendas10@mundoproviagens.com.br\tuser\n5160037\tatendimento@mundoproviagens.com.br\tuser\n5160042\tvendas2@mundoproviagens.com.br\tuser\n5160052\tvendas12@mundoproviagens.com.br\tuser\n8130003\tvendas3@mundoproviagens.com.br\tuser\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

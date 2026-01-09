@@ -1,0 +1,85 @@
+{
+  "query": "SELECT id, nome, email FROM vendedores LIMIT 15;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, nome, email FROM vendedores LIMIT 15;",
+  "rows": [
+    {
+      "id": "1",
+      "nome": "Rafael",
+      "email": "vendas5@mundoproviagens.com.br"
+    },
+    {
+      "id": "2",
+      "nome": "Nathaly",
+      "email": "atendimento@mundoproviagens.com.br"
+    },
+    {
+      "id": "3",
+      "nome": "Francine",
+      "email": "vendas3@mundoproviagens.com.br"
+    },
+    {
+      "id": "4",
+      "nome": "Mauro",
+      "email": "vendas6@mundoproviagens.com.br"
+    },
+    {
+      "id": "5",
+      "nome": "Luana",
+      "email": "vendas2@mundoproviagens.com.br"
+    },
+    {
+      "id": "7",
+      "nome": "Danilo",
+      "email": "vendas7@mundoproviagens.com.br"
+    },
+    {
+      "id": "8",
+      "nome": "Pedro",
+      "email": "vendas12@mundoproviagens.com.br"
+    },
+    {
+      "id": "9",
+      "nome": "Leonardo",
+      "email": "vendas4@mundoproviagens.com.br"
+    },
+    {
+      "id": "10",
+      "nome": "Yasmin",
+      "email": "vendas10@mundoproviagens.com.br"
+    },
+    {
+      "id": "11",
+      "nome": "Lucas",
+      "email": "vendas9@mundoproviagens.com.br"
+    },
+    {
+      "id": "12",
+      "nome": "Isabelle",
+      "email": "vendas8@mundoproviagens.com.br"
+    },
+    {
+      "id": "13",
+      "nome": "Andrios",
+      "email": "vendas@mundoproviagens.com.br"
+    },
+    {
+      "id": "14",
+      "nome": "Felipe",
+      "email": "felipe@mundoproviagens.com.br"
+    },
+    {
+      "id": "30001",
+      "nome": "Gabriel",
+      "email": "gabriel@mundoproviagens.com.br"
+    },
+    {
+      "id": "60001",
+      "nome": "Júlia",
+      "email": "vendas11@mundoproviagens.com.br"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\temail\n1\tRafael\tvendas5@mundoproviagens.com.br\n2\tNathaly\tatendimento@mundoproviagens.com.br\n3\tFrancine\tvendas3@mundoproviagens.com.br\n4\tMauro\tvendas6@mundoproviagens.com.br\n5\tLuana\tvendas2@mundoproviagens.com.br\n7\tDanilo\tvendas7@mundoproviagens.com.br\n8\tPedro\tvendas12@mundoproviagens.com.br\n9\tLeonardo\tvendas4@mundoproviagens.com.br\n10\tYasmin\tvendas10@mundoproviagens.com.br\n11\tLucas\tvendas9@mundoproviagens.com.br\n12\tIsabelle\tvendas8@mundoproviagens.com.br\n13\tAndrios\tvendas@mundoproviagens.com.br\n14\tFelipe\tfelipe@mundoproviagens.com.br\n30001\tGabriel\tgabriel@mundoproviagens.com.br\n60001\tJúlia\tvendas11@mundoproviagens.com.br\n",
+  "stderr": "",
+  "execution_time_ms": 51
+}

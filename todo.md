@@ -683,3 +683,12 @@
 - [x] Melhorar cards do ranking com cores por performance (verde/amarelo/vermelho)
 - [x] Adicionar mini gráficos de barras horizontais para comparação (barras de progresso)
 - [x] Testar visualizações em modo apresentação - tudo funcionando perfeitamente!
+
+
+### ✅ BUG CRÍTICO CORRIGIDO: Acesso de Vendedores Restaurado
+- [x] Testar acesso ao site publicado (https://vendashboard-jutehpsj.manus.space/) como vendedor
+- [x] Identificar erro específico que bloqueia vendedores (campo email NULL na tabela vendedores)
+- [x] Verificar se problema está no Home.tsx, App.tsx, ProtectedRoute.tsx ou MeuPainel.tsx (problema no banco)
+- [x] Corrigir o problema identificado (populado campo email de todos os 15 vendedores)
+- [x] Testar novamente com conta de vendedor (funcionando)
+- [ ] Republicar checkpoint corrigido
