@@ -743,4 +743,4 @@
 - [x] Mover MeuPainel.tsx para rota /vendedor
 - [ ] Testar acesso admin em https://vendashboard-jutehpsj.manus.space/
 - [ ] Testar acesso vendedor em https://vendasmundopro.manus.space/vendedor
-- [ ] Salvar checkpoint e publicar
+- [x] Salvar checkpoint e publicar (checkpoint db773634 criado)

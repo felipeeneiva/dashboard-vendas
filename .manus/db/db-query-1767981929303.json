@@ -1,0 +1,17 @@
+{
+  "query": "SELECT id, nome, email, LENGTH(email) as email_length, HEX(email) as email_hex FROM vendedores WHERE nome = 'Danilo';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user pKThLpGXzdZkTAu.ac53d9f9167d --database jUteHPSJGShqbZJcfArKWy --execute SELECT id, nome, email, LENGTH(email) as email_length, HEX(email) as email_hex FROM vendedores WHERE nome = 'Danilo';",
+  "rows": [
+    {
+      "id": "7",
+      "nome": "Danilo",
+      "email": "vendas7@mundoproviagens.com.br",
+      "email_length": "30",
+      "email_hex": "76656E64617337406D756E646F70726F76696167656E732E636F6D2E6272"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\temail\temail_length\temail_hex\n7\tDanilo\tvendas7@mundoproviagens.com.br\t30\t76656E64617337406D756E646F70726F76696167656E732E636F6D2E6272\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

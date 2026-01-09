@@ -118,10 +118,19 @@ export async function getVendedorById(id: number): Promise<Vendedor | undefined>
 }
 
 export async function getVendedorByEmail(email: string | null | undefined): Promise<Vendedor | undefined> {
+  console.log('[DB] getVendedorByEmail chamado com email:', email);
   const db = await getDb();
-  if (!db || !email) return undefined;
+  if (!db) {
+    console.log('[DB] Database não disponível');
+    return undefined;
+  }
+  if (!email) {
+    console.log('[DB] Email é null ou undefined');
+    return undefined;
+  }
   
   const result = await db.select().from(vendedores).where(eq(vendedores.email, email)).limit(1);
+  console.log('[DB] Resultado da busca:', result.length > 0 ? `Encontrado: ID ${result[0].id} - ${result[0].nome}` : 'Não encontrado');
   return result.length > 0 ? result[0] : undefined;
 }
 
