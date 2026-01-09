@@ -663,3 +663,9 @@
 - [x] Adicionar botão flutuante "Sair da Apresentação" (canto superior direito)
 - [x] Testar ativação de fullscreen - funcionando perfeitamente
 - [x] Testar saída de fullscreen (ESC) - botão flutuante e ESC funcionam
+
+### Feature: % Receita na Apresentação
+- [x] Verificar se metaTrimestral1.vendedores contém campo percentualReceita - adicionado ao backend
+- [x] Adicionar percentualReceita ao backend (server/routers.ts linha 273-285)
+- [x] Adicionar coluna "% Receita" no ranking de performance (linha 331-336)
+- [x] Testar exibição de % receita na apresentação - funcionando perfeitamente!

@@ -79,6 +79,7 @@ export default function ApresentacaoMetaTrimestral1() {
       vendido: v.vendido,
       falta: v.falta,
       percentual: v.percentual,
+      percentualReceita: v.percentualReceita || 0,
       status: v.percentual >= 80 ? 'sucesso' : v.percentual >= 60 ? 'atencao' : 'risco'
     };
   });
@@ -325,6 +326,12 @@ export default function ApresentacaoMetaTrimestral1() {
                       <span className="text-gray-600">Falta: </span>
                       <span className="font-semibold text-[#ff5722]">
                         R$ {v.falta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">% Receita: </span>
+                      <span className="font-semibold text-[#5ec4e8]">
+                        {Number(v.percentualReceita).toFixed(2)}%
                       </span>
                     </div>
                   </div>

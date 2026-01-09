@@ -267,8 +267,10 @@ export const appRouter = router({
         );
         
         const totalVendido = metricasTrimestre.reduce((sum, m) => sum + m.totalVendas, 0);
+        const totalReceita = metricasTrimestre.reduce((sum, m) => sum + m.totalReceita, 0);
         const falta = meta.metaTrimestral - totalVendido;
         const percentual = meta.metaTrimestral > 0 ? ((totalVendido / meta.metaTrimestral) * 100).toFixed(2) : '0.00';
+        const percentualReceita = totalVendido > 0 ? ((totalReceita / totalVendido) * 100).toFixed(2) : '0.00';
         
         metasPorTrimestre.get(meta.trimestre)!.vendedores.push({
           vendedorId: vendedor.id,
@@ -280,6 +282,7 @@ export const appRouter = router({
           vendido: db.centavosParaReais(totalVendido),
           falta: db.centavosParaReais(Math.max(0, falta)),
           percentual,
+          percentualReceita,
           totalVendidoCentavos: totalVendido // Mantém valor em centavos para cálculo da equipe
         });
       }
