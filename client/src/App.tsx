@@ -29,6 +29,7 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Welcome} />
+      <Route path={"/public/welcome"} component={Welcome} />
       <Route path={"/admin"} component={Home} />
       <Route path={"/login-vendedor"} component={LoginVendedor} />
       <Route path={"/vendedor/trocar-senha"} component={TrocarSenhaVendedor} />
