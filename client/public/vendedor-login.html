@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo Pró Viagens - Login Vendedor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .error {
+            color: #dc2626;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+        }
+        
+        .help-text {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>Mundo Pró Viagens</h1>
+            <p>Login de Vendedor</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="seu.email@mundoproviagens.com.br"
+                    required
+                    autofocus
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input 
+                    type="password" 
+                    id="senha" 
+                    name="senha" 
+                    placeholder="••••••••"
+                    required
+                >
+            </div>
+            
+            <div class="error" id="error"></div>
+            <div class="loading" id="loading">Entrando...</div>
+            
+            <button type="submit" id="submitBtn">Entrar</button>
+        </form>
+        
+        <div class="help-text">
+            <strong>Primeira vez?</strong><br>
+            Use a senha padrão fornecida. Você será solicitado a criar uma nova senha no primeiro acesso.
+        </div>
+    </div>
+    
+    <script>
+        const form = document.getElementById('loginForm');
+        const errorDiv = document.getElementById('error');
+        const loadingDiv = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            
+            errorDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/trpc/authVendedor.login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        json: { email, senha }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.result?.data?.json?.token) {
+                    // Salva token no localStorage
+                    localStorage.setItem('vendedor_token', data.result.data.json.token);
+                    localStorage.setItem('vendedor_data', JSON.stringify(data.result.data.json.vendedor));
+                    
+                    // Redireciona para o painel
+                    if (data.result.data.json.vendedor.primeiroAcesso) {
+                        window.location.href = '/vendedor/trocar-senha';
+                    } else {
+                        window.location.href = '/vendedor';
+                    }
+                } else {
+                    throw new Error(data.result?.error?.message || 'Erro ao fazer login');
+                }
+            } catch (error) {
+                errorDiv.textContent = error.message || 'Email ou senha incorretos';
+                errorDiv.style.display = 'block';
+                loadingDiv.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
