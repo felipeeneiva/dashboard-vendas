@@ -761,3 +761,9 @@
 - [x] Popular senha padrão "Teste123*" para todos os 15 vendedores
 - [ ] Testar login com vendas8@mundoproviagens.com.br
 - [ ] Publicar checkpoint e validar funcionamento
+
+### 🚨 URGENTE: Remover OAuth e usar apenas JWT
+- [x] Modificar MeuPainel para verificar token JWT do localStorage
+- [x] Atualizar endpoint meusDados para aceitar token via header
+- [x] Remover redirecionamento OAuth da rota /vendedor
+- [ ] Testar login completo: login → troca senha → painel

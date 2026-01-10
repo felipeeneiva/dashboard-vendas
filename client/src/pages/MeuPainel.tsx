@@ -7,34 +7,51 @@ import { trpc } from "@/lib/trpc";
 import { getLoginUrl, APP_LOGO } from "@/const";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 
 export default function MeuPainel() {
-  const { user, loading: authLoading, isAuthenticated } = useAuth();
+  const [, setLocation] = useLocation();
+  const [vendedorToken, setVendedorToken] = useState<string | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  
+  useEffect(() => {
+    // Verifica se tem token JWT no localStorage
+    const token = localStorage.getItem("vendedor_token");
+    if (!token) {
+      // Se não tem token, redireciona para login
+      setLocation("/login-vendedor");
+      return;
+    }
+    setVendedorToken(token);
+    setAuthLoading(false);
+  }, [setLocation]);
   const [anoSelecionado, setAnoSelecionado] = useState<number>(2025);
   
   const { data, isLoading } = trpc.painelVendedor.meusDados.useQuery(
-    { ano: anoSelecionado },
-    { enabled: isAuthenticated }
+    { ano: anoSelecionado, token: vendedorToken || "" },
+    { enabled: !!vendedorToken }
   );
   
   const { data: evolucao, isLoading: loadingEvolucao } = trpc.painelVendedor.evolucaoMensal.useQuery(
-    { ano: anoSelecionado },
-    { enabled: isAuthenticated }
+    { ano: anoSelecionado, token: vendedorToken || "" },
+    { enabled: !!vendedorToken }
   );
   
-  const { data: comparativo, isLoading: loadingComparativo } = trpc.painelVendedor.comparativoAnos.useQuery(undefined, {
-    enabled: isAuthenticated,
-  });
+  const { data: comparativo, isLoading: loadingComparativo } = trpc.painelVendedor.comparativoAnos.useQuery(
+    { token: vendedorToken || "" },
+    { enabled: !!vendedorToken }
+  );
   
   const { data: topDestinos, isLoading: loadingDestinos } = trpc.painelVendedor.topDestinos.useQuery(
-    { limit: 10 },
-    { enabled: isAuthenticated }
+    { limit: 10, token: vendedorToken || "" },
+    { enabled: !!vendedorToken }
   );
   
-  const { data: minhasMetas, isLoading: loadingMetas } = trpc.painelVendedor.minhasMetas.useQuery(undefined, {
-    enabled: isAuthenticated,
-  });
+  const { data: minhasMetas, isLoading: loadingMetas } = trpc.painelVendedor.minhasMetas.useQuery(
+    { token: vendedorToken || "" },
+    { enabled: !!vendedorToken }
+  );
 
   // Mostrar loading enquanto verifica autenticação
   if (authLoading || isLoading) {
@@ -45,26 +62,7 @@ export default function MeuPainel() {
     );
   }
 
-  // Redirecionar para login se não autenticado
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-4">
-        <Card className="max-w-md w-full">
-          <CardHeader>
-            <CardTitle>Acesso Restrito</CardTitle>
-            <CardDescription>
-              Você precisa fazer login com sua conta Google para acessar seu painel individual.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button asChild className="w-full">
-              <a href={getLoginUrl()}>Fazer Login com Google</a>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  // Não precisa mais verificar isAuthenticated pois o useEffect já redireciona
 
   // Mostrar erro se vendedor não encontrado
   if (!data) {

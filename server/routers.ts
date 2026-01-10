@@ -1380,33 +1380,26 @@ export const appRouter = router({
   // Router de painel individual do vendedor
   painelVendedor: router({
     // Busca dados do vendedor logado
-    meusDados: protectedProcedure
+    meusDados: publicProcedure
       .input(z.object({
-        trimestre: z.array(z.string()).optional(), // Ex: ['Setembro/2025', 'Outubro/2025', 'Novembro/2025']
+        trimestre: z.array(z.string()).optional(),
         ano: z.number().optional(),
-        mes: z.string().optional()
-      }).optional())
-      .query(async ({ ctx, input }) => {
-        // Busca vendedor pelo email do usuário logado
-               console.log('='.repeat(80));
-        console.log('[DEBUG] OpenId do usuário:', ctx.user.openId);
-        console.log('[DEBUG] Email do usuário:', ctx.user.email);
-        console.log('='.repeat(80));
+        mes: z.string().optional(),
+        token: z.string()
+      }))
+      .query(async ({ input }) => {
+        // Verifica token JWT
+        const vendedorData = authVendedor.verificarToken(input.token);
         
-        // Tenta buscar por openId primeiro (mais confiável)
-        let vendedor = await db.getVendedorByOpenId(ctx.user.openId);
-        
-        // Se não encontrar por openId, tenta por email e vincula automaticamente
-        if (!vendedor && ctx.user.email) {
-          console.log('[DEBUG] Vendedor não encontrado por openId, tentando por email e vinculando...');
-          vendedor = await db.vincularVendedorPorOpenId(ctx.user.email, ctx.user.openId);
+        if (!vendedorData) {
+          throw new Error('Token inválido ou expirado');
         }
         
-        console.log('[DEBUG] Vendedor encontrado:', vendedor ? `ID ${vendedor.id} - ${vendedor.nome}` : 'NULL');
-        console.log('='.repeat(80));
+        // Busca vendedor pelo ID do token
+        const vendedor = await db.getVendedorById(vendedorData.vendedorId);
         
         if (!vendedor) {
-          console.error('[ERROR] Vendedor não encontrado para email:', ctx.user.email);
+          console.error('[ERROR] Vendedor não encontrado para ID:', vendedorData.vendedorId);
           // Retorna null para o frontend mostrar mensagem de erro
           return null;
         }
@@ -1508,10 +1501,16 @@ export const appRouter = router({
       }),
 
     // Evolução mensal do vendedor
-    evolucaoMensal: protectedProcedure
-      .input(z.object({ ano: z.number().optional() }).optional())
-      .query(async ({ ctx, input }) => {
-        const vendedor = await db.getVendedorByEmail(ctx.user.email);
+    evolucaoMensal: publicProcedure
+      .input(z.object({ 
+        ano: z.number().optional(),
+        token: z.string()
+      }))
+      .query(async ({ input }) => {
+        const vendedorData = authVendedor.verificarToken(input.token);
+        if (!vendedorData) throw new Error('Token inválido ou expirado');
+        
+        const vendedor = await db.getVendedorById(vendedorData.vendedorId);
         if (!vendedor) throw new Error('Vendedor não encontrado');
 
         const metricas = await db.getMetricasByVendedor(vendedor.id);
@@ -1549,9 +1548,13 @@ export const appRouter = router({
       }),
 
     // Comparativo 2024 vs 2025
-    comparativoAnos: protectedProcedure
-      .query(async ({ ctx }) => {
-        const vendedor = await db.getVendedorByEmail(ctx.user.email);
+    comparativoAnos: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const vendedorData = authVendedor.verificarToken(input.token);
+        if (!vendedorData) throw new Error('Token inválido ou expirado');
+        
+        const vendedor = await db.getVendedorById(vendedorData.vendedorId);
         if (!vendedor) throw new Error('Vendedor não encontrado');
 
         const metricas = await db.getMetricasByVendedor(vendedor.id);
@@ -1598,9 +1601,13 @@ export const appRouter = router({
       }),
 
     // Buscar metas trimestrais do vendedor
-    minhasMetas: protectedProcedure
-      .query(async ({ ctx }) => {
-        const vendedor = await db.getVendedorByEmail(ctx.user.email);
+    minhasMetas: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const vendedorData = authVendedor.verificarToken(input.token);
+        if (!vendedorData) throw new Error('Token inválido ou expirado');
+        
+        const vendedor = await db.getVendedorById(vendedorData.vendedorId);
         if (!vendedor) throw new Error('Vendedor não encontrado');
 
         const dbInstance = await db.getDb();
@@ -1677,13 +1684,17 @@ export const appRouter = router({
       }),
 
     // Top destinos do vendedor
-    topDestinos: protectedProcedure
+    topDestinos: publicProcedure
       .input(z.object({
         limit: z.number().default(10),
-        ano: z.number().optional()
-      }).optional())
-      .query(async ({ ctx, input }) => {
-        const vendedor = await db.getVendedorByEmail(ctx.user.email);
+        ano: z.number().optional(),
+        token: z.string()
+      }))
+      .query(async ({ input }) => {
+        const vendedorData = authVendedor.verificarToken(input.token);
+        if (!vendedorData) throw new Error('Token inválido ou expirado');
+        
+        const vendedor = await db.getVendedorById(vendedorData.vendedorId);
         if (!vendedor) throw new Error('Vendedor não encontrado');
 
         const dbInstance = await db.getDb();
