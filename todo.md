@@ -772,3 +772,8 @@
 - [x] Investigar por que /login-vendedor redireciona para OAuth
 - [x] Desabilitar middleware OAuth nas rotas públicas
 - [x] Garantir que página de login customizada sempre apareça
+
+### ✅ RESOLVIDO: Página de Boas-vindas Pública
+- [x] Criar página Welcome com dois botões de acesso
+- [x] Mover dashboard admin para /admin
+- [x] Página inicial (/) agora é pública para vendedores
