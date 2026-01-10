@@ -10,6 +10,7 @@ import { APP_TITLE, APP_LOGO } from "@/const";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { ModalLoginVendedor } from "@/components/ModalLoginVendedor";
 
 // Emails dos administradores
 const ADMIN_EMAILS = ['felipe@mundoproviagens.com.br', 'vendas@mundoproviagens.com.br'];
@@ -51,6 +52,7 @@ export default function Home() {
   const [comparativo2024vs2025, setComparativo2024vs2025] = useState<any>(null);
   const [topDestinos, setTopDestinos] = useState<any>(null);
   const [anoGrafico, setAnoGrafico] = useState<'2024' | '2025' | 'todos'>('2025');
+  const [modalLoginAberto, setModalLoginAberto] = useState(false);
 
   useEffect(() => {
     // Buscar % de receita consolidada
@@ -232,6 +234,16 @@ export default function Home() {
                 <SelectItem value="nome">Nome A-Z</SelectItem>
               </SelectContent>
             </Select>
+            
+            <Button
+              onClick={() => setModalLoginAberto(true)}
+              variant="default"
+              className="gap-2 bg-blue-600 hover:bg-blue-700"
+              size="sm"
+            >
+              <Target className="h-4 w-4" />
+              <span>Acesso Vendedor</span>
+            </Button>
             
             <Button
               onClick={() => setLocation('/analises')}
@@ -1376,6 +1388,12 @@ export default function Home() {
           </Card>
         )}
       </main>
+      
+      {/* Modal de Login de Vendedor */}
+      <ModalLoginVendedor 
+        open={modalLoginAberto} 
+        onOpenChange={setModalLoginAberto} 
+      />
     </div>
   );
 }

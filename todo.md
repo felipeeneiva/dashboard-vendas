@@ -767,3 +767,8 @@
 - [x] Atualizar endpoint meusDados para aceitar token via header
 - [x] Remover redirecionamento OAuth da rota /vendedor
 - [ ] Testar login completo: login → troca senha → painel
+
+### 🚨 URGENTE: Desabilitar OAuth completamente
+- [x] Investigar por que /login-vendedor redireciona para OAuth
+- [x] Desabilitar middleware OAuth nas rotas públicas
+- [x] Garantir que página de login customizada sempre apareça
