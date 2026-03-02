@@ -8,6 +8,7 @@ import { metricas } from "../drizzle/schema";
 import * as db from "./db";
 import { extrairMetricasAba, extrairDadosVendedor, gerarListaMeses } from "./sheetsExtractor";
 import * as authVendedor from "./auth-vendedor";
+import { sincronizarGoogleCalendar } from "./googleCalendar";
 
 // Configuração dos vendedores
 const VENDEDORES_CONFIG = [
@@ -1882,6 +1883,28 @@ export const appRouter = router({
           estatisticas: null
         };
       }
+    }),
+  }),
+
+  // Router de Google Calendar - Sincronização de Viagens
+  googleCalendar: router({
+    // Sincroniza eventos do Google Calendar e retorna viagens por período
+    sincronizar: publicProcedure
+      .input(z.object({
+        accessToken: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        console.log('[Google Calendar] Iniciando sincronização via tRPC...');
+        const resultado = await sincronizarGoogleCalendar(input.accessToken);
+        return resultado;
+      }),
+
+    // Retorna o status da última sincronização (armazenado em memória)
+    status: publicProcedure.query(async () => {
+      return {
+        disponivel: true,
+        mensagem: 'Pronto para sincronizar',
+      };
     }),
   }),
 

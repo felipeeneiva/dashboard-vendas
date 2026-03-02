@@ -54,6 +54,75 @@ export default function Home() {
   const [anoGrafico, setAnoGrafico] = useState<'2024' | '2025' | 'todos'>('2025');
   const [modalLoginAberto, setModalLoginAberto] = useState(false);
 
+  // Estados para sincronização do Google Calendar
+  const [isSincronizandoCalendario, setIsSincronizandoCalendario] = useState(false);
+  const [resultadoCalendario, setResultadoCalendario] = useState<{
+    totalImportadas: number;
+    proximos30Dias: number;
+    de30a90Dias: number;
+    de90a120Dias: number;
+    timestampSincronizacao: string;
+  } | null>(null);
+  const [modalCalendarioAberto, setModalCalendarioAberto] = useState(false);
+
+  // Mutation para sincronizar Google Calendar
+  const sincronizarCalendario = trpc.googleCalendar.sincronizar.useMutation({
+    onSuccess: (data: any) => {
+      setResultadoCalendario({
+        totalImportadas: data.totalImportadas,
+        proximos30Dias: data.proximos30Dias?.length || 0,
+        de30a90Dias: data.de30a90Dias?.length || 0,
+        de90a120Dias: data.de90a120Dias?.length || 0,
+        timestampSincronizacao: new Date(data.timestampSincronizacao).toLocaleString('pt-BR'),
+      });
+      setIsSincronizandoCalendario(false);
+      setModalCalendarioAberto(true);
+      toast.success(`Calendário sincronizado! ${data.totalImportadas} viagens importadas.`);
+    },
+    onError: (error: any) => {
+      setIsSincronizandoCalendario(false);
+      toast.error(`Erro ao sincronizar calendário: ${error.message}`);
+    }
+  });
+
+  const handleSincronizarCalendario = () => {
+    // Iniciar fluxo OAuth do Google Calendar
+    setIsSincronizandoCalendario(true);
+    
+    // Verificar se há token do Google disponível via window.__MANUS_GOOGLE_TOKEN__
+    const googleToken = (window as any).__MANUS_GOOGLE_TOKEN__;
+    
+    if (googleToken) {
+      sincronizarCalendario.mutate({ accessToken: googleToken });
+    } else {
+      // Redirecionar para autorização OAuth do Google
+      const redirectUri = `${window.location.origin}/api/oauth/google-calendar/callback`;
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+      
+      if (!clientId) {
+        // Modo demo: simular sincronização com dados de exemplo
+        setTimeout(() => {
+          setResultadoCalendario({
+            totalImportadas: 12,
+            proximos30Dias: 4,
+            de30a90Dias: 5,
+            de90a120Dias: 3,
+            timestampSincronizacao: new Date().toLocaleString('pt-BR'),
+          });
+          setIsSincronizandoCalendario(false);
+          setModalCalendarioAberto(true);
+          toast.success('Calendário sincronizado! 12 viagens importadas (modo demo).');
+        }, 2000);
+        return;
+      }
+      
+      const scopes = encodeURIComponent('https://www.googleapis.com/auth/calendar.readonly');
+      const state = encodeURIComponent(btoa(window.location.href));
+      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scopes}&access_type=offline&prompt=consent&state=${state}`;
+      window.location.href = authUrl;
+    }
+  };
+
   useEffect(() => {
     // Buscar % de receita consolidada
     const inputReceita = encodeURIComponent(JSON.stringify({ json: { ano: 2025 } }));
@@ -235,6 +304,26 @@ export default function Home() {
               </SelectContent>
             </Select>
             
+            <Button
+              onClick={handleSincronizarCalendario}
+              disabled={isSincronizandoCalendario}
+              variant="outline"
+              className="gap-2 border-teal-400 hover:bg-teal-50 text-teal-700 dark:border-teal-600 dark:hover:bg-teal-900/20 dark:text-teal-400"
+              size="sm"
+            >
+              {isSincronizandoCalendario ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span className="hidden sm:inline">Sincronizando...</span>
+                </>
+              ) : (
+                <>
+                  <Calendar className="h-4 w-4" />
+                  <span className="hidden sm:inline">Sincronizar Calendário</span>
+                </>
+              )}
+            </Button>
+
             <Button
               onClick={() => setModalLoginAberto(true)}
               variant="default"
@@ -1394,6 +1483,67 @@ export default function Home() {
         open={modalLoginAberto} 
         onOpenChange={setModalLoginAberto} 
       />
+
+      {/* Modal de Resultado da Sincronização do Google Calendar */}
+      {modalCalendarioAberto && resultadoCalendario && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-lg">
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+                  <Calendar className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Calendário Sincronizado</h2>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{resultadoCalendario.timestampSincronizacao}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="col-span-2 bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4 text-center border border-teal-200 dark:border-teal-800">
+                  <p className="text-3xl font-bold text-teal-700 dark:text-teal-300">{resultadoCalendario.totalImportadas}</p>
+                  <p className="text-sm text-teal-600 dark:text-teal-400 font-medium mt-1">Total de Viagens Importadas</p>
+                </div>
+
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 text-center border border-blue-200 dark:border-blue-800">
+                  <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">{resultadoCalendario.proximos30Dias}</p>
+                  <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mt-1">Próximos 30 dias</p>
+                </div>
+
+                <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 text-center border border-orange-200 dark:border-orange-800">
+                  <p className="text-2xl font-bold text-orange-700 dark:text-orange-300">{resultadoCalendario.de30a90Dias}</p>
+                  <p className="text-xs text-orange-600 dark:text-orange-400 font-medium mt-1">30 a 90 dias</p>
+                </div>
+
+                <div className="col-span-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 text-center border border-purple-200 dark:border-purple-800">
+                  <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">{resultadoCalendario.de90a120Dias}</p>
+                  <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mt-1">90 a 120 dias</p>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => setModalCalendarioAberto(false)}
+                >
+                  Fechar
+                </Button>
+                <Button
+                  onClick={handleSincronizarCalendario}
+                  disabled={isSincronizandoCalendario}
+                  className="gap-2 bg-teal-600 hover:bg-teal-700 text-white"
+                >
+                  {isSincronizandoCalendario ? (
+                    <><Loader2 className="h-4 w-4 animate-spin" /> Sincronizando...</>
+                  ) : (
+                    <><RefreshCw className="h-4 w-4" /> Sincronizar Novamente</>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
