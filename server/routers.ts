@@ -3,13 +3,14 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
+import { sql, desc } from "drizzle-orm";
+import { metricas } from "../drizzle/schema";
 import * as db from "./db";
 import { extrairMetricasAba, extrairDadosVendedor, gerarListaMeses } from "./sheetsExtractor";
 import * as authVendedor from "./auth-vendedor";
 
 // Configuração dos vendedores
 const VENDEDORES_CONFIG = [
-  { nome: 'Rafael', email: 'vendas5@mundoproviagens.com.br', sheetId: '1ZJz0MgOHLkYYNW5eWZmOAU797KXQPbwGmp8YnWl4NPo', dataEntrada: new Date('2023-01-01') },
   { nome: 'Gabriel', email: 'gabriel@mundoproviagens.com.br', sheetId: '1Fp7Y6ytwk7SLZAEZkSw-gAU2nCWVK9M1SyK0enbjQfY', dataEntrada: new Date('2024-01-01') },
   { nome: 'Francine', email: 'vendas3@mundoproviagens.com.br', sheetId: '1PpzDxn6eM3LKwtJTchD6qVbbyUkAeDnA6hNy0gmrx10', dataEntrada: new Date('2023-01-01') },
   { nome: 'Mauro', email: 'vendas6@mundoproviagens.com.br', sheetId: '19CNbM8qmkDFi-TxPDH8xaKeK0xOngcnDR2zOYH-LFSk', dataEntrada: new Date('2023-01-01') },
@@ -1835,6 +1836,55 @@ export const appRouter = router({
     }),
   }),
   
+  // Router de sincronização
+  sincronizacao: router({
+    status: publicProcedure.query(async () => {
+      const dbInstance = await db.getDb();
+      if (!dbInstance) {
+        return { 
+          status: 'erro', 
+          mensagem: 'Banco de dados não disponível',
+          ultimaSincronizacao: null,
+          estatisticas: null
+        };
+      }
+
+      try {
+        const ultima = await dbInstance
+          .select()
+          .from(metricas)
+          .orderBy(desc(metricas.dataExtracao))
+          .limit(1);
+
+        const estatisticas = await dbInstance.execute(sql`
+          SELECT 
+            (SELECT COUNT(*) FROM vendedores) as totalVendedores,
+            (SELECT COUNT(*) FROM metricas WHERE dataExtracao > DATE_SUB(NOW(), INTERVAL 24 HOUR)) as atualizados24h,
+            (SELECT COUNT(*) FROM vendas_diarias WHERE dataExtracao > DATE_SUB(NOW(), INTERVAL 24 HOUR)) as vendas24h
+        `);
+
+        const stats = (estatisticas[0] as any)[0];
+
+        return {
+          status: 'sucesso',
+          ultimaSincronizacao: ultima.length > 0 ? ultima[0].dataExtracao : null,
+          estatisticas: {
+            vendedores: stats.totalVendedores,
+            atualizados24h: stats.atualizados24h,
+            vendas24h: stats.vendas24h
+          }
+        };
+      } catch (error) {
+        return { 
+          status: 'erro', 
+          mensagem: error instanceof Error ? error.message : 'Erro desconhecido',
+          ultimaSincronizacao: null,
+          estatisticas: null
+        };
+      }
+    }),
+  }),
+
   // Router de autenticação de vendedores
   authVendedor: router({
     login: publicProcedure

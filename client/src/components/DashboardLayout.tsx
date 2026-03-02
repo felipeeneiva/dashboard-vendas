@@ -21,7 +21,8 @@ import {
 } from "@/components/ui/sidebar";
 import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users, BarChart3, Target, TrendingUp, Package, PieChart, Activity, HeadphonesIcon } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, BarChart3, Target, TrendingUp, Package, PieChart, Activity, HeadphonesIcon, RefreshCw, CheckCircle2, AlertCircle } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -157,6 +158,9 @@ function DashboardLayoutContent({
   setSidebarWidth,
 }: DashboardLayoutContentProps) {
   const { user, logout } = useAuth();
+  const syncStatus = trpc.sincronizacao.status.useQuery(undefined, {
+    refetchInterval: 300000, // Atualiza a cada 5 minutos
+  });
   const [location, setLocation] = useLocation();
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === "collapsed";
@@ -282,7 +286,41 @@ function DashboardLayoutContent({
             ))}
           </SidebarContent>
 
-          <SidebarFooter className="p-3">
+          <SidebarFooter className="p-3 space-y-3">
+            {/* Widget de Sincronização */}
+            {!isCollapsed && (
+              <div className="px-2 py-2 rounded-lg bg-accent/30 border border-border/50 mb-2">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1">
+                    <RefreshCw className={`h-2.5 w-2.5 ${syncStatus.isFetching ? 'animate-spin' : ''}`} />
+                    Sincronização
+                  </span>
+                  {syncStatus.data?.status === 'sucesso' ? (
+                    <CheckCircle2 className="h-3 w-3 text-green-500" />
+                  ) : (
+                    <AlertCircle className="h-3 w-3 text-amber-500" />
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[11px] text-foreground font-medium">
+                    {syncStatus.data?.ultimaSincronizacao 
+                      ? new Date(syncStatus.data.ultimaSincronizacao).toLocaleString('pt-BR', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })
+                      : 'Nunca sincronizado'}
+                  </p>
+                  {syncStatus.data?.estatisticas && (
+                    <p className="text-[10px] text-muted-foreground">
+                      {syncStatus.data.estatisticas.atualizados24h} vendedores atualizados (24h)
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-3 rounded-lg px-1 py-1 hover:bg-accent/50 transition-colors w-full text-left group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
