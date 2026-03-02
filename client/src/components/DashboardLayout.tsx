@@ -318,6 +318,21 @@ function DashboardLayoutContent({
                     </p>
                   )}
                 </div>
+                {user?.role === 'admin' && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="w-full mt-2 h-7 text-[10px] gap-1.5 border border-border/50 hover:bg-primary/10 hover:text-primary transition-all"
+                    onClick={() => {
+                      // Disparar sincronização manual via tRPC se disponível
+                      // Ou apenas informar que a sincronização automática está ativa
+                      alert("A sincronização automática está ativa (cada 5 min). Para forçar agora, use o terminal ou aguarde o próximo ciclo.");
+                    }}
+                  >
+                    <RefreshCw className="h-3 w-3" />
+                    Sincronizar Agora
+                  </Button>
+                )}
               </div>
             )}
 
